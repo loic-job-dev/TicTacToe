@@ -141,22 +141,20 @@ public class TicTacToe {
     public boolean checkWinner() {
         boolean result = false;
         for (int i = 0; i < board.getSize(); i++) {
+
+            //Check for the rows
             if (!isNotEmpty(i, 0)) {
                 System.out.println("Première case de la ligne " + (i+1) + " vide");
             } else if (isNotEmpty(i, 0)) {
                 System.out.println("Première case de la ligne " + (i+1) + " non vide");
-
-
-                //Here's the problem : method compare (0, 0, 0, 0), returns true,
-                boolean rowValid = false;
+                boolean rowValid = true;
                 for(int j = 0; j < board.getSize(); j++) {
                     boolean checkRow = false;
                     if (sameOwner(i, 0, i, j)) {
-                        System.out.println("i = " + i + ", j = " + j);
                         checkRow = true;
                     }
-                    if (checkRow) {
-                        rowValid = true;
+                    if (!checkRow) {
+                        rowValid = false;
                     }
                 }
                 if (rowValid) {
@@ -165,8 +163,7 @@ public class TicTacToe {
                 }
             }
 
-
-
+            //Check for the columns
             if (isNotEmpty(0,i)
                     && sameOwner(0, i, 1, i)
                     && sameOwner(0, i, 2, i)) {
