@@ -28,15 +28,15 @@ classDiagram
         +setOwner()
         +play()
     }
-    TicTacToe --> Board
-    TicTacToe --> Player
+    TicTacToe <|-- Board
+    TicTacToe <|-- Player
 
     class Board {
         -int size
         -Tile[] tiles
         +createBoard()
     }
-    Board --> Tile
+    Board <|-- Tile
 
     class Tile {
         -int coordinateX
