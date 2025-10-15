@@ -23,7 +23,7 @@ classDiagram
         +Player player1
         +Player player2
         +launchGame()
-        +Game()
+        +game()
     }
     Game --> Board
     Game --> Player
@@ -38,7 +38,7 @@ classDiagram
     class Tile {
         -int coordinateX
         -int coordinateY
-        +hasPawn()
+        -boolean hasPawn
     }
 
     class Player {
