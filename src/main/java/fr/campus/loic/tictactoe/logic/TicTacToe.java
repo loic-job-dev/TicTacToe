@@ -18,12 +18,15 @@ public class TicTacToe {
     private final Board board;
     /** The first player */
     private Player player1;
+    /** The second player */
+    private Player player2;
 
     /** Creates a new Tic-Tac-Toe game with a 3x3 board and default players. */
     public TicTacToe() {
         this.clavier =  new Scanner(System.in);
         this.board = new Board(3);
         this.player1 = new Player("X", 1);
+        this.player2 = new Player("O", 2);
     }
 
     /** Displays the current state of the board in the console. */
@@ -32,7 +35,7 @@ public class TicTacToe {
             System.out.println(ConsoleColors.CYAN + "---------------");
             for (int x = 0; x < board.getSize(); x++) {
                 System.out.print("|");
-                board.getTile(x, y).getRepresentation();
+                System.out.print(board.getTile(x, y).getRepresentation());
                 System.out.print("|");
             }
             System.out.println();
@@ -46,12 +49,12 @@ public class TicTacToe {
      *
      * @return the coordinates {x, y} of the selected tile
      */
-    public int[] getMoveFromPlayer() {
+    public int[] getMoveFromPlayer(Player player) {
         int x = 0;
         int y = 0;
         while (true) {
             try {
-                System.out.println("Merci de choisir les coordonnées de la case à capturer (de 1 à 3)");
+                System.out.println("Merci de choisir les coordonnées de la case à capturer (de 1 à 3)\n");
                 System.out.print("Coordonnée X : ");
                 y = clavier.nextInt() - 1;
 
@@ -74,7 +77,7 @@ public class TicTacToe {
             }
         }
         board.getTile(x, y).setPawn(true);
-        setOwner(x, y, player1);
+        setOwner(x, y, player);
         return new int[] { x, y };
     }
 
@@ -92,12 +95,73 @@ public class TicTacToe {
     /** Runs the game loop, prompting the player for moves and updating the board. */
     public void play(){
         display();
-        for (int pippo = 0; pippo <9; pippo++) {
-            int[] move = getMoveFromPlayer(); // Appel de la méthode
-            int x = move[0];  // Première case du tableau → X
-            int y = move[1];  // Deuxième case du tableau → Y
-            System.out.println("Tu as choisi la case : (" + (y+1) + ", " + (x+1) + ")");
+        boolean player1Turn = true;
+        for (int pippo = 1; pippo <= 9; pippo++) {
+            System.out.println("\nTour de jeu N°" + pippo + "\n");
+            if (player1Turn) {
+                System.out.println("Tour du joueur 1");
+                playerTurn(this.player1);
+                player1Turn = false;
+            } else {
+                System.out.println("Tour du joueur 2");
+                playerTurn(this.player2);
+                player1Turn = true;
+            }
             display();
+            if(checkWinner()){
+                pippo = 9;
+                System.out.println("Fin de la partie !");
+            };
         }
+    }
+
+    /**
+     * Executes a single turn for the given player by prompting them for a move
+     * and displaying the chosen coordinates.
+     *
+     * @param player the player whose turn it is
+     */
+    public void playerTurn(Player player) {
+        int[] move;
+        move = getMoveFromPlayer(player);
+        int x = move[0];  // Première case du tableau → X
+        int y = move[1];  // Deuxième case du tableau → Y
+        System.out.println("\nTu as choisi la case : (" + (y + 1) + ", " + (x + 1) + ")");
+    }
+
+    /**
+     * Checks whether there is a winner on the current board.
+     * <p>
+     * A winner is detected if any row, column, or diagonal contains the same
+     * non-empty symbol.
+     * </p>
+     *
+     * @return {@code true} if a player has won, {@code false} otherwise
+     */
+    public boolean checkWinner() {
+        boolean result = false;
+
+        for (int i = 0; i < board.getSize(); i++) {
+            if ((!board.getTile(i, 0).getRepresentation().equals("   "))
+                    && (board.getTile(i, 0).getRepresentation().equals(board.getTile(i, 1).getRepresentation()))
+                    && (board.getTile(i, 0).getRepresentation().equals(board.getTile(i, 2).getRepresentation()))) {
+                result = true;
+            } else if ((!board.getTile(0, i).getRepresentation().equals("   "))
+                    && (board.getTile(0, i).getRepresentation().equals(board.getTile(1, i).getRepresentation()))
+                    && (board.getTile(0, i).getRepresentation().equals(board.getTile(2, i).getRepresentation()))) {
+                result = true;
+            }
+        }
+        if ((!board.getTile(0, 0).getRepresentation().equals("   "))
+                && (board.getTile(0, 0).getRepresentation().equals(board.getTile(1, 1).getRepresentation()))
+                && (board.getTile(0, 0).getRepresentation().equals(board.getTile(2, 2).getRepresentation()))) {
+            result = true;
+        }
+        if ((!board.getTile(0, 2).getRepresentation().equals("   "))
+                && (board.getTile(0, 2).getRepresentation().equals(board.getTile(1, 1).getRepresentation()))
+                && (board.getTile(0, 2).getRepresentation().equals(board.getTile(2, 0).getRepresentation()))) {
+            result = true;
+        }
+        return result;
     }
 }

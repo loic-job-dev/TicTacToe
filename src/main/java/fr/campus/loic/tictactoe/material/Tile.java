@@ -44,8 +44,8 @@ public class Tile {
     }
 
     /** Prints the tile's representation to the console */
-    public void getRepresentation() {
-        System.out.print(representation);
+    public String getRepresentation() {
+        return representation;
     }
 
     /**
