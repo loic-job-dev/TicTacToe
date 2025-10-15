@@ -111,7 +111,7 @@ public class TicTacToe {
             if(checkWinner()){
                 pippo = 9;
                 System.out.println("Fin de la partie !");
-            };
+            }
         }
     }
 
@@ -140,28 +140,51 @@ public class TicTacToe {
      */
     public boolean checkWinner() {
         boolean result = false;
-
         for (int i = 0; i < board.getSize(); i++) {
-            if ((!board.getTile(i, 0).getRepresentation().equals("   "))
-                    && (board.getTile(i, 0).getRepresentation().equals(board.getTile(i, 1).getRepresentation()))
-                    && (board.getTile(i, 0).getRepresentation().equals(board.getTile(i, 2).getRepresentation()))) {
+            if (isNotEmpty(i, 0)
+                    && sameOwner(i, 0, i, 1)
+                    && sameOwner(i, 0, i, 2)) {
                 result = true;
-            } else if ((!board.getTile(0, i).getRepresentation().equals("   "))
-                    && (board.getTile(0, i).getRepresentation().equals(board.getTile(1, i).getRepresentation()))
-                    && (board.getTile(0, i).getRepresentation().equals(board.getTile(2, i).getRepresentation()))) {
+            } else if (isNotEmpty(0,i)
+                    && sameOwner(0, i, 1, i)
+                    && sameOwner(0, i, 2, i)) {
                 result = true;
             }
         }
-        if ((!board.getTile(0, 0).getRepresentation().equals("   "))
-                && (board.getTile(0, 0).getRepresentation().equals(board.getTile(1, 1).getRepresentation()))
-                && (board.getTile(0, 0).getRepresentation().equals(board.getTile(2, 2).getRepresentation()))) {
+        if (isNotEmpty(0, 0)
+                && sameOwner(0, 0, 1, 1)
+                && sameOwner(0, 0, 2, 2)) {
             result = true;
         }
-        if ((!board.getTile(0, 2).getRepresentation().equals("   "))
-                && (board.getTile(0, 2).getRepresentation().equals(board.getTile(1, 1).getRepresentation()))
-                && (board.getTile(0, 2).getRepresentation().equals(board.getTile(2, 0).getRepresentation()))) {
+        if (isNotEmpty(0, 2)
+                && sameOwner(0, 2, 1, 1)
+                && sameOwner(0, 2, 2, 0)) {
             result = true;
         }
         return result;
+    }
+
+    /**
+     * Checks if the tile at the given coordinates is not empty.
+     *
+     * @param x the row index of the tile
+     * @param y the column index of the tile
+     * @return {@code true} if the tile is empty, {@code false} otherwise
+     */
+    public boolean isNotEmpty(int x, int y) {
+        return (!board.getTile(x, y).getRepresentation().equals("   "));
+    }
+
+    /**
+     * Checks if two tiles have the same owner (i.e., the same representation).
+     *
+     * @param x the row index of the first tile
+     * @param y the column index of the first tile
+     * @param X the row index of the second tile
+     * @param Y the column index of the second tile
+     * @return {@code true} if both tiles have the same owner, {@code false} otherwise
+     */
+    public boolean sameOwner(int x, int y, int X, int Y) {
+        return board.getTile(x, y).getRepresentation().equals(board.getTile(X, Y).getRepresentation());
     }
 }

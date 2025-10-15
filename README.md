@@ -27,6 +27,8 @@ classDiagram
         +getMoveFromPlayer()
         +setOwner()
         +play()
+        +playerTurn()
+        +checkWinner()
     }
     TicTacToe <|-- Board
     TicTacToe <|-- Player
