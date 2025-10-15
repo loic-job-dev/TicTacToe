@@ -16,18 +16,20 @@ classDiagram
     class Main {
         +main()
     }
-    Main --> Game
+    Main --> TicTacToe
 
-    class Game {
+    class TicTacToe {
+        +Scanner clavier
         +Board board
         +Player player1
         +Player player2
         +display()
-        +launchGame()
-        +game()
+        +getMoveFromPlayer()
+        +setOwner()
+        +play()
     }
-    Game --> Board
-    Game --> Player
+    TicTacToe --> Board
+    TicTacToe --> Player
 
     class Board {
         -int size
@@ -40,16 +42,13 @@ classDiagram
         -int coordinateX
         -int coordinateY
         -boolean hasPawn
+        -String representation
     }
 
     class Player {
-        -String name
-        -Pawn pawn
-        +choosePawn()
-    }
-    Player --> Pawn
-
-    class Pawn {
+        -String representation
         -String color
-        -String pattern
     }
+```
+
+

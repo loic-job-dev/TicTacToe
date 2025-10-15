@@ -49,10 +49,10 @@ public class TicTacToe {
             try {
                 System.out.println("Merci de choisir les coordonnées de la case à capturer (de 1 à 3)");
                 System.out.print("Coordonnée X : ");
-                x = clavier.nextInt() - 1;
+                y = clavier.nextInt() - 1;
 
                 System.out.print("Coordonnée Y : ");
-                y = clavier.nextInt() - 1;
+                x = clavier.nextInt() - 1;
 
                 if (x >= 0 && x < 3 && y >= 0 && y < 3) {
                     if (!board.getTile(x, y).hasPawn()) {
@@ -76,5 +76,16 @@ public class TicTacToe {
 
     public void setOwner(int x, int y, Player player) {
         board.getTile(x, y).setRepresentation(player.getRepresentation());
+    }
+
+    public void play(){
+        display();
+        for (int pippo = 0; pippo <9; pippo++) {
+            int[] move = getMoveFromPlayer(); // Appel de la méthode
+            int x = move[0];  // Première case du tableau → X
+            int y = move[1];  // Deuxième case du tableau → Y
+            System.out.println("Tu as choisi la case : (" + (y+1) + ", " + (x+1) + ")");
+            display();
+        }
     }
 }

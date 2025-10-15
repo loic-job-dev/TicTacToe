@@ -11,8 +11,11 @@ public class Player {
         if  (number == 1) {
             this.color = ConsoleColors.RED;
         }
-        if  (number == 2) {
+        else if  (number == 2) {
             this.color = ConsoleColors.GREEN;
+        }
+        else {
+            this.color = ConsoleColors.YELLOW;
         }
     }
 
