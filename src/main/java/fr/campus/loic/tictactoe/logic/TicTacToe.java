@@ -141,21 +141,45 @@ public class TicTacToe {
     public boolean checkWinner() {
         boolean result = false;
         for (int i = 0; i < board.getSize(); i++) {
-            if (isNotEmpty(i, 0)
-                    && sameOwner(i, 0, i, 1)
-                    && sameOwner(i, 0, i, 2)) {
-                result = true;
-            } else if (isNotEmpty(0,i)
+            if (!isNotEmpty(i, 0)) {
+                System.out.println("Première case de la ligne " + (i+1) + " vide");
+            } else if (isNotEmpty(i, 0)) {
+                System.out.println("Première case de la ligne " + (i+1) + " non vide");
+
+
+                //Here's the problem : method compare (0, 0, 0, 0), returns true,
+                boolean rowValid = false;
+                for(int j = 0; j < board.getSize(); j++) {
+                    boolean checkRow = false;
+                    if (sameOwner(i, 0, i, j)) {
+                        System.out.println("i = " + i + ", j = " + j);
+                        checkRow = true;
+                    }
+                    if (checkRow) {
+                        rowValid = true;
+                    }
+                }
+                if (rowValid) {
+                    System.out.println("ligne gagante en index " + (i+1));
+                    result = true;
+                }
+            }
+
+
+
+            if (isNotEmpty(0,i)
                     && sameOwner(0, i, 1, i)
                     && sameOwner(0, i, 2, i)) {
                 result = true;
             }
         }
+        //test diagnoale 1
         if (isNotEmpty(0, 0)
                 && sameOwner(0, 0, 1, 1)
                 && sameOwner(0, 0, 2, 2)) {
             result = true;
         }
+        //test diagonale 2
         if (isNotEmpty(0, 2)
                 && sameOwner(0, 2, 1, 1)
                 && sameOwner(0, 2, 2, 0)) {
@@ -172,7 +196,11 @@ public class TicTacToe {
      * @return {@code true} if the tile is empty, {@code false} otherwise
      */
     public boolean isNotEmpty(int x, int y) {
-        return (!board.getTile(x, y).getRepresentation().equals("   "));
+        if (board.getTile(x, y).getRepresentation().equals("   ")){
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
