@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"fr.campus.loic.tictactoe"},{"l":"fr.campus.loic.tictactoe.logic"},{"l":"fr.campus.loic.tictactoe.material"},{"l":"fr.campus.loic.tictactoe.player"}];updateSearchResults();

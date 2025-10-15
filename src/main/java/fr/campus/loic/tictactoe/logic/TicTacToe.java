@@ -9,22 +9,24 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * class contains the logic for a TicTacToe game
+ * Handles the logic of a Tic-Tac-Toe game, including player moves and board display.
  */
 public class TicTacToe {
+    /** Scanner for reading player input. */
     private final Scanner clavier;
+    /** The game board. */
     private final Board board;
+    /** The first player */
     private Player player1;
 
+    /** Creates a new Tic-Tac-Toe game with a 3x3 board and default players. */
     public TicTacToe() {
         this.clavier =  new Scanner(System.in);
         this.board = new Board(3);
         this.player1 = new Player("X", 1);
     }
 
-    /**
-     * Displays the board into the console
-     */
+    /** Displays the current state of the board in the console. */
     public void display() {
         for (int y = 0; y < board.getSize(); y++) {
             System.out.println(ConsoleColors.CYAN + "---------------");
@@ -39,8 +41,10 @@ public class TicTacToe {
     }
 
     /**
-     * checks if the coordinates given by the player are correct, and if the tile is not already captured
-     * @return the coordinates given by the player
+     * Prompts the player to enter valid coordinates for their move.
+     * Ensures the chosen tile is within bounds and not already occupied.
+     *
+     * @return the coordinates {x, y} of the selected tile
      */
     public int[] getMoveFromPlayer() {
         int x = 0;
@@ -74,10 +78,18 @@ public class TicTacToe {
         return new int[] { x, y };
     }
 
+    /**
+     * Sets the owner of a tile and updates its visual representation.
+     *
+     * @param x the row index
+     * @param y the column index
+     * @param player the player who owns the tile
+     */
     public void setOwner(int x, int y, Player player) {
         board.getTile(x, y).setRepresentation(player.getRepresentation());
     }
 
+    /** Runs the game loop, prompting the player for moves and updating the board. */
     public void play(){
         display();
         for (int pippo = 0; pippo <9; pippo++) {
