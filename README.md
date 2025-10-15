@@ -1,42 +1,54 @@
 # TicTacToe
-School project in java, to create a TicTacToe game.
 
+School project in Java
+
+---
+
+## Description
+This projects aims to create a TicTacToe game, playable in console.
+
+---
+
+## Class diagram
+
+```mermaid
 classDiagram
-    Main
-    Main : +main()
+    class Main {
+        +main()
+    }
     Main --> Game
 
-    class Game{
-    +Board Board
-    +Player player1
-    +Player player2
-    +launchGame()
-    +Game()
+    class Game {
+        +Board board
+        +Player player1
+        +Player player2
+        +launchGame()
+        +Game()
     }
-    Game <|-- Board
-    Game <|--Player
+    Game --> Board
+    Game --> Player
 
-    class Board{
+    class Board {
         -int size
-        -[Tile] tiles
-        -create()
+        -Tile[] tiles
+        +create()
     }
-    Board <|--Tile
+    Board --> Tile
 
-    class Tile{
-        -int coordonateX
-        -int coordonateY
-        -hasPawn()
+    class Tile {
+        -int coordinateX
+        -int coordinateY
+        +hasPawn()
     }
 
-    class Player{
-        -string name
+    class Player {
+        -String name
         -Pawn pawn
-        -choosePawn()
+        +choosePawn()
     }
-    Player <|--Pawn
+    Player --> Pawn
 
-    class Pawn{
-        -string color
-        -string pattern
+    class Pawn {
+        -String color
+        -String pattern
     }
