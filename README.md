@@ -22,6 +22,7 @@ classDiagram
         +Board board
         +Player player1
         +Player player2
+        +display()
         +launchGame()
         +game()
     }
@@ -31,7 +32,7 @@ classDiagram
     class Board {
         -int size
         -Tile[] tiles
-        +create()
+        +createBoard()
     }
     Board --> Tile
 

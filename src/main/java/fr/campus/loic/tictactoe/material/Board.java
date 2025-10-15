@@ -30,17 +30,4 @@ public class Board {
         }
         return tiles[x][y];
     }
-
-    public void displayBoard() {
-        for (int y = 0; y < size; y++) {
-            System.out.println("---------------");
-            for (int x = 0; x < size; x++) {
-                System.out.print("|");
-                tiles[x][y].getRepresentation();
-                System.out.print("|");
-            }
-            System.out.println();
-        }
-        System.out.println("---------------");
-    }
 }
