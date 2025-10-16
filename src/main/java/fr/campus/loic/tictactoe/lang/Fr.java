@@ -14,8 +14,11 @@ public class Fr {
     public static final String coordinateY = "Coordonnée verticale (Y) : ";
     public static final String tileAlreadyTaken = "Case déjà prise !";
     public static final String wrongCoordinate = "Les coordonnées doivent être comprises entre 1 et ";
-    public static final String exceptionCoordinateMessage = "\nMerci de saisir un chiffre valide pour indiquer ton choix.\n";
+    public static final String exceptionIntMessage = "\nMerci de saisir un chiffre valide pour indiquer ton choix.\n";
     public static final String turnOfPlayer = "Tour du joueur ";
     public static final String victory = "Victoire du joueur ";
+    public static final String chooseGameMode = "Quel mode de jeu ?\n1 - Joueur contre Joueur\n2 - Joueur contre Bot\n3 - Bot contre Bot\n";
+    public static final String wrongChoice = "Choisir un chiffre parmis la liste proposée !";
+
 
 }

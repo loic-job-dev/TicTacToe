@@ -29,7 +29,7 @@ public class TicTacToe {
         this.clavier =  new Scanner(System.in);
         this.board = new Board(3);
         this.player1 = new HumanPlayer("X", 1);
-        this.player2 = new ArtificialPlayer("O", 2);
+        this.player2 = new HumanPlayer("O", 2);
     }
 
     /** Displays the current state of the board in the console. */
@@ -77,10 +77,10 @@ public class TicTacToe {
                             System.out.println(Fr.tileAlreadyTaken);
                         }
                     } else {
-                        System.out.println(Fr.wrongCoordinate + board.getSize() + ".");
+                        System.out.println(ConsoleColors.RED + Fr.wrongCoordinate + board.getSize() + "." + ConsoleColors.RESET);
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println(Fr.exceptionCoordinateMessage);
+                    System.out.println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
                     clavier.nextLine();
                 }
             }
@@ -109,6 +109,7 @@ public class TicTacToe {
     /** Runs the game loop, prompting the player for moves and updating the board. */
     public void play(){
         System.out.println(ConsoleColors.YELLOW + Fr.rulesTicTacToe + ConsoleColors.RESET);
+        chooseGameMode();
         display();
         boolean player1Turn = true;
         for (int pippo = 1; pippo <= board.getSize()*board.getSize(); pippo++) {
@@ -243,5 +244,37 @@ public class TicTacToe {
      */
     public boolean sameOwner(int x, int y, int X, int Y) {
         return board.getTile(x, y).getRepresentation().equals(board.getTile(X, Y).getRepresentation());
+    }
+
+    public void chooseGameMode() {
+        int choice = 0;
+
+        while (true) {
+            try {
+                System.out.println(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
+                choice = clavier.nextInt();
+
+                if (choice == 1) {
+                    this.player1 = new HumanPlayer("X", 1);
+                    this.player2 = new HumanPlayer("O", 2);
+                    break;
+                }
+                else if (choice == 2) {
+                    this.player1 = new HumanPlayer("X", 1);
+                    this.player2 = new ArtificialPlayer("O", 2);
+                    break;
+                }
+                else if (choice == 3) {
+                    this.player1 = new ArtificialPlayer("X", 1);
+                    this.player2 = new ArtificialPlayer("O", 2);
+                    break;
+                } else {
+                    System.out.println(ConsoleColors.RED + Fr.wrongChoice +  ConsoleColors.RESET);
+                }
+            } catch (InputMismatchException e) {
+                    System.out.println(ConsoleColors.RED + Fr.exceptionIntMessage +  ConsoleColors.RESET);
+                    clavier.nextLine();
+            }
+        }
     }
 }

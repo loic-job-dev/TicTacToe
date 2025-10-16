@@ -23,6 +23,6 @@ public class ArtificialPlayer extends Player implements RandomCoordinateCapable 
      */
     @Override
     public int randomCoordinatePlayed (int size) {
-        return RANDOM.nextInt(0, (size-1));
+        return RANDOM.nextInt(0, (size));
     }
 }
