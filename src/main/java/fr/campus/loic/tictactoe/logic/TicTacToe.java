@@ -1,5 +1,6 @@
 package fr.campus.loic.tictactoe.logic;
 
+import fr.campus.loic.tictactoe.lang.Fr;
 import fr.campus.loic.tictactoe.material.Board;
 import fr.campus.loic.tictactoe.material.ConsoleColors;
 import fr.campus.loic.tictactoe.material.Tile;
@@ -31,16 +32,20 @@ public class TicTacToe {
 
     /** Displays the current state of the board in the console. */
     public void display() {
+        String separator = "";
+        for (int i = 0; i < board.getSize(); i++) {
+            separator += Fr.separator;
+        }
         for (int y = 0; y < board.getSize(); y++) {
-            System.out.println(ConsoleColors.CYAN + "---------------");
+            System.out.println(ConsoleColors.CYAN + separator);
             for (int x = 0; x < board.getSize(); x++) {
                 System.out.print("|");
                 System.out.print(board.getTile(x, y).getRepresentation());
-                System.out.print("|");
+                    System.out.print("|");
             }
             System.out.println();
         }
-        System.out.println("---------------" + ConsoleColors.RESET);
+        System.out.println(separator + ConsoleColors.RESET);
     }
 
     /**
@@ -61,7 +66,7 @@ public class TicTacToe {
                 System.out.print("Coordonnée Y : ");
                 x = clavier.nextInt() - 1;
 
-                if (x >= 0 && x < 3 && y >= 0 && y < 3) {
+                if (x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize()) {
                     if (!board.getTile(x, y).hasPawn()) {
                         break;
                     }
@@ -96,7 +101,7 @@ public class TicTacToe {
     public void play(){
         display();
         boolean player1Turn = true;
-        for (int pippo = 1; pippo <= 9; pippo++) {
+        for (int pippo = 1; pippo <= board.getSize()*board.getSize(); pippo++) {
             System.out.println("\nTour de jeu N°" + pippo + "\n");
             if (player1Turn) {
                 System.out.println("Tour du joueur 1");
@@ -109,7 +114,7 @@ public class TicTacToe {
             }
             display();
             if(checkWinner()){
-                pippo = 9;
+                pippo = board.getSize()*board.getSize();
                 System.out.println("Fin de la partie !");
             }
         }
@@ -140,42 +145,45 @@ public class TicTacToe {
      */
     public boolean checkWinner() {
         boolean result = false;
+
         for (int i = 0; i < board.getSize(); i++) {
 
             //Check for the rows
-            if (!isNotEmpty(i, 0)) {
-                System.out.println("Première case de la ligne " + (i+1) + " vide");
-            } else if (isNotEmpty(i, 0)) {
-                System.out.println("Première case de la ligne " + (i+1) + " non vide");
-                boolean rowValid = true;
-                for(int j = 0; j < board.getSize(); j++) {
-                    boolean checkRow = false;
-                    if (sameOwner(i, 0, i, j)) {
-                        checkRow = true;
-                    }
-                    if (!checkRow) {
-                        rowValid = false;
+            if (isNotEmpty(0, i)) {
+                boolean rowWin = true;
+                for (int j = 1; j < board.getSize(); j++) {
+                    if (!sameOwner(0, i, j, i)) {
+                        rowWin = false;
+                        break;
                     }
                 }
-                if (rowValid) {
-                    System.out.println("ligne gagante en index " + (i+1));
+                if (rowWin) {
                     result = true;
                 }
             }
 
             //Check for the columns
-            if (isNotEmpty(0,i)
-                    && sameOwner(0, i, 1, i)
-                    && sameOwner(0, i, 2, i)) {
-                result = true;
+            if (isNotEmpty(i, 0)) {
+                boolean colWin = true;
+                for (int j = 1; j < board.getSize(); j++) {
+                    if (!sameOwner(i, 0, i, j)) {
+                        colWin = false;
+                        break;
+                    }
+                }
+                if (colWin) {
+                    result = true;
+                }
             }
         }
+
         //test diagnoale 1
         if (isNotEmpty(0, 0)
                 && sameOwner(0, 0, 1, 1)
                 && sameOwner(0, 0, 2, 2)) {
             result = true;
         }
+
         //test diagonale 2
         if (isNotEmpty(0, 2)
                 && sameOwner(0, 2, 1, 1)
@@ -190,7 +198,7 @@ public class TicTacToe {
      *
      * @param x the row index of the tile
      * @param y the column index of the tile
-     * @return {@code true} if the tile is empty, {@code false} otherwise
+     * @return {@code false} if the tile is empty, {@code true} otherwise
      */
     public boolean isNotEmpty(int x, int y) {
         if (board.getTile(x, y).getRepresentation().equals("   ")){

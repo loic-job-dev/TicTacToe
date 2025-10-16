@@ -6,7 +6,7 @@ package fr.campus.loic.tictactoe.material;
 public class Board {
 
     /** Size of the board (number of rows/columns). */
-    private final int size;
+    private final int SIZE;
 
     /** 2D array of tiles composing the board. */
     private Tile[][] tiles;
@@ -17,15 +17,15 @@ public class Board {
      * @param size the size of the board (size x size)
      */
     public Board(int size) {
-        this.size = size;
+        this.SIZE = size;
         this.tiles = new Tile[size][size];
         createBoard();
     }
 
     /** Initializes the board by creating tiles for each position. */
     private void createBoard() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
                 tiles[i][j] = new Tile(i, j);
             }
         }
@@ -37,7 +37,7 @@ public class Board {
      * @return the board size
      */
     public int getSize() {
-        return size;
+        return SIZE;
     }
 
     /**
@@ -49,7 +49,7 @@ public class Board {
      * @throws IndexOutOfBoundsException if coordinates are outside the board
      */
     public Tile getTile(int x, int y) {
-        if (x < 0 || x >= size || y < 0 || y >= size) {
+        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
             throw new IndexOutOfBoundsException("Coordonnées en dehors du plateau !");
         }
         return tiles[x][y];
