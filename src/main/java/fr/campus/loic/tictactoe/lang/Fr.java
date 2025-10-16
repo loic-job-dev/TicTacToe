@@ -8,6 +8,7 @@ public class Fr {
     public static final String separator = "-----";
 
     // texts
+    public static final String rulesTicTacToe = "\nBienvenue au TicTacToe selon Djodjo !\nLe but du jeu est d'aligner ses pions sur une ligne, une colonne ou une diagonale avant l'autre joueur.\n";
     public static final String choose = "Merci de choisir les coordonnées de la case à capturer (de 1 à 3)\n";
     public static final String coordinateX = "Coordonnée horizontale (X) : ";
     public static final String coordinateY = "Coordonnée verticale (Y) : ";

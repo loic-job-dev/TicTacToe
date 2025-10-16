@@ -2,6 +2,8 @@ package fr.campus.loic.tictactoe.player;
 
 import fr.campus.loic.tictactoe.material.ConsoleColors;
 
+import java.security.SecureRandom;
+
 /**
  * Represents a player with a specific symbol and color.
  * <p>
@@ -9,7 +11,7 @@ import fr.campus.loic.tictactoe.material.ConsoleColors;
  * 1 = Red, 2 = Green, others = Yellow.
  * </p>
  */
-public class Player {
+public abstract class Player {
     /** The player's symbol representation. */
     String representation;
 

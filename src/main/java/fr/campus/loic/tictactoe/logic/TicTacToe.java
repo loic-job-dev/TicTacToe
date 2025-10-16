@@ -3,8 +3,10 @@ package fr.campus.loic.tictactoe.logic;
 import fr.campus.loic.tictactoe.lang.Fr;
 import fr.campus.loic.tictactoe.material.Board;
 import fr.campus.loic.tictactoe.material.ConsoleColors;
-import fr.campus.loic.tictactoe.material.Tile;
+import fr.campus.loic.tictactoe.player.ArtificialPlayer;
+import fr.campus.loic.tictactoe.player.HumanPlayer;
 import fr.campus.loic.tictactoe.player.Player;
+import fr.campus.loic.tictactoe.player.RandomCoordinateCapable;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -26,8 +28,8 @@ public class TicTacToe {
     public TicTacToe() {
         this.clavier =  new Scanner(System.in);
         this.board = new Board(3);
-        this.player1 = new Player("X", 1);
-        this.player2 = new Player("O", 2);
+        this.player1 = new HumanPlayer("X", 1);
+        this.player2 = new ArtificialPlayer("O", 2);
     }
 
     /** Displays the current state of the board in the console. */
@@ -49,7 +51,7 @@ public class TicTacToe {
     }
 
     /**
-     * Prompts the player to enter valid coordinates for their move.
+     * Prompts the human player to enter valid coordinates for their move.
      * Ensures the chosen tile is within bounds and not already occupied.
      *
      * @return the coordinates {x, y} of the selected tile
@@ -57,29 +59,36 @@ public class TicTacToe {
     public int[] getMoveFromPlayer(Player player) {
         int x = 0;
         int y = 0;
-        while (true) {
-            try {
-                System.out.println(Fr.choose);
-                System.out.print(Fr.coordinateX);
-                y = clavier.nextInt() - 1;
+        if (player instanceof HumanPlayer) {
+            while (true) {
+                try {
+                    System.out.println(Fr.choose);
+                    System.out.print(Fr.coordinateX);
+                    y = clavier.nextInt() - 1;
 
-                System.out.print(Fr.coordinateY);
-                x = clavier.nextInt() - 1;
+                    System.out.print(Fr.coordinateY);
+                    x = clavier.nextInt() - 1;
 
-                if (x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize()) {
-                    if (!board.getTile(x, y).hasPawn()) {
-                        break;
+                    if (x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize()) {
+                        if (!board.getTile(x, y).hasPawn()) {
+                            break;
+                        }
+                        else {
+                            System.out.println(Fr.tileAlreadyTaken);
+                        }
+                    } else {
+                        System.out.println(Fr.wrongCoordinate + board.getSize() + ".");
                     }
-                    else {
-                        System.out.println(Fr.tileAlreadyTaken);
-                    }
-                } else {
-                    System.out.println(Fr.wrongCoordinate + board.getSize() + ".");
+                } catch (InputMismatchException e) {
+                    System.out.println(Fr.exceptionCoordinateMessage);
+                    clavier.nextLine();
                 }
-            } catch (InputMismatchException e) {
-                System.out.println(Fr.exceptionCoordinateMessage);
-                clavier.nextLine();
             }
+        } else if (player instanceof RandomCoordinateCapable random) {
+            do {
+                x = random.randomCoordinatePlayed(board.getSize());
+                y = random.randomCoordinatePlayed(board.getSize());
+            } while (board.getTile(x, y).hasPawn());
         }
         board.getTile(x, y).setPawn(true);
         setOwner(x, y, player);
@@ -99,6 +108,7 @@ public class TicTacToe {
 
     /** Runs the game loop, prompting the player for moves and updating the board. */
     public void play(){
+        System.out.println(ConsoleColors.YELLOW + Fr.rulesTicTacToe + ConsoleColors.RESET);
         display();
         boolean player1Turn = true;
         for (int pippo = 1; pippo <= board.getSize()*board.getSize(); pippo++) {
