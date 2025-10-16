@@ -59,11 +59,11 @@ public class TicTacToe {
         int y = 0;
         while (true) {
             try {
-                System.out.println("Merci de choisir les coordonnées de la case à capturer (de 1 à 3)\n");
-                System.out.print("Coordonnée X : ");
+                System.out.println(Fr.choose);
+                System.out.print(Fr.coordinateX);
                 y = clavier.nextInt() - 1;
 
-                System.out.print("Coordonnée Y : ");
+                System.out.print(Fr.coordinateY);
                 x = clavier.nextInt() - 1;
 
                 if (x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize()) {
@@ -71,13 +71,13 @@ public class TicTacToe {
                         break;
                     }
                     else {
-                        System.out.println("Case déjà prise !");
+                        System.out.println(Fr.tileAlreadyTaken);
                     }
                 } else {
-                    System.out.println("Les coordonnées doivent être comprises entre 1 et 3.");
+                    System.out.println(Fr.wrongCoordinate + board.getSize() + ".");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("\nMerci de saisir un chiffre valide pour indiquer ton choix.\n");
+                System.out.println(Fr.exceptionCoordinateMessage);
                 clavier.nextLine();
             }
         }
@@ -102,20 +102,17 @@ public class TicTacToe {
         display();
         boolean player1Turn = true;
         for (int pippo = 1; pippo <= board.getSize()*board.getSize(); pippo++) {
-            System.out.println("\nTour de jeu N°" + pippo + "\n");
             if (player1Turn) {
-                System.out.println("Tour du joueur 1");
+                System.out.println(Fr.turnOfPlayer + player1.getNumber());
                 playerTurn(this.player1);
                 player1Turn = false;
             } else {
-                System.out.println("Tour du joueur 2");
+                System.out.println(Fr.turnOfPlayer + player2.getNumber());
                 playerTurn(this.player2);
                 player1Turn = true;
             }
-            display();
             if(checkWinner()){
                 pippo = board.getSize()*board.getSize();
-                System.out.println("Fin de la partie !");
             }
         }
     }
@@ -131,7 +128,10 @@ public class TicTacToe {
         move = getMoveFromPlayer(player);
         int x = move[0];  // Première case du tableau → X
         int y = move[1];  // Deuxième case du tableau → Y
-        System.out.println("\nTu as choisi la case : (" + (y + 1) + ", " + (x + 1) + ")");
+        display();
+        if(checkWinner()){
+            System.out.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
+        }
     }
 
     /**

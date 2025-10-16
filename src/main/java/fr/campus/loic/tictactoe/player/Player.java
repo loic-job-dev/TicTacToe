@@ -16,6 +16,9 @@ public class Player {
     /** The player's color code. */
     String color;
 
+    /** The player's number. */
+    int number;
+
     /**
      * Creates a new player with the given symbol and number.
      *
@@ -24,6 +27,7 @@ public class Player {
      */
     public Player(String representation, int number) {
         this.representation = representation;
+        this.number = number;
         if  (number == 1) {
             this.color = ConsoleColors.RED;
         }
@@ -42,5 +46,14 @@ public class Player {
      */
     public String getRepresentation() {
         return this.color + representation + ConsoleColors.CYAN;
+    }
+
+    /**
+     * Returns the player's number.
+     *
+     * @return the number used to design the player
+     */
+    public int getNumber() {
+        return this.number;
     }
 }

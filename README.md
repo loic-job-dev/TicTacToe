@@ -50,6 +50,7 @@ classDiagram
     class Player {
         -String representation
         -String color
+        -int number
     }
 ```
 
