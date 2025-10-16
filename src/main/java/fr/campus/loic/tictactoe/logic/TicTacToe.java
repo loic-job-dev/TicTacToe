@@ -178,17 +178,31 @@ public class TicTacToe {
         }
 
         //test diagnoale 1
-        if (isNotEmpty(0, 0)
-                && sameOwner(0, 0, 1, 1)
-                && sameOwner(0, 0, 2, 2)) {
-            result = true;
+        if (isNotEmpty(0, 0)) {
+            boolean diag1Win = true;
+            for (int j = 1; j < board.getSize(); j++) {
+                if (!sameOwner(0, 0, j, j)) {
+                    diag1Win = false;
+                    break;
+                }
+            }
+            if (diag1Win) {
+                result = true;
+            }
         }
 
         //test diagonale 2
-        if (isNotEmpty(0, 2)
-                && sameOwner(0, 2, 1, 1)
-                && sameOwner(0, 2, 2, 0)) {
-            result = true;
+        if (isNotEmpty(0, board.getSize() - 1)) {
+            boolean diag2Win = true;
+            for (int j = 1; j < board.getSize(); j++) {
+                if (!sameOwner(0, board.getSize()-1, j, board.getSize()-1-j)) {
+                    diag2Win = false;
+                    break;
+                }
+            }
+            if (diag2Win) {
+                result = true;
+            }
         }
         return result;
     }
