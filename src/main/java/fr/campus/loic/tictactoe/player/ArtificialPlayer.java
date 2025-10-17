@@ -2,9 +2,14 @@ package fr.campus.loic.tictactoe.player;
 
 import java.security.SecureRandom;
 
+/**
+ * Represents an artificial (computer-controlled) player capable of generating random moves.
+ */
 public class ArtificialPlayer extends Player implements RandomCoordinateCapable {
 
+    /** Secure random number generator used for coordinate selection. */
     private final SecureRandom RANDOM = new SecureRandom();
+
     /**
      * Creates a new player with the given symbol and number.
      *
@@ -16,10 +21,10 @@ public class ArtificialPlayer extends Player implements RandomCoordinateCapable 
     }
 
     /**
-     * Generates a random number from 0 to the size of a board.
+     * Generates a random coordinate within the valid board range.
      *
-     * @param size the size of the board, which is the maximum value acceptable
-     * @return a random number from 0 to size
+     * @param size the board size (e.g., 3 for a 3×3 grid)
+     * @return a random integer between {@code 0} (inclusive) and {@code size} (exclusive)
      */
     @Override
     public int randomCoordinatePlayed (int size) {

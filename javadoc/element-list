@@ -1,4 +1,7 @@
 fr.campus.loic.tictactoe
+fr.campus.loic.tictactoe.controller
+fr.campus.loic.tictactoe.lang
 fr.campus.loic.tictactoe.logic
 fr.campus.loic.tictactoe.material
 fr.campus.loic.tictactoe.player
+fr.campus.loic.tictactoe.view

@@ -1,5 +1,6 @@
 package fr.campus.loic.tictactoe.logic;
 
+import fr.campus.loic.tictactoe.controller.InteractionUtilisateur;
 import fr.campus.loic.tictactoe.lang.Fr;
 import fr.campus.loic.tictactoe.material.Board;
 import fr.campus.loic.tictactoe.material.ConsoleColors;
@@ -10,7 +11,6 @@ import fr.campus.loic.tictactoe.player.RandomCoordinateCapable;
 import fr.campus.loic.tictactoe.view.View;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 /**
  * Handles the logic of a Tic-Tac-Toe game, including player moves and board display.
@@ -19,7 +19,7 @@ public class TicTacToe {
     /** View used to display messages in the console */
     private final View view;
     /** Scanner for reading player input. */
-    private final Scanner clavier;
+    private final InteractionUtilisateur clavier;
     /** The game board. */
     private final Board board;
     /** The first player */
@@ -29,8 +29,8 @@ public class TicTacToe {
 
     /** Creates a new Tic-Tac-Toe game with a 3x3 board and default players. */
     public TicTacToe() {
-        this.clavier =  new Scanner(System.in);
-        this.board = new Board(3);
+        this.clavier =  new InteractionUtilisateur();
+        this.board = new Board(4);
         this.view = new View();
     }
 
@@ -41,15 +41,15 @@ public class TicTacToe {
             separator += Fr.separator;
         }
         for (int y = 0; y < board.getSize(); y++) {
-            view.displayln(ConsoleColors.CYAN + separator);
+            view.println(ConsoleColors.CYAN + separator);
             for (int x = 0; x < board.getSize(); x++) {
-                view.display("|");
-                view.display(board.getTile(x, y).getRepresentation());
-                view.display("|");
+                view.print("|");
+                view.print(board.getTile(x, y).getRepresentation());
+                view.print("|");
             }
-            view.displayln("");
+            view.println("");
         }
-        view.displayln(separator + ConsoleColors.RESET);
+        view.println(separator + ConsoleColors.RESET);
     }
 
     /**
@@ -64,11 +64,11 @@ public class TicTacToe {
         if (player instanceof HumanPlayer) {
             while (true) {
                 try {
-                    view.displayln(Fr.choose);
-                    view.display(Fr.coordinateX);
+                    view.println(Fr.choose);
+                    view.print(Fr.coordinateX);
                     y = clavier.nextInt() - 1;
 
-                    view.display(Fr.coordinateY);
+                    view.print(Fr.coordinateY);
                     x = clavier.nextInt() - 1;
 
                     if (x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize()) {
@@ -76,13 +76,13 @@ public class TicTacToe {
                             break;
                         }
                         else {
-                            view.displayln(Fr.tileAlreadyTaken);
+                            view.println(Fr.tileAlreadyTaken);
                         }
                     } else {
-                        view.displayln(ConsoleColors.RED + Fr.wrongCoordinate + board.getSize() + "." + ConsoleColors.RESET);
+                        view.println(ConsoleColors.RED + Fr.wrongCoordinate + board.getSize() + "." + ConsoleColors.RESET);
                     }
                 } catch (InputMismatchException e) {
-                    view.displayln(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
+                    view.println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
                     clavier.nextLine();
                 }
             }
@@ -110,17 +110,17 @@ public class TicTacToe {
 
     /** Runs the game loop, prompting the player for moves and updating the board. */
     public void play(){
-        view.displayln(ConsoleColors.YELLOW + Fr.rulesTicTacToe + ConsoleColors.RESET);
+        view.println(ConsoleColors.YELLOW + Fr.rulesTicTacToe + ConsoleColors.RESET);
         chooseGameMode();
         display();
         boolean player1Turn = true;
         for (int pippo = 1; pippo <= board.getSize()*board.getSize(); pippo++) {
             if (player1Turn) {
-                view.displayln(Fr.turnOfPlayer + player1.getNumber());
+                view.println(Fr.turnOfPlayer + player1.getNumber());
                 playerTurn(this.player1);
                 player1Turn = false;
             } else {
-                view.displayln(Fr.turnOfPlayer + player2.getNumber());
+                view.println(Fr.turnOfPlayer + player2.getNumber());
                 playerTurn(this.player2);
                 player1Turn = true;
             }
@@ -143,7 +143,7 @@ public class TicTacToe {
         int y = move[1];  // Deuxième case du tableau → Y
         display();
         if(checkWinner()){
-            view.displayln(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
+            view.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
         }
     }
 
@@ -253,7 +253,7 @@ public class TicTacToe {
 
         while (true) {
             try {
-                view.displayln(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
+                view.println(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
                 choice = clavier.nextInt();
 
                 if (choice == 1) {
@@ -271,10 +271,10 @@ public class TicTacToe {
                     this.player2 = new ArtificialPlayer("O", 2);
                     break;
                 } else {
-                    view.displayln(ConsoleColors.RED + Fr.wrongChoice +  ConsoleColors.RESET);
+                    view.println(ConsoleColors.RED + Fr.wrongChoice +  ConsoleColors.RESET);
                 }
             } catch (InputMismatchException e) {
-                view.displayln(ConsoleColors.RED + Fr.exceptionIntMessage +  ConsoleColors.RESET);
+                view.println(ConsoleColors.RED + Fr.exceptionIntMessage +  ConsoleColors.RESET);
                 clavier.nextLine();
             }
         }

@@ -1,7 +1,17 @@
 package fr.campus.loic.tictactoe.material;
 
 /**
- * This class is a tool to change the color displayed in the console
+ * Utility class that defines ANSI escape codes for coloring console output.
+ * <p>
+ * These constants can be used to add color and text formatting (like bold)
+ * when printing messages in the console.
+ * </p>
+ *
+ * <pre>{@code
+ * System.out.println(ConsoleColors.RED + "Error message" + ConsoleColors.RESET);
+ * }</pre>
+ *
+ * Note: Color display depends on terminal support for ANSI escape codes.
  */
 public class ConsoleColors {
     // Reset
