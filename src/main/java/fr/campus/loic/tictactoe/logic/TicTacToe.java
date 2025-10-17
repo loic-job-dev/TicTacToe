@@ -183,6 +183,9 @@ public class TicTacToe {
      * @return {@code true} if a winning sequence exists, {@code false} otherwise
      */
     public boolean checkWinnerCondition(int condition) {
+        if (condition > board.getSize()) {
+            condition = board.getSize();
+        }
         //4 directions to test for every tile
         int[][] directions = { {0, 1}, {1, 0}, {1, 1}, {1, -1} };
 
