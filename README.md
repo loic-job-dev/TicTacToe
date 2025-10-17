@@ -40,7 +40,7 @@ To compile and run the project using Gradle:
 ./gradlew build
 
 # Run the application
-./gradlew run
+java -cp build/libs/TicTacToe-1.0-SNAPSHOT.jar fr.campus.loic.tictactoe.Main
 ```
 
 ---
