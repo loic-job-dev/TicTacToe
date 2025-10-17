@@ -228,11 +228,7 @@ public class TicTacToe {
      * @return {@code false} if the tile is empty, {@code true} otherwise
      */
     public boolean isNotEmpty(int x, int y) {
-        if (board.getTile(x, y).getRepresentation().equals("   ")){
-            return false;
-        } else {
-            return true;
-        }
+        return !board.getTile(x, y).getRepresentation().equals("   ");
     }
 
     /**

@@ -8,8 +8,8 @@ public class Board {
     /** Size of the board (number of rows/columns). */
     private final int SIZE;
 
-    /** 2D array of tiles composing the board. */
-    private Tile[][] tiles;
+    /** 1D array of tiles composing the board. */
+    private Tile[] tiles;
 
     /**
      * Creates a new board of the specified size.
@@ -18,7 +18,7 @@ public class Board {
      */
     public Board(int size) {
         this.SIZE = size;
-        this.tiles = new Tile[size][size];
+        this.tiles = new Tile[size * size];
         createBoard();
     }
 
@@ -26,7 +26,7 @@ public class Board {
     private void createBoard() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                tiles[i][j] = new Tile(i, j);
+                tiles[i * SIZE + j] = new Tile(i, j);
             }
         }
     }
@@ -52,6 +52,6 @@ public class Board {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
             throw new IndexOutOfBoundsException("Coordonnées en dehors du plateau !");
         }
-        return tiles[x][y];
+        return tiles[x * SIZE + y];
     }
 }
