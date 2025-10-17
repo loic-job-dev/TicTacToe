@@ -118,25 +118,43 @@ classDiagram
 
 ---
 
-## Algorithm for the checkWinner() method
+## Algorithm for the checkWinnerCondition() method
 
 ```mermaid
 flowchart TD
-    StartRow([Start Row Check])
-    RowCheck{isNotEmpty_row_0_i ?}
-    RowWin[Set rowWin = true]
-    RowInnerLoop{For j from 1 to board_size-1}
-    RowSameOwner{sameOwner_row_0_i_j_i ?}
-    RowFail[Set rowWin = false]
-    SetResultRow[Set result = true]
-    EndRow([End Row Check])
+    Start([Start checkWinnerCondition])
+    iLoop{For each row i}
+    jLoop{For each column j}
+    TileCheck{Tile i_j not empty?}
+    DirectionsLoop{For each direction -dx,dy-}
+SetCount[Set count = 1]
+kLoop{For k from 1 to condition-1}
+CheckNextTile{Next tile in direction dx_dy within board?}
+SameOwner{Same owner as start tile?}
+IncrementCount[Increment count]
+CountCheck{count == condition?}
+ReturnTrue[Return true]
+ContinueDirection[Continue to next direction]
+End([Return false])
 
-    StartRow --> RowCheck
-    RowCheck -- No --> EndRow
-    RowCheck -- Yes --> RowWin
-    RowWin --> RowInnerLoop
-    RowInnerLoop --> RowSameOwner
-    RowSameOwner -- Yes --> RowInnerLoop
-    RowSameOwner -- No --> RowFail --> EndRow
-    RowInnerLoop --> SetResultRow --> EndRow
+%% Flèches
+Start --> iLoop
+iLoop --> jLoop
+jLoop --> TileCheck
+TileCheck -- No --> jLoop
+TileCheck -- Yes --> DirectionsLoop
+DirectionsLoop --> SetCount
+SetCount --> kLoop
+kLoop --> CheckNextTile
+CheckNextTile -- No --> ContinueDirection
+CheckNextTile -- Yes --> SameOwner
+SameOwner -- Yes --> IncrementCount --> kLoop
+SameOwner -- No --> ContinueDirection
+kLoop --> CountCheck
+CountCheck -- Yes --> ReturnTrue
+CountCheck -- No --> DirectionsLoop
+ContinueDirection --> DirectionsLoop
+DirectionsLoop --> jLoop
+jLoop --> iLoop
+iLoop --> End
 ```
