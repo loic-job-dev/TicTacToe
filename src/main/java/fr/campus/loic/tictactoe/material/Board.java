@@ -7,6 +7,8 @@ public class Board {
 
     /** Size of the board (number of rows/columns). */
     private final int SIZE;
+    private final int HEIGHT;
+    private final int WIDTH;
 
     /** 1D array of tiles composing the board. */
     private Tile[] tiles;
@@ -14,19 +16,22 @@ public class Board {
     /**
      * Creates a new board of the specified size.
      *
-     * @param size the size of the board (size x size)
+     * @param height the height of the board
+     * @param width the width of the board
      */
-    public Board(int size) {
-        this.SIZE = size;
-        this.tiles = new Tile[size * size];
+    public Board(int height, int width) {
+        this.HEIGHT = height;
+        this.WIDTH = width;
+        this.SIZE = height*width;
+        this.tiles = new Tile[SIZE];
         createBoard();
     }
 
     /** Initializes the board by creating tiles for each position. */
     private void createBoard() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                tiles[i * SIZE + j] = new Tile(i, j);
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                tiles[i * j] = new Tile(i, j);
             }
         }
     }
@@ -41,6 +46,24 @@ public class Board {
     }
 
     /**
+     * Returns the height of the board.
+     *
+     * @return the board height
+     */
+    public int getHeight() {
+        return HEIGHT;
+    }
+
+    /**
+     * Returns the width of the board.
+     *
+     * @return the board width
+     */
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    /**
      * Returns the tile at the specified coordinates.
      *
      * @param x the row index
@@ -52,6 +75,6 @@ public class Board {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
             throw new IndexOutOfBoundsException("Coordonnées en dehors du plateau !");
         }
-        return tiles[x * SIZE + y];
+        return tiles[x * y];
     }
 }

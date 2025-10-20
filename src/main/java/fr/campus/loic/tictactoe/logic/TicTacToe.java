@@ -27,22 +27,24 @@ public class TicTacToe {
     /** The second player */
     private Player player2;
 
+    //private Player[] players;
+
     /** Creates a new Tic-Tac-Toe game with a 3x3 board. */
     public TicTacToe() {
         this.clavier =  new InteractionUtilisateur();
-        this.board = new Board(4);
+        this.board = new Board(5, 6);
         this.view = new View();
     }
 
     /** Displays the current state of the board in the console. */
     public void display() {
         String separator = "";
-        for (int i = 0; i < board.getSize(); i++) {
+        for (int i = 0; i < board.getWidth(); i++) {
             separator += Fr.separator;
         }
-        for (int y = 0; y < board.getSize(); y++) {
+        for (int y = 0; y < board.getHeight(); y++) {
             view.println(ConsoleColors.CYAN + separator);
-            for (int x = 0; x < board.getSize(); x++) {
+            for (int x = 0; x < board.getWidth(); x++) {
                 view.print("|");
                 view.print(board.getTile(x, y).getRepresentation());
                 view.print("|");
@@ -59,8 +61,8 @@ public class TicTacToe {
      * @return the coordinates {x, y} of the selected tile
      */
     public int[] getMoveFromPlayer(Player player) {
-        int x = 0;
-        int y = 0;
+        int x = 0; //player.getX;
+        int y = 0; //player.getY;
         if (player instanceof HumanPlayer) {
             while (true) {
                 try {
@@ -71,7 +73,7 @@ public class TicTacToe {
                     view.print(Fr.coordinateY);
                     x = clavier.nextInt() - 1;
 
-                    if (x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize()) {
+                    if (x >= 0 && x < board.getWidth() && y >= 0 && y < board.getHeight()) {
                         if (!board.getTile(x, y).hasPawn()) {
                             break;
                         }
@@ -88,8 +90,8 @@ public class TicTacToe {
             }
         } else if (player instanceof RandomCoordinateCapable random) {
             do {
-                x = random.randomCoordinatePlayed(board.getSize());
-                y = random.randomCoordinatePlayed(board.getSize());
+                x = random.randomCoordinatePlayed(board.getWidth());
+                y = random.randomCoordinatePlayed(board.getHeight());
             } while (board.getTile(x, y).hasPawn());
         }
         board.getTile(x, y).setPawn(true);
@@ -114,7 +116,7 @@ public class TicTacToe {
         chooseGameMode();
         display();
         boolean player1Turn = true;
-        for (int pippo = 1; pippo <= board.getSize()*board.getSize(); pippo++) {
+        for (int pippo = 1; pippo <= board.getSize(); pippo++) {
             if (player1Turn) {
                 view.println(Fr.turnOfPlayer + player1.getNumber());
                 playerTurn(this.player1);
@@ -125,7 +127,7 @@ public class TicTacToe {
                 player1Turn = true;
             }
             if(checkWinnerCondition(3)){
-                pippo = board.getSize()*board.getSize();
+                pippo = board.getSize();
             }
         }
     }
@@ -183,15 +185,16 @@ public class TicTacToe {
      * @return {@code true} if a winning sequence exists, {@code false} otherwise
      */
     public boolean checkWinnerCondition(int condition) {
-        if (condition > board.getSize()) {
-            condition = board.getSize();
+        int minimalCondition = Math.min(board.getWidth(), board.getHeight());
+        if (condition > minimalCondition) {
+            condition = minimalCondition;
         }
         //4 directions to test for every tile
         int[][] directions = { {0, 1}, {1, 0}, {1, 1}, {1, -1} };
 
         //Check every tile
-        for (int i = 0; i < board.getSize(); i++) {
-            for (int j = 0; j < board.getSize(); j++) {
+        for (int i = 0; i < board.getWidth(); i++) {
+            for (int j = 0; j < board.getHeight(); j++) {
                 //If the tile is not empty, maybe there's a winner
                 if (isNotEmpty(i, j)) {
                     //For each of the 4 directions to test
@@ -206,7 +209,7 @@ public class TicTacToe {
                             int y = j + k * dy;
 
                             //If the tile is out of board, break
-                            if (x < 0 || y < 0 || x >= board.getSize() || y >= board.getSize()) {
+                            if (x < 0 || y < 0 || x >= board.getWidth() || y >= board.getHeight()) {
                                 break;
                             }
                             //If the tile have the same owner, increment count
