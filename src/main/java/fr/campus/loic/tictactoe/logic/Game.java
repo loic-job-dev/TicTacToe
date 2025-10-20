@@ -39,14 +39,14 @@ public abstract class Game {
     /** Displays the current state of the board in the console. */
     public void display() {
         String separator = "";
-        for (int i = 0; i < board.getWidth(); i++) {
+        for (int col = 0; col < board.getWidth(); col++) {
             separator += Fr.separator;
         }
-        for (int y = 0; y < board.getHeight(); y++) {
+        for (int row = 0; row < board.getHeight(); row++) {
             view.println(ConsoleColors.CYAN + separator);
-            for (int x = 0; x < board.getWidth(); x++) {
+            for (int col = 0; col < board.getWidth(); col++) {
                 view.print("|");
-                view.print(board.getTile(x, y).getRepresentation());
+                view.print(board.getTile(col, row).getRepresentation());
                 view.print("|");
             }
             view.println("");
@@ -58,23 +58,23 @@ public abstract class Game {
      * Prompts the human player to enter valid coordinates for their move.
      * Ensures the chosen tile is within bounds and not already occupied.
      *
-     * @return the coordinates {x, y} of the selected tile
+     * @return the coordinates {col, row} of the selected tile
      */
     public int[] getMoveFromPlayer(Player player) {
-        int x = 0; //player.getX;
-        int y = 0; //player.getY;
+        int col = 0; //player.getX;
+        int row = 0; //player.getY;
         if (player instanceof HumanPlayer) {
             while (true) {
                 try {
                     view.println(Fr.choose);
                     view.print(Fr.coordinateX);
-                    y = clavier.nextInt() - 1;
+                    row = clavier.nextInt() - 1;
 
                     view.print(Fr.coordinateY);
-                    x = clavier.nextInt() - 1;
+                    col = clavier.nextInt() - 1;
 
-                    if (x >= 0 && x < board.getWidth() && y >= 0 && y < board.getHeight()) {
-                        if (!board.getTile(x, y).hasPawn()) {
+                    if (col >= 0 && col < board.getWidth() && row >= 0 && row < board.getHeight()) {
+                        if (!board.getTile(col, row).hasPawn()) {
                             break;
                         }
                         else {
@@ -90,22 +90,22 @@ public abstract class Game {
             }
         } else if (player instanceof RandomCoordinateCapable random) {
             do {
-                x = random.randomCoordinatePlayed(board.getWidth());
-                y = random.randomCoordinatePlayed(board.getHeight());
-            } while (board.getTile(x, y).hasPawn());
+                col = random.randomCoordinatePlayed(board.getWidth());
+                row = random.randomCoordinatePlayed(board.getHeight());
+            } while (board.getTile(col, row).hasPawn());
         }
-        return new int[] { x, y };
+        return new int[] { col, row };
     }
 
     /**
      * Sets the owner of a tile and updates its visual representation.
      *
-     * @param x the row index
-     * @param y the column index
+     * @param col the column index
+     * @param row the row index
      * @param player the player who owns the tile
      */
-    public void setOwner(int x, int y, Player player) {
-        board.getTile(x, y).setRepresentation(player.getRepresentation());
+    public void setOwner(int col, int row, Player player) {
+        board.getTile(col, row).setRepresentation(player.getRepresentation());
     }
 
     /** Runs the game loop, prompting the player for moves and updating the board. */
@@ -149,25 +149,25 @@ public abstract class Game {
     /**
      * Checks if the tile at the given coordinates is not empty.
      *
-     * @param x the row index of the tile
-     * @param y the column index of the tile
+     * @param col the column index of the tile
+     * @param row the row index of the tile
      * @return {@code false} if the tile is empty, {@code true} otherwise
      */
-    public boolean isNotEmpty(int x, int y) {
-        return !board.getTile(x, y).getRepresentation().equals("   ");
+    public boolean isNotEmpty(int col, int row) {
+        return !board.getTile(col, row).getRepresentation().equals("   ");
     }
 
     /**
      * Checks if two tiles have the same owner (i.e., the same representation).
      *
-     * @param x the row index of the first tile
-     * @param y the column index of the first tile
-     * @param X the row index of the second tile
-     * @param Y the column index of the second tile
+     * @param col1 the column index of the first tile
+     * @param row1 the row index of the first tile
+     * @param col2 the column index of the second tile
+     * @param row2 the row index of the second tile
      * @return {@code true} if both tiles have the same owner, {@code false} otherwise
      */
-    public boolean sameOwner(int x, int y, int X, int Y) {
-        return board.getTile(x, y).getRepresentation().equals(board.getTile(X, Y).getRepresentation());
+    public boolean sameOwner(int col1, int row1, int col2, int row2) {
+        return board.getTile(col1, row1).getRepresentation().equals(board.getTile(col2, row2).getRepresentation());
     }
 
     /**
@@ -190,10 +190,10 @@ public abstract class Game {
         int[][] directions = { {0, 1}, {1, 0}, {1, 1}, {1, -1} };
 
         //Check every tile
-        for (int i = 0; i < board.getWidth(); i++) {
-            for (int j = 0; j < board.getHeight(); j++) {
+        for (int col = 0; col < board.getWidth(); col++) {
+            for (int row = 0; row < board.getHeight(); row++) {
                 //If the tile is not empty, maybe there's a winner
-                if (isNotEmpty(i, j)) {
+                if (isNotEmpty(col, row)) {
                     //For each of the 4 directions to test
                     for (int[] dir : directions) {
                         int dx = dir[0]; //row deplacement
@@ -202,15 +202,15 @@ public abstract class Game {
 
                         //Loop depending on the condition
                         for (int k = 1; k < condition; k++) {
-                            int x = i + k * dx;
-                            int y = j + k * dy;
+                            int x = col + k * dx;
+                            int y = row + k * dy;
 
                             //If the tile is out of board, break
                             if (x < 0 || y < 0 || x >= board.getWidth() || y >= board.getHeight()) {
                                 break;
                             }
                             //If the tile have the same owner, increment count
-                            if (sameOwner(i, j, x, y)) {
+                            if (sameOwner(col, row, x, y)) {
                                 count++;
                             }
                             else break;
