@@ -45,7 +45,7 @@ public class Tile {
 
     /** Prints the tile's representation to the console */
     public String getRepresentation() {
-        return representation;
+        return this.representation;
     }
 
     /**

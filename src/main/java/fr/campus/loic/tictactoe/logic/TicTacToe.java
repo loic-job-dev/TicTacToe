@@ -81,7 +81,7 @@ public class TicTacToe {
                             view.println(Fr.tileAlreadyTaken);
                         }
                     } else {
-                        view.println(ConsoleColors.RED + Fr.wrongCoordinate + board.getSize() + "." + ConsoleColors.RESET);
+                        view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
                     }
                 } catch (InputMismatchException e) {
                     view.println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
@@ -94,8 +94,6 @@ public class TicTacToe {
                 y = random.randomCoordinatePlayed(board.getHeight());
             } while (board.getTile(x, y).hasPawn());
         }
-        board.getTile(x, y).setPawn(true);
-        setOwner(x, y, player);
         return new int[] { x, y };
     }
 
@@ -139,10 +137,9 @@ public class TicTacToe {
      * @param player the player whose turn it is
      */
     public void playerTurn(Player player) {
-        int[] move;
-        move = getMoveFromPlayer(player);
-        int x = move[0];  // Première case du tableau → X
-        int y = move[1];  // Deuxième case du tableau → Y
+        int[] move = getMoveFromPlayer(player);
+        board.getTile(move[0], move[1]).setPawn(true);
+        setOwner(move[0], move[1], player);
         display();
         if(checkWinnerCondition(3)){
             view.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);

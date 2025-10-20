@@ -31,7 +31,7 @@ public class Board {
     private void createBoard() {
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
-                tiles[i * j] = new Tile(i, j);
+                tiles[j * WIDTH + i] = new Tile(i, j);
             }
         }
     }
@@ -75,6 +75,6 @@ public class Board {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
             throw new IndexOutOfBoundsException("Coordonnées en dehors du plateau !");
         }
-        return tiles[x * y];
+        return tiles[y * WIDTH + x];
     }
 }

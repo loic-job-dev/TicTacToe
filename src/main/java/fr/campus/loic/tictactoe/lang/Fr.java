@@ -13,7 +13,7 @@ public class Fr {
     public static final String coordinateX = "Coordonnée horizontale (X) : ";
     public static final String coordinateY = "Coordonnée verticale (Y) : ";
     public static final String tileAlreadyTaken = "Case déjà prise !";
-    public static final String wrongCoordinate = "Les coordonnées doivent être comprises entre 1 et ";
+    public static final String wrongCoordinate = "Les coordonnées saisies sont en dehors du plateau !";
     public static final String exceptionIntMessage = "\nMerci de saisir un chiffre valide pour indiquer ton choix.\n";
     public static final String turnOfPlayer = "Tour du joueur ";
     public static final String victory = "Victoire du joueur ";
