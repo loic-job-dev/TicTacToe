@@ -52,9 +52,9 @@ classDiagram
     class Main {
         +main()
     }
-    Main --> TicTacToe
+    Main --> Game
 
-    class TicTacToe {
+    class Game {
         -View view
         -InteractionUtilisateur clavier
         -Board board
@@ -68,10 +68,22 @@ classDiagram
         +checkWinnerCondition()
         +chooseGameMode()
     }
-    TicTacToe --> View
-    TicTacToe --> InteractionUtilisateur
-    TicTacToe --> Board
-    TicTacToe --> Player
+    Game --> View
+    Game --> InteractionUtilisateur
+    Game --> Board
+    Game --> Player
+    
+    class TicTacToe {
+    }
+    Game <|-- TicTacToe
+    
+    class Gomoku{
+    }
+    Game <|-- Gomoku
+    
+    class Connect4{
+    }
+    Game <|-- Connect4
 
     class View {
         +println()

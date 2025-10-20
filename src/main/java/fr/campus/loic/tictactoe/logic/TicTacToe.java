@@ -124,7 +124,7 @@ public class TicTacToe {
                 playerTurn(this.player2);
                 player1Turn = true;
             }
-            if(checkWinnerCondition(board.getSize())){
+            if(checkWinnerCondition(3)){
                 pippo = board.getSize()*board.getSize();
             }
         }
@@ -142,7 +142,7 @@ public class TicTacToe {
         int x = move[0];  // Première case du tableau → X
         int y = move[1];  // Deuxième case du tableau → Y
         display();
-        if(checkWinnerCondition(board.getSize())){
+        if(checkWinnerCondition(3)){
             view.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
         }
     }
