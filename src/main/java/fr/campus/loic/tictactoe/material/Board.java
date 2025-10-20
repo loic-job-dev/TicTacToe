@@ -72,7 +72,7 @@ public class Board {
      * @throws IndexOutOfBoundsException if coordinates are outside the board
      */
     public Tile getTile(int x, int y) {
-        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
+        if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) {
             throw new IndexOutOfBoundsException("Coordonnées en dehors du plateau !");
         }
         return tiles[y * WIDTH + x];

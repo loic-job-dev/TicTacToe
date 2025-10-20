@@ -27,9 +27,9 @@ public abstract class Game {
     //private Player[] players;
 
     /** Creates a new game with a board. */
-    public Game() {
+    public Game(int height, int width) {
         this.clavier =  new InteractionUtilisateur();
-        this.board = new Board(3, 3);
+        this.board = new Board(height, width);
         this.view = new View();
     }
 

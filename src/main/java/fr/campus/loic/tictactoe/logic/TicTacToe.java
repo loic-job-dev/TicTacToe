@@ -10,14 +10,12 @@ import fr.campus.loic.tictactoe.player.Player;
  */
 public class TicTacToe extends Game {
     /** The game board. */
-    private final Board board;
 
     //private Player[] players;
 
     /** Creates a new Tic-Tac-Toe game with a 3x3 board. */
     public TicTacToe() {
-        super();
-        this.board = new Board(3, 3);
+        super(3, 3);
     }
 
 
@@ -58,5 +56,4 @@ public class TicTacToe extends Game {
             view.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
         }
     }
-
 }
