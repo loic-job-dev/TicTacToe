@@ -5,8 +5,9 @@ School project in Java
 ---
 
 ## Description
-This project aims to create a TicTacToe game, playable in console.
-The first menu allows the user to choose between 3 different game modes :
+This project aims to create a TicTacToe game or a Gomoku game, or a Connect4 game, playable in console.
+
+The first menu allows the user to choose the type of game he wants to play, and a second menu allows the user to choose between 3 different game modes :
 - human versus human
 - human versus computer
 - computer versus computer
