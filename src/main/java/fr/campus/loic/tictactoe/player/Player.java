@@ -36,8 +36,14 @@ public abstract class Player {
         else if  (number == 2) {
             this.color = ConsoleColors.GREEN;
         }
-        else {
+        else if  (number == 3) {
+            this.color = ConsoleColors.PURPLE;
+        }
+        else if  (number == 4) {
             this.color = ConsoleColors.YELLOW;
+        }
+        else {
+            this.color = ConsoleColors.WHITE;
         }
     }
 

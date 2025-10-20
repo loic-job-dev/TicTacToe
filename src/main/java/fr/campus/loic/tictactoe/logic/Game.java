@@ -19,6 +19,8 @@ public abstract class Game {
     protected final InteractionUtilisateur clavier;
     /** The game board. */
     protected final Board board;
+    /** Victory condition. */
+    protected int vicortyCondition;
     /** The first player */
     protected Player player1;
     /** The second player */
@@ -27,10 +29,11 @@ public abstract class Game {
     //private Player[] players;
 
     /** Creates a new game with a board. */
-    public Game(int height, int width) {
+    public Game(int height, int width, int vicortyCondition) {
         this.clavier =  new InteractionUtilisateur();
         this.board = new Board(height, width);
         this.view = new View();
+        this.vicortyCondition = vicortyCondition;
     }
 
     /** Displays the current state of the board in the console. */
@@ -106,7 +109,26 @@ public abstract class Game {
     }
 
     /** Runs the game loop, prompting the player for moves and updating the board. */
-    public void play(){    }
+    public void play(){
+        view.println(ConsoleColors.YELLOW + Fr.rulesTicTacToe + ConsoleColors.RESET);
+        chooseGameMode();
+        display();
+        boolean player1Turn = true;
+        for (int pippo = 1; pippo <= board.getSize(); pippo++) {
+            if (player1Turn) {
+                view.println(Fr.turnOfPlayer + player1.getNumber());
+                playerTurn(player1);
+                player1Turn = false;
+            } else {
+                view.println(Fr.turnOfPlayer + player2.getNumber());
+                playerTurn(player2);
+                player1Turn = true;
+            }
+            if(checkWinnerCondition(vicortyCondition)){
+                pippo = board.getSize();
+            }
+        }
+    }
 
     /**
      * Executes a single turn for the given player by prompting them for a move
@@ -114,7 +136,15 @@ public abstract class Game {
      *
      * @param player the player whose turn it is
      */
-    public void playerTurn(Player player) {}
+    public void playerTurn(Player player) {
+        int[] move = getMoveFromPlayer(player);
+        board.getTile(move[0], move[1]).setPawn(true);
+        setOwner(move[0], move[1], player);
+        display();
+        if(checkWinnerCondition(vicortyCondition)){
+            view.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
+        }
+    }
 
     /**
      * Checks if the tile at the given coordinates is not empty.
