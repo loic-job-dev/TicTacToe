@@ -10,22 +10,29 @@ import java.util.InputMismatchException;
 
 /**
  * Handles the logic of a Connect4 game, including player moves and board display.
+ * <p>
+ * Connect4 is played on a 6x7 grid, and the goal is to align 4 consecutive pawns.
+ * Supports both human and AI (random) players.
+ * </p>
  */
 public class Connect4 extends Game{
 
-    /** Creates a new Gomoku game with a 15x15 board. */
+    /** Creates a new Connect4 game with a 6x7 board and a winning condition of 4 in a row. */
     public Connect4() {
         super(6, 7, 4);
     }
 
-    @Override
     /**
-     * Prompts the human player to enter valid coordinates for their move.
-     * Ensures the chosen tile is within bounds and not already occupied.
-     * The
+     * Prompts the player to select a valid move (column and row) for their turn.
+     * <p>
+     * For a human player, input is requested via the console. For an AI player
+     * implementing {@link RandomCoordinateCapable}, a random column is chosen.
+     * </p>
      *
-     * @return the coordinates {x, y} of the selected tile
+     * @param player the player making the move
+     * @return an array of two integers: {column, row} of the selected tile
      */
+    @Override
     public int[] getMoveFromPlayer(Player player) {
         int col = 0; //player.getX;
         int row = 0; //player.getY;
@@ -40,9 +47,9 @@ public class Connect4 extends Game{
 
                         row = nextTileEmpty(col);
                         if (row != -1) {
-                            break; // colonne valide et case libre trouvée
+                            break;
                         } else {
-                            view.println(ConsoleColors.RED + "Cette colonne est pleine !" + ConsoleColors.RESET);
+                            view.println(ConsoleColors.RED + Fr.colFull + ConsoleColors.RESET);
                         }
                     } else {
                         view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
@@ -55,23 +62,24 @@ public class Connect4 extends Game{
         } else if (player instanceof RandomCoordinateCapable random) {
             do {
                 col = random.randomCoordinatePlayed(board.getWidth());
-                row = random.randomCoordinatePlayed(board.getHeight());
+                row = nextTileEmpty(col);
             } while (board.getTile(col, row).hasPawn());
         }
-        System.out.println("col = " + col + " , row = " + row);
         return new int[] { col, row };
     }
 
+    /**
+     * Finds the next empty tile in a given column, starting from the bottom.
+     *
+     * @param col the column to check
+     * @return the row index of the next empty tile, or -1 if the column is full
+     */
     public int nextTileEmpty(int col) {
-        // Commencer par la ligne la plus basse
         for (int row = board.getHeight() - 1; row >= 0; row--) {
-            System.out.println("colonne = " + (col+1));
-            System.out.println("row = " + (row+1));
             if (!board.getTile(col, row).hasPawn()) {
                 return row;
             }
         }
-        // Colonne pleine
         return -1;
     }
 }

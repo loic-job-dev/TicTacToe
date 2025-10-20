@@ -19,5 +19,5 @@ public class Fr {
     public static final String victory = "Victoire du joueur ";
     public static final String chooseGameMode = "Quel mode de jeu ?\n1 - Joueur contre Joueur\n2 - Joueur contre Bot\n3 - Bot contre Bot\n";
     public static final String wrongChoice = "\nChoisir un chiffre parmis la liste proposée !\n";
-
+    public static final String colFull = "\nCette colonne est pleine !\n";
 }
