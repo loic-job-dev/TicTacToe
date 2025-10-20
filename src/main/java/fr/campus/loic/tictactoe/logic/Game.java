@@ -28,6 +28,7 @@ public abstract class Game {
     /** The second player */
     protected Player player2;
 
+    protected Player[] players;
     //private Player[] players;
 
 
@@ -234,6 +235,7 @@ public abstract class Game {
      */
     public void chooseGameMode() {
         int choice = 0;
+        players = new Player[2];
 
         while (true) {
             try {
