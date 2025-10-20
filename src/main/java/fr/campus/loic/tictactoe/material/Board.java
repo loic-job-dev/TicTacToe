@@ -29,9 +29,9 @@ public class Board {
 
     /** Initializes the board by creating tiles for each position. */
     private void createBoard() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                tiles[j * WIDTH + i] = new Tile(i, j);
+        for (int col = 0; col < WIDTH; col++) {
+            for (int row = 0; row < HEIGHT; row++) {
+                tiles[row * WIDTH + col] = new Tile(row, col);
             }
         }
     }
@@ -66,15 +66,15 @@ public class Board {
     /**
      * Returns the tile at the specified coordinates.
      *
-     * @param x the row index
-     * @param y the column index
+     * @param row the row index
+     * @param col the column index
      * @return the tile at (x, y)
      * @throws IndexOutOfBoundsException if coordinates are outside the board
      */
-    public Tile getTile(int x, int y) {
-        if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) {
+    public Tile getTile(int row, int col) {
+        if (row < 0 || row >= WIDTH || col < 0 || col >= HEIGHT) {
             throw new IndexOutOfBoundsException("Coordonnées en dehors du plateau !");
         }
-        return tiles[y * WIDTH + x];
+        return tiles[col * WIDTH + row];
     }
 }
