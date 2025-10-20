@@ -65,7 +65,7 @@ classDiagram
         +getMoveFromPlayer()
         +setOwner()
         +playerTurn()
-        +checkWinner()
+        +checkWinnerCondition()
         +chooseGameMode()
     }
     TicTacToe --> View
