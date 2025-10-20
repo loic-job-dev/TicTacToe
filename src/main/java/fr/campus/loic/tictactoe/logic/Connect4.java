@@ -19,7 +19,7 @@ public class Connect4 extends Game{
 
     /** Creates a new Connect4 game with a 6x7 board and a winning condition of 4 in a row. */
     public Connect4() {
-        super(6, 7, 4);
+        super(6, 7, 4, Fr.rulesConnect4);
     }
 
     /**

@@ -21,6 +21,8 @@ public abstract class Game {
     protected final Board board;
     /** Victory condition. */
     protected int vicortyCondition;
+    /** Rules of the game. */
+    protected String rules;
     /** The first player */
     protected Player player1;
     /** The second player */
@@ -28,12 +30,14 @@ public abstract class Game {
 
     //private Player[] players;
 
+
     /** Creates a new game with a board. */
-    public Game(int height, int width, int vicortyCondition) {
+    public Game(int height, int width, int vicortyCondition, String rules) {
         this.clavier =  new InteractionUtilisateur();
         this.board = new Board(height, width);
         this.view = new View();
         this.vicortyCondition = vicortyCondition;
+        this.rules = rules;
     }
 
     /** Displays the current state of the board in the console. */
@@ -110,7 +114,7 @@ public abstract class Game {
 
     /** Runs the game loop, prompting the player for moves and updating the board. */
     public void play(){
-        view.println(ConsoleColors.YELLOW + Fr.rulesTicTacToe + ConsoleColors.RESET);
+        view.println(ConsoleColors.YELLOW + rules + ConsoleColors.RESET);
         chooseGameMode();
         display();
         boolean player1Turn = true;
