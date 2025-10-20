@@ -1,4 +1,4 @@
-# TicTacToe
+# SquareGames
 
 School project in Java
 
