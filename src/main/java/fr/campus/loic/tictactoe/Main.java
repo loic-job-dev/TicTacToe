@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         View view = new View();
         InteractionUtilisateur iu = new  InteractionUtilisateur();
-        Game game = new TicTacToe();
+        Game game;
 
         //Using the args
         //For example, type in terminal :
@@ -29,6 +29,7 @@ public class Main {
                 case "connect4" -> game = new Connect4();
                 default -> {
                     view.println("Jeu inconnu, utilisation du Tic tac toe par défaut.");
+                    game = new TicTacToe();
                 }
             }
             game.play();
@@ -47,20 +48,22 @@ public class Main {
                         case 1 -> {
                             game = new TicTacToe();
                             validChoice = true;
+                            game.play();
                         }
                         case 2 -> {
                             game = new Gomoku();
                             validChoice = true;
+                            game.play();
                         }
                         case 3 -> {
                             game = new Connect4();
                             validChoice = true;
+                            game.play();
                         }
                         default -> {
                             view.println(ConsoleColors.RED + Fr.wrongChoice + ConsoleColors.RESET);
                         }
                     }
-                    game.play();
                 } catch (InputMismatchException e) {
                     view.println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
                     iu.nextLine();
