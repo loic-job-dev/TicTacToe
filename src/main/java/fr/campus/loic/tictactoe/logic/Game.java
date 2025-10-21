@@ -27,17 +27,22 @@ public abstract class Game {
     protected Player player1;
     /** The second player */
     protected Player player2;
-
+    /** The list of players */
     protected Player[] players;
-    //private Player[] players;
 
-
-    /** Creates a new game with a board. */
-    public Game(int height, int width, int vicortyCondition, String rules) {
+    /**
+     * Creates a new game instance with the specified board size, victory condition, and rules.
+     *
+     * @param height            the number of rows on the board
+     * @param width             the number of columns on the board
+     * @param victoryCondition  the number of consecutive tiles required to win
+     * @param rules             a description of the game rules displayed at the start
+     */
+    public Game(int height, int width, int victoryCondition, String rules) {
         this.clavier =  new InteractionUtilisateur();
         this.board = new Board(height, width);
         this.view = new View();
-        this.vicortyCondition = vicortyCondition;
+        this.vicortyCondition = victoryCondition;
         this.rules = rules;
     }
 
@@ -113,24 +118,49 @@ public abstract class Game {
         board.getTile(col, row).setRepresentation(player.getRepresentation());
     }
 
-    /** Runs the game loop, prompting the player for moves and updating the board. */
+    /**
+     * Runs the main game loop for the current match.
+     * <p>
+     * Displays the rules, initializes the game mode, and alternates turns between players
+     * until a winner is found or the board is full. After each move, the board is updated
+     * and displayed in the console.
+     * </p>
+     * <ul>
+     *     <li>Calls {@code chooseGameMode()} to determine player types (human or AI).</li>
+     *     <li>Each player takes a turn via {@code playerTurn(Player)}.</li>
+     *     <li>After every move, {@code checkWinnerCondition(int)} verifies if a win occurred.</li>
+     *     <li>If no moves remain, the game ends in a draw.</li>
+     * </ul>
+     */
     public void play(){
         view.println(ConsoleColors.YELLOW + rules + ConsoleColors.RESET);
         chooseGameMode();
         display();
-        boolean player1Turn = true;
-        for (int pippo = 1; pippo <= board.getSize(); pippo++) {
-            if (player1Turn) {
-                view.println(Fr.turnOfPlayer + player1.getNumber());
-                playerTurn(player1);
-                player1Turn = false;
-            } else {
-                view.println(Fr.turnOfPlayer + player2.getNumber());
-                playerTurn(player2);
-                player1Turn = true;
-            }
-            if(checkWinnerCondition(vicortyCondition)){
-                pippo = board.getSize();
+
+        int countTrun = 0;
+        boolean gameWon = false;
+
+        while (countTrun < board.getSize() && !gameWon) {
+            for (Player p : players) {
+                System.out.println("Début : Compteur = " + countTrun);
+                System.out.println("Size = " + board.getSize());
+
+                view.println(Fr.turnOfPlayer + p.getNumber());
+                playerTurn(p);
+                countTrun++;
+                display();
+
+                if(checkWinnerCondition(vicortyCondition)){
+                    view.println(ConsoleColors.BOLD_GREEN + Fr.victory +  p.getNumber() + ConsoleColors.RESET);
+                    gameWon = true;
+                    break;
+                }
+
+                if (countTrun >= board.getSize()) {
+                    break;
+                }
+
+                System.out.println("Fin : Compteur = " + countTrun + "\n\n");
             }
         }
     }
@@ -145,10 +175,6 @@ public abstract class Game {
         int[] move = getMoveFromPlayer(player);
         board.getTile(move[0], move[1]).setPawn(true);
         setOwner(move[0], move[1], player);
-        display();
-        if(checkWinnerCondition(vicortyCondition)){
-            view.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
-        }
     }
 
     /**
@@ -230,8 +256,18 @@ public abstract class Game {
     }
 
     /**
-     * Prompts the user to choose a game mode (human vs human, human vs computer, or computer vs computer).
-     * Creates the two players of the game depending on the game mode chosen.
+     * Prompts the user to select a game mode and initializes the two players accordingly.
+     * <p>
+     * The user can choose between:
+     * </p>
+     * <ul>
+     *     <li><b>1</b> — Human vs Human</li>
+     *     <li><b>2</b> — Human vs AI</li>
+     *     <li><b>3</b> — AI vs AI</li>
+     * </ul>
+     * <p>
+     * Ensures a valid numeric input; displays an error message for invalid or non-numeric entries.
+     * </p>
      */
     public void chooseGameMode() {
         int choice = 0;
@@ -243,18 +279,18 @@ public abstract class Game {
                 choice = clavier.nextInt();
 
                 if (choice == 1) {
-                    this.player1 = new HumanPlayer("X", 1);
-                    this.player2 = new HumanPlayer("O", 2);
+                    this.players[0] = new HumanPlayer("X", 1);
+                    this.players[1] = new HumanPlayer("O", 2);
                     break;
                 }
                 else if (choice == 2) {
-                    this.player1 = new HumanPlayer("X", 1);
-                    this.player2 = new ArtificialPlayer("O", 2);
+                    this.players[0] = new HumanPlayer("X", 1);
+                    this.players[1] = new ArtificialPlayer("O", 2);
                     break;
                 }
                 else if (choice == 3) {
-                    this.player1 = new ArtificialPlayer("X", 1);
-                    this.player2 = new ArtificialPlayer("O", 2);
+                    this.players[0] = new ArtificialPlayer("X", 1);
+                    this.players[1] = new ArtificialPlayer("O", 2);
                     break;
                 } else {
                     view.println(ConsoleColors.RED + Fr.wrongChoice +  ConsoleColors.RESET);
