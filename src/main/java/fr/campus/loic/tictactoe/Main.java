@@ -23,6 +23,8 @@ public class Main {
         // javac -d out $(find src/main/java/fr -name "*.java")
         // java -cp out fr.campus.loic.tictactoe.Main gomoku
         if (args.length > 0) {
+            String gameType = args[0];
+
             switch (args[0]) {
                 case "tictactoe" -> game = new TicTacToe();
                 case "gomoku" -> game = new Gomoku();

@@ -7,8 +7,6 @@ import fr.campus.loic.tictactoe.lang.Fr;
  */
 public class Gomoku extends Game {
 
-    //private Player[] players;
-
     /** Creates a new Gomoku game with a 15x15 board and a winning condition of 5 in a row. */
     public Gomoku() {
         super(15, 15, 5, Fr.rulesGomoku);
