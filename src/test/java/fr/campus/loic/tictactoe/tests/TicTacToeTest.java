@@ -20,7 +20,6 @@ public class TicTacToeTest {
         int col = 2;
         int row = 1;
         tictactoe.getBoard().getTile(col, row).setPawn(true);
-        tictactoe.setOwner(col, row, playerX);
         //THEN
         assertTrue(tictactoe.getBoard().getTile(2, 1).hasPawn());
     }

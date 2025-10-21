@@ -7,8 +7,6 @@ import fr.campus.loic.tictactoe.logic.Game;
 import fr.campus.loic.tictactoe.logic.Gomoku;
 import fr.campus.loic.tictactoe.logic.TicTacToe;
 import fr.campus.loic.tictactoe.material.ConsoleColors;
-import fr.campus.loic.tictactoe.player.ArtificialPlayer;
-import fr.campus.loic.tictactoe.player.HumanPlayer;
 import fr.campus.loic.tictactoe.view.View;
 
 import java.util.InputMismatchException;
@@ -18,34 +16,55 @@ public class Main {
     public static void main(String[] args) {
         View view = new View();
         InteractionUtilisateur iu = new  InteractionUtilisateur();
+        Game game = new TicTacToe();
 
-        int choice = 0;
+        //Using the args
+        //For example, type in terminal :
+        // javac -d out $(find src/main/java/fr -name "*.java")
+        // java -cp out fr.campus.loic.tictactoe.Main gomoku
+        if (args.length > 0) {
+            switch (args[0]) {
+                case "tictactoe" -> game = new TicTacToe();
+                case "gomoku" -> game = new Gomoku();
+                case "connect4" -> game = new Connect4();
+                default -> {
+                    view.println("Jeu inconnu, utilisation du Tic tac toe par défaut.");
+                }
+            }
+            game.play();
+        }
 
-        while (true) {
-            try {
-                view.println(ConsoleColors.PURPLE + Fr.chooseGameType + ConsoleColors.RESET);
-                choice = iu.nextInt();
+        //If not args passed, the user have to make a choice
+        else {
+            int choice = 0;
+            boolean validChoice = false;
+            while (!validChoice) {
+                try {
+                    view.println(ConsoleColors.PURPLE + Fr.chooseGameType + ConsoleColors.RESET);
+                    choice = iu.nextInt();
 
-                if (choice == 1) {
-                    Game tictactoe = new TicTacToe();
-                    tictactoe.play();
-                    break;
+                    switch (choice) {
+                        case 1 -> {
+                            game = new TicTacToe();
+                            validChoice = true;
+                        }
+                        case 2 -> {
+                            game = new Gomoku();
+                            validChoice = true;
+                        }
+                        case 3 -> {
+                            game = new Connect4();
+                            validChoice = true;
+                        }
+                        default -> {
+                            view.println(ConsoleColors.RED + Fr.wrongChoice + ConsoleColors.RESET);
+                        }
+                    }
+                    game.play();
+                } catch (InputMismatchException e) {
+                    view.println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
+                    iu.nextLine();
                 }
-                else if (choice == 2) {
-                    Game gomoku = new Gomoku();
-                    gomoku.play();
-                    break;
-                }
-                else if (choice == 3) {
-                    Game connect4 = new Connect4();
-                    connect4.play();
-                    break;
-                } else {
-                    view.println(ConsoleColors.RED + Fr.wrongChoice +  ConsoleColors.RESET);
-                }
-            } catch (InputMismatchException e) {
-                view.println(ConsoleColors.RED + Fr.exceptionIntMessage +  ConsoleColors.RESET);
-                iu.nextLine();
             }
         }
     }

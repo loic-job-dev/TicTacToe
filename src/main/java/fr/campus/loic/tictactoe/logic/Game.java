@@ -142,9 +142,6 @@ public abstract class Game {
 
         while (countTrun < board.getSize() && !gameWon) {
             for (Player p : players) {
-                System.out.println("Début : Compteur = " + countTrun);
-                System.out.println("Size = " + board.getSize());
-
                 view.println(Fr.turnOfPlayer + p.getNumber());
                 playerTurn(p);
                 countTrun++;
@@ -159,8 +156,6 @@ public abstract class Game {
                 if (countTrun >= board.getSize()) {
                     break;
                 }
-
-                System.out.println("Fin : Compteur = " + countTrun + "\n\n");
             }
         }
     }
