@@ -66,15 +66,15 @@ public class Board {
     /**
      * Returns the tile at the specified coordinates.
      *
-     * @param row the row index
      * @param col the column index
+     * @param row the row index
      * @return the tile at (x, y)
      * @throws IndexOutOfBoundsException if coordinates are outside the board
      */
-    public Tile getTile(int row, int col) {
-        if (row < 0 || row >= WIDTH || col < 0 || col >= HEIGHT) {
+    public Tile getTile(int col, int row) {
+        if (col < 0 || col >= WIDTH || row < 0 || row >= HEIGHT) {
             throw new IndexOutOfBoundsException("Coordonnées en dehors du plateau !");
         }
-        return tiles[col * WIDTH + row];
+        return tiles[row * WIDTH + col];
     }
 }

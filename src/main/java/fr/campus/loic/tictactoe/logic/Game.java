@@ -301,4 +301,12 @@ public abstract class Game {
             }
         }
     }
+
+    /**
+     * Getter for the tests
+     * @return the board created for the game.
+     */
+    public Board getBoard() {
+        return board;
+    }
 }
