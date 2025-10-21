@@ -16,29 +16,30 @@ public class Main {
     public static void main(String[] args) {
         View view = new View();
         InteractionUtilisateur iu = new  InteractionUtilisateur();
-        Game game;
+
 
         //Using the args
         //For example, type in terminal :
         // javac -d out $(find src/main/java/fr -name "*.java")
         // java -cp out fr.campus.loic.tictactoe.Main gomoku
         if (args.length > 0) {
-            String gameType = args[0];
-
-            switch (args[0]) {
-                case "tictactoe" -> game = new TicTacToe();
-                case "gomoku" -> game = new Gomoku();
-                case "connect4" -> game = new Connect4();
-                default -> {
-                    view.println("Jeu inconnu, utilisation du Tic tac toe par défaut.");
-                    game = new TicTacToe();
-                }
+            try {
+                String className = "fr.campus.loic.tictactoe.logic." + args[0];
+                Class<?> clazz = Class.forName(className);
+                Game game = (Game) clazz.getDeclaredConstructor().newInstance();
+                game.play();
+            } catch (ClassNotFoundException e) {
+                view.println("Jeu inconnu, utilisation du Tic Tac Toe par défaut.");
+                Game game = new TicTacToe();
+                game.play();
+            } catch (Exception e) {
+                view.print(e.getMessage());
             }
-            game.play();
         }
 
         //If not args passed, the user have to make a choice
         else {
+            Game game;
             int choice = 0;
             boolean validChoice = false;
             while (!validChoice) {
