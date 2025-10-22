@@ -1,12 +1,6 @@
 package fr.campus.loic.tictactoe.model.game;
 
 import fr.campus.loic.tictactoe.view.lang.Fr;
-import fr.campus.loic.tictactoe.view.ConsoleColors;
-import fr.campus.loic.tictactoe.model.player.HumanPlayer;
-import fr.campus.loic.tictactoe.model.player.Player;
-import fr.campus.loic.tictactoe.model.player.RandomCoordinateCapable;
-
-import java.util.InputMismatchException;
 
 /**
  * Handles the logic of a Connect4 game, including player moves and board display.
@@ -15,8 +9,7 @@ import java.util.InputMismatchException;
  * Supports both human and AI (random) players.
  * </p>
  */
-public class Connect4 extends Game{
-
+public class Connect4 extends Game {
 
     /** Creates a new Connect4 game with a 6x7 board and a winning condition of 4 in a row. */
     public Connect4() {

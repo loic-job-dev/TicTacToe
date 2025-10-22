@@ -178,133 +178,135 @@ config:
   theme: neo
 ---
 classDiagram
-direction BT
-class ArtificialPlayer {
-- SecureRandom RANDOM
-+ randomCoordinatePlayed(int) int
-  }
-  class Board {
-- int HEIGHT
-- int WIDTH
-- int SIZE
-- Tile[] tiles
-- createBoard() void
-+ getSize() int
-+ getWidth() int
-+ getTile(int, int) Tile
-+ getHeight() int
-  }
-  class Connect4 {
-+ getMoveFromPlayer(Player) int[]
-+ nextTileEmpty(int) int
-  }
-  class Connect4Controller
-  class ConsoleColors {
-+ String CYAN
-+ String YELLOW
-+ String RED
-+ String RESET
-+ String BOLD_RED
-+ String PURPLE
-+ String WHITE
-+ String BOLD_GREEN
-+ String GREEN
-+ String BLUE
-  }
-  class Fr {
-+ String chooseGameMode
-+ String turnOfPlayer
-+ String wrongCoordinate
-+ String separator
-+ String choose
-+ String victory
-+ String chooseGameType
-+ String rulesGomoku
-+ String colFull
-+ String coordinateX
-+ String wrongChoice
-+ String rulesConnect4
-+ String coordinateY
-+ String tileAlreadyTaken
-+ String rulesTicTacToe
-+ String exceptionIntMessage
-  }
-  class Game {
-# GameController clavier
-# Player player1
-# View view
-# int vicortyCondition
-# Player player2
-# String rules
-# Board board
-# Player[] players
-+ getMoveFromPlayer(Player) int[]
-+ checkWinnerCondition(int) boolean
-+ getBoard() Board
-+ sameOwner(int, int, int, int) boolean
-+ playerTurn(Player) void
-+ isNotEmpty(int, int) boolean
-+ play() void
-+ setOwner(int, int, Player) void
-+ display() void
-+ chooseGameMode() void
-  }
-  class GameController {
-- Scanner clavier
-+ nextLine() void
-+ nextInt() int
-  }
-  class Gomoku
-  class GomokuController
-  class HumanPlayer
-  class Main {
-+ main(String[]) void
-  }
-  class Player {
-  ~ String representation
-  ~ String color
-  ~ int number
-+ getNumber() int
-+ getRepresentation() String
-  }
-  class RandomCoordinateCapable {
-  <<Interface>>
-+ randomCoordinatePlayed(int) int
-  }
-  class TicTacToe
-  class TicTacToeController
-  class TicTacToeTest {
-+ testFirstLineSecondColumn() void
-+ testNewBoardIsEmpty() void
-+ testTileCaptured() void
-+ testCoordinateTooHigh() void
-  }
-  class Tile {
-- int coordinateX
-- boolean hasPawn
-- String representation
-- int coordinateY
-+ getCoordinateY() int
-+ getRepresentation() String
-+ setPawn(boolean) void
-+ setRepresentation(String) void
-+ getCoordinateX() int
-+ hasPawn() boolean
-  }
-  class View {
-+ println(String) void
-+ print(String) void
-  }
+    direction BT
+    class ArtificialPlayer {
+        - SecureRandom RANDOM
+        + randomCoordinatePlayed(int) int
+    }
+    class Board {
+        - int WIDTH
+        - int SIZE
+        - int HEIGHT
+        - Tile[] tiles
+        - createBoard() void
+        + getHeight() int
+        + getWidth() int
+        + getSize() int
+        + getTile(int, int) Tile
+        + hasPawnAt(int, int) boolean
+    }
+    class Connect4
+    class ConsoleColors {
+        + String WHITE
+        + String BLUE
+        + String PURPLE
+        + String BOLD_RED
+        + String RESET
+        + String RED
+        + String YELLOW
+        + String CYAN
+        + String GREEN
+        + String BOLD_GREEN
+    }
+    class Fr {
+        + String choose
+        + String chooseGameMode
+        + String separator
+        + String rulesConnect4
+        + String coordinateY
+        + String rulesGomoku
+        + String wrongCoordinate
+        + String exceptionIntMessage
+        + String chooseGameType
+        + String colFull
+        + String tileAlreadyTaken
+        + String turnOfPlayer
+        + String rulesTicTacToe
+        + String victory
+        + String coordinateX
+        + String wrongChoice
+    }
+    class Game {
+        # Player[] players
+        # String rules
+        # Board board
+        # boolean gravity
+        # int victoryCondition
+        + playerTurn(Player, int[]) void
+        + getGravity() boolean
+        + getPlayers() Player[]
+        + setOwner(int, int, Player) void
+        + sameOwner(int, int, int, int) boolean
+        + getRules() String
+        + isNotEmpty(int, int) boolean
+        + getVictoryCondition() int
+        + hasPawnAt(int, int) boolean
+        + checkWinnerCondition(int) boolean
+        + getBoard() Board
+        + setPlayers(Player[]) void
+    }
+    class GameController {
+        - View view
+        - Game game
+        - getRow() int[]
+        + play() void
+        - getCoordinates() int[]
+        + display() void
+        + chooseGameMode() void
+        + getMoveFromPlayer(Player) int[]
+        + nextTileEmpty(int) int
+    }
+    class Gomoku
+    class HumanPlayer
+    class Main {
+        + main(String[]) void
+    }
+    class OutOfBoardException
+    class Player {
+        ~ int number
+        ~ String color
+        ~ String representation
+        + getRepresentation() String
+        + getNumber() int
+    }
+    class RandomCoordinateCapable {
+        <<Interface>>
+        + randomCoordinatePlayed(int) int
+    }
+    class TicTacToe
+    class TicTacToeTest {
+        + testFirstLineSecondColumn() void
+        + testNewBoardIsEmpty() void
+        + testCoordinateTooHigh() void
+        + testTileCaptured() void
+    }
+    class Tile {
+        - boolean hasPawn
+        - int coordinateX
+        - String representation
+        - int coordinateY
+        + setRepresentation(String) void
+        + getCoordinateX() int
+        + hasPawn() boolean
+        + setPawn(boolean) void
+        + getRepresentation() String
+        + getCoordinateY() int
+    }
+    class View {
+        - Scanner clavier
+        + println(String) void
+        + askCoordinates(String) int[]
+        + askInt(String) int
+        + print(String) void
+    }
 
-ArtificialPlayer  -->  Player
-ArtificialPlayer  ..>  RandomCoordinateCapable
-Connect4  -->  Game
-Connect4Controller  -->  GameController
-Gomoku  -->  Game
-GomokuController  -->  GameController
-HumanPlayer  -->  Player
-TicTacToe  -->  Game
-TicTacToeController  -->  GameController 
+    ArtificialPlayer  -->  Player
+    ArtificialPlayer  ..>  RandomCoordinateCapable
+    Connect4  -->  Game
+    Gomoku  -->  Game
+    HumanPlayer  -->  Player
+    TicTacToe  -->  Game
+
 ```
 
 ---

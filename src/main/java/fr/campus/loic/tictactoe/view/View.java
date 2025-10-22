@@ -1,7 +1,6 @@
 package fr.campus.loic.tictactoe.view;
 
 import fr.campus.loic.tictactoe.view.lang.Fr;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

@@ -1,16 +1,8 @@
 package fr.campus.loic.tictactoe.model.game;
 
-import fr.campus.loic.tictactoe.controller.GameController;
-import fr.campus.loic.tictactoe.view.lang.Fr;
 import fr.campus.loic.tictactoe.model.material.Board;
-import fr.campus.loic.tictactoe.view.ConsoleColors;
-import fr.campus.loic.tictactoe.model.player.ArtificialPlayer;
-import fr.campus.loic.tictactoe.model.player.HumanPlayer;
 import fr.campus.loic.tictactoe.model.player.Player;
-import fr.campus.loic.tictactoe.model.player.RandomCoordinateCapable;
 
-
-import java.util.InputMismatchException;
 
 public abstract class Game {
     /** The game board. */
