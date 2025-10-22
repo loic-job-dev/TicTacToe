@@ -25,10 +25,43 @@ To build and run this project, you will need:
 
 ---
 
-### Main Dependencies
+## Main Dependencies
 
 - JUnit 5 (`org.junit.jupiter:junit-jupiter`) for unit testing.
 - JUnit Platform (`org.junit.platform:junit-platform-launcher`) for test runtime.
+
+---
+
+## Naming Conventions
+
+This project follows the official Java naming conventions for clarity and consistency.
+
+### General Rules
+
+- Use English for all identifiers.
+- Be descriptive and concise.
+- Avoid unnecessary abbreviations.
+- Prefer meaningful names (e.g., boardWidth instead of bw).
+
+### Conventions Summary
+
+| Element Type         | Convention   | Example                        |
+|-----------------------|--------------|----------------------------------|
+| Package               | lowercase    | `fr.campus.loic.tictactoe`       |
+| Class / Interface     | PascalCase   | `GameController`, `Player`       |
+| Method                | camelCase    | `checkWinnerCondition()`         |
+| Variable / Attribute  | camelCase    | `victoryCondition`               |
+| Constant              | UPPER_CASE   | `MAX_SCORE`                      |
+
+---
+
+### Notes
+
+- **Classes** are nouns (e.g., `Board`, `Player`).
+- **Methods** are verbs or verb phrases (e.g., `setOwner()`, `getBoard()`).
+- **Constants** are written in uppercase and declared as `public static final`.
+- **Packages** are all lowercase and reflect the project structure.
+- **Names** should be clear, descriptive, and written in English.
 
 ---
 
