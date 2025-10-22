@@ -52,8 +52,8 @@ public class GameController {
      * @return the coordinates {col, row} of the selected tile
      */
     public int[] getMoveFromPlayer(Player player) {
-        int col = 0; //player.getX;
-        int row = 0; //player.getY;
+        int col = 0;
+        int row = 0;
         if (player instanceof HumanPlayer) {
             int[] coords = getCoordinates();
             col = coords[0];
@@ -76,7 +76,7 @@ public class GameController {
 
         try {
             if (game.hasPawnAt(col, row)) {
-                this.view.println("You already have a pawn!");
+                this.view.println(ConsoleColors.RED + Fr.tileAlreadyTaken + ConsoleColors.RESET);
                 return getCoordinates();
             }
             return new int[]{col, row};
@@ -211,35 +211,24 @@ public class GameController {
 
         Player[] players = new Player[2];
 
-        while (true) {
-            try {
-                view.println(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
-                choice = clavier.nextInt();
+        choice = view.askInt(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
 
-                if (choice == 1) {
-                    players[0] = new HumanPlayer("X", 1);
-                    players[1] = new HumanPlayer("O", 2);
-                    game.setPlayers(players);
-                    break;
-                }
-                else if (choice == 2) {
-                    players[0] = new HumanPlayer("X", 1);
-                    players[1] = new ArtificialPlayer("O", 2);
-                    game.setPlayers(players);
-                    break;
-                }
-                else if (choice == 3) {
-                    players[0] = new ArtificialPlayer("X", 1);
-                    players[1] = new ArtificialPlayer("O", 2);
-                    game.setPlayers(players);
-                    break;
-                } else {
-                    view.println(ConsoleColors.RED + Fr.wrongChoice +  ConsoleColors.RESET);
-                }
-            } catch (InputMismatchException e) {
-                view.println(ConsoleColors.RED + Fr.exceptionIntMessage +  ConsoleColors.RESET);
-                clavier.nextLine();
-            }
+        if (choice == 1) {
+            players[0] = new HumanPlayer("X", 1);
+            players[1] = new HumanPlayer("O", 2);
+            game.setPlayers(players);
+        }
+        else if (choice == 2) {
+            players[0] = new HumanPlayer("X", 1);
+            players[1] = new ArtificialPlayer("O", 2);
+            game.setPlayers(players);
+        }
+        else if (choice == 3) {
+            players[0] = new ArtificialPlayer("X", 1);
+            players[1] = new ArtificialPlayer("O", 2);
+            game.setPlayers(players);
+        } else {
+            chooseGameMode();
         }
     }
 }
