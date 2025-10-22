@@ -1,8 +1,6 @@
-package fr.campus.loic.tictactoe.player;
+package fr.campus.loic.tictactoe.model.player;
 
-import fr.campus.loic.tictactoe.material.ConsoleColors;
-
-import java.security.SecureRandom;
+import fr.campus.loic.tictactoe.model.material.ConsoleColors;
 
 /**
  * Represents a player with a specific symbol and color.

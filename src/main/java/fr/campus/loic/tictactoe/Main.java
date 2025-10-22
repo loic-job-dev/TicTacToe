@@ -1,12 +1,12 @@
 package fr.campus.loic.tictactoe;
 
 import fr.campus.loic.tictactoe.controller.InteractionUtilisateur;
-import fr.campus.loic.tictactoe.lang.Fr;
-import fr.campus.loic.tictactoe.logic.Connect4;
-import fr.campus.loic.tictactoe.logic.Game;
-import fr.campus.loic.tictactoe.logic.Gomoku;
-import fr.campus.loic.tictactoe.logic.TicTacToe;
-import fr.campus.loic.tictactoe.material.ConsoleColors;
+import fr.campus.loic.tictactoe.view.lang.Fr;
+import fr.campus.loic.tictactoe.model.game.Connect4;
+import fr.campus.loic.tictactoe.model.game.Game;
+import fr.campus.loic.tictactoe.model.game.Gomoku;
+import fr.campus.loic.tictactoe.model.game.TicTacToe;
+import fr.campus.loic.tictactoe.model.material.ConsoleColors;
 import fr.campus.loic.tictactoe.view.View;
 
 import java.util.InputMismatchException;
@@ -21,7 +21,7 @@ public class Main {
         //Using the args
         //For example, type in terminal :
         // javac -d out $(find src/main/java/fr -name "*.java")
-        // java -cp out fr.campus.loic.tictactoe.Main gomoku
+        // java -cp out fr.campus.loic.tictactoe.Main Gomoku
         if (args.length > 0) {
             try {
                 String className = "fr.campus.loic.tictactoe.logic." + args[0];

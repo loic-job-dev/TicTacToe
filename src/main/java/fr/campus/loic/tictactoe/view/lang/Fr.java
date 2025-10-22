@@ -1,4 +1,4 @@
-package fr.campus.loic.tictactoe.lang;
+package fr.campus.loic.tictactoe.view.lang;
 
 /**
  * Contains the different texts to display

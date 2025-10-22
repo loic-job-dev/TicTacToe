@@ -1,4 +1,4 @@
-package fr.campus.loic.tictactoe.material;
+package fr.campus.loic.tictactoe.model.material;
 
 /**
  * Utility class that defines ANSI escape codes for coloring console output.

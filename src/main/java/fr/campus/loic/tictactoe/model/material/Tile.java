@@ -1,4 +1,4 @@
-package fr.campus.loic.tictactoe.material;
+package fr.campus.loic.tictactoe.model.material;
 
 /**
  * Represents a single tile on a board.

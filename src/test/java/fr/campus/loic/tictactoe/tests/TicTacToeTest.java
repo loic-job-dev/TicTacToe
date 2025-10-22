@@ -1,12 +1,9 @@
 package fr.campus.loic.tictactoe.tests;
 
-import fr.campus.loic.tictactoe.logic.Game;
-import fr.campus.loic.tictactoe.logic.TicTacToe;
-import fr.campus.loic.tictactoe.player.HumanPlayer;
+import fr.campus.loic.tictactoe.model.game.Game;
+import fr.campus.loic.tictactoe.model.game.TicTacToe;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.InputMismatchException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

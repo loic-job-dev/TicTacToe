@@ -1,13 +1,13 @@
-package fr.campus.loic.tictactoe.logic;
+package fr.campus.loic.tictactoe.model.game;
 
 import fr.campus.loic.tictactoe.controller.InteractionUtilisateur;
-import fr.campus.loic.tictactoe.lang.Fr;
-import fr.campus.loic.tictactoe.material.Board;
-import fr.campus.loic.tictactoe.material.ConsoleColors;
-import fr.campus.loic.tictactoe.player.ArtificialPlayer;
-import fr.campus.loic.tictactoe.player.HumanPlayer;
-import fr.campus.loic.tictactoe.player.Player;
-import fr.campus.loic.tictactoe.player.RandomCoordinateCapable;
+import fr.campus.loic.tictactoe.view.lang.Fr;
+import fr.campus.loic.tictactoe.model.material.Board;
+import fr.campus.loic.tictactoe.model.material.ConsoleColors;
+import fr.campus.loic.tictactoe.model.player.ArtificialPlayer;
+import fr.campus.loic.tictactoe.model.player.HumanPlayer;
+import fr.campus.loic.tictactoe.model.player.Player;
+import fr.campus.loic.tictactoe.model.player.RandomCoordinateCapable;
 import fr.campus.loic.tictactoe.view.View;
 
 import java.util.InputMismatchException;
@@ -70,6 +70,7 @@ public abstract class Game {
      *
      * @return the coordinates {col, row} of the selected tile
      */
+    //controller ?
     public int[] getMoveFromPlayer(Player player) {
         int col = 0; //player.getX;
         int row = 0; //player.getY;

@@ -1,6 +1,6 @@
-package fr.campus.loic.tictactoe.logic;
+package fr.campus.loic.tictactoe.model.game;
 
-import fr.campus.loic.tictactoe.lang.Fr;
+import fr.campus.loic.tictactoe.view.lang.Fr;
 
 /**
  * Handles the logic of a Tic-Tac-Toe game, including player moves and board display.

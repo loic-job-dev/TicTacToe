@@ -1,4 +1,4 @@
-package fr.campus.loic.tictactoe.material;
+package fr.campus.loic.tictactoe.model.material;
 
 /**
  * Represents a Tic-Tac-Toe board of a given size with a grid of tiles.

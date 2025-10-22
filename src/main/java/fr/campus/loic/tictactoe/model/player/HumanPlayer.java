@@ -1,4 +1,4 @@
-package fr.campus.loic.tictactoe.player;
+package fr.campus.loic.tictactoe.model.player;
 
 /**
  * Represents a human player in the Tic-Tac-Toe game.

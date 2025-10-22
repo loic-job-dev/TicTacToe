@@ -1,10 +1,10 @@
-package fr.campus.loic.tictactoe.logic;
+package fr.campus.loic.tictactoe.model.game;
 
-import fr.campus.loic.tictactoe.lang.Fr;
-import fr.campus.loic.tictactoe.material.ConsoleColors;
-import fr.campus.loic.tictactoe.player.HumanPlayer;
-import fr.campus.loic.tictactoe.player.Player;
-import fr.campus.loic.tictactoe.player.RandomCoordinateCapable;
+import fr.campus.loic.tictactoe.view.lang.Fr;
+import fr.campus.loic.tictactoe.model.material.ConsoleColors;
+import fr.campus.loic.tictactoe.model.player.HumanPlayer;
+import fr.campus.loic.tictactoe.model.player.Player;
+import fr.campus.loic.tictactoe.model.player.RandomCoordinateCapable;
 
 import java.util.InputMismatchException;
 

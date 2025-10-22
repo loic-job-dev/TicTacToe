@@ -1,4 +1,4 @@
-package fr.campus.loic.tictactoe.player;
+package fr.campus.loic.tictactoe.model.player;
 
 import java.security.SecureRandom;
 

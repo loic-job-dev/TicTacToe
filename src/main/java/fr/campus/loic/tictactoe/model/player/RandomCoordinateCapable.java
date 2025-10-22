@@ -1,4 +1,4 @@
-package fr.campus.loic.tictactoe.player;
+package fr.campus.loic.tictactoe.model.player;
 
 /**
  * Defines a contract for objects capable of generating a random coordinate to play.
