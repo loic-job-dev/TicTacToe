@@ -20,8 +20,6 @@ public class GameController {
 
     private final View view = new View();
     private final Game game;
-    /** Scanner used to read user input from the console. */
-    private final Scanner clavier = new Scanner(System.in);
 
     public GameController(Game game) {
         this.game = game;
@@ -62,7 +60,7 @@ public class GameController {
             do {
                 col = random.randomCoordinatePlayed(game.getBoard().getWidth());
                 row = random.randomCoordinatePlayed(game.getBoard().getHeight());
-            } while (game.getBoard().getTile(col, row).hasPawn());
+            } while (game.hasPawnAt(col, row));
         }
         return new int[] { col, row };
     }
@@ -97,14 +95,12 @@ public class GameController {
      * @return an array of two integers: {column, row} of the selected tile
      */
     public int[] getMoveFromPlayerGravity(Player player) {
-        int col = 0; //player.getX;
-        int row = 0; //player.getY;
+        int col = 0;
+        int row = 0;
         if (player instanceof HumanPlayer) {
             while (true) {
-                try {
                     view.println(Fr.choose);
-                    view.print(Fr.coordinateX);
-                    col = clavier.nextInt() - 1;
+                    col = view.askInt(Fr.coordinateX);
 
                     if (col >= 0 && col < game.getBoard().getWidth()) {
 
@@ -117,16 +113,12 @@ public class GameController {
                     } else {
                         view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
                     }
-                } catch (InputMismatchException e) {
-                    view.println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
-                    clavier.nextLine();
-                }
             }
         } else if (player instanceof RandomCoordinateCapable random) {
             do {
                 col = random.randomCoordinatePlayed(game.getBoard().getWidth());
                 row = nextTileEmpty(col);
-            } while (game.getBoard().getTile(col, row).hasPawn());
+            } while (game.hasPawnAt(col, row));
         }
         return new int[] { col, row };
     }

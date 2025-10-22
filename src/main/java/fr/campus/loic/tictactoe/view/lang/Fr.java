@@ -11,7 +11,7 @@ public class Fr {
     public static final String rulesTicTacToe = "\nBienvenue au TicTacToe selon Djodjo & Léa !\nLe but du jeu est d'aligner ses pions sur une ligne, une colonne ou une diagonale avant l'autre joueur.\n";
     public static final String rulesGomoku = "\nBienvenue au Gomoku selon Djodjo & Léa !\nLe but du jeu est d'aligner 5 pions sur une ligne, une colonne ou une diagonale avant l'autre joueur.\n";
     public static final String rulesConnect4 ="\nBienvenue au Puissance 4 selon Djodjo & Léa !\nLe but du jeu est d'aligner 4 pions sur une ligne, une colonne ou une diagonale avant l'autre joueur.\n";
-    public static final String choose = "Merci de choisir les coordonnées de la case à capturer (de 1 à 3)\n";
+    public static final String choose = "Merci de choisir les coordonnées de la case à capturer\n";
     public static final String coordinateX = "Coordonnée horizontale (X) : ";
     public static final String coordinateY = "Coordonnée verticale (Y) : ";
     public static final String tileAlreadyTaken = "Case déjà prise !";
