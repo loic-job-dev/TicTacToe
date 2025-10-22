@@ -17,7 +17,7 @@ public class Main {
         Game tictactoe = new TicTacToe();
         Game gomoku = new Gomoku();
         Game connect4 = new Connect4();
-        GameController game = new GameController(connect4);
+        GameController game = new GameController(tictactoe);
 
         game.play();
 

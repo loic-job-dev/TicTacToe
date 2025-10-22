@@ -55,27 +55,20 @@ public class GameController {
         int row = 0; //player.getY;
         if (player instanceof HumanPlayer) {
             while (true) {
-                try {
-                    view.println(Fr.choose);
-                    view.print(Fr.coordinateX);
-                    row = clavier.nextInt() - 1;
 
-                    view.print(Fr.coordinateY);
-                    col = clavier.nextInt() - 1;
+                int[] coordinates = view.askCoordinates(Fr.choose);
+                row = coordinates[1];
+                col = coordinates[0];
 
-                    if (col >= 0 && col < game.getBoard().getWidth() && row >= 0 && row < game.getBoard().getHeight()) {
-                        if (!game.getBoard().getTile(col, row).hasPawn()) {
-                            break;
-                        }
-                        else {
-                            view.println(Fr.tileAlreadyTaken);
-                        }
-                    } else {
-                        view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
+                if (col >= 0 && col < game.getBoard().getWidth() && row >= 0 && row < game.getBoard().getHeight()) {
+                    if (!game.getBoard().getTile(col, row).hasPawn()) {
+                        break;
                     }
-                } catch (InputMismatchException e) {
-                    view.println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
-                    clavier.nextLine();
+                    else {
+                        view.println(Fr.tileAlreadyTaken);
+                    }
+                } else {
+                    view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
                 }
             }
         } else if (player instanceof RandomCoordinateCapable random) {
