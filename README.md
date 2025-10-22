@@ -50,83 +50,122 @@ java -cp build/libs/TicTacToe-1.0-SNAPSHOT.jar fr.campus.loic.tictactoe.Main
 
 ```mermaid
 classDiagram
-    class Main {
-        +main()
-    }
-    Main --> Game
-
-    class Game {
-        -View view
-        -InteractionUtilisateur clavier
-        -Board board
-        -Player player1
-        -Player player2
-        +play()
-        +display()
-        +getMoveFromPlayer()
-        +setOwner()
-        +playerTurn()
-        +checkWinnerCondition()
-        +chooseGameMode()
-    }
-    Game --> View
-    Game --> InteractionUtilisateur
-    Game --> Board
-    Game --> Player
-    
-    class TicTacToe {
-    }
-    Game <|-- TicTacToe
-    
-    class Gomoku{
-    }
-    Game <|-- Gomoku
-    
-    class Connect4{
-    }
-    Game <|-- Connect4
-
-    class View {
-        +println()
-        +print()
-    }
-
-    class InteractionUtilisateur {
-        +Scanner clavier
-        +nextInt()
-        +nextLine()
-    }
-
-    class Board {
-        -int SIZE
-        -Tile[][] tiles
-        +createBoard()
-    }
-    Board --> Tile
-
-    class Tile {
-        -int coordinateX
-        -int coordinateY
-        -boolean hasPawn
-        -String representation
-    }
-
-    class Player {
-        -String representation
-        -int number
-        -String color
-    }
-    Player <|-- HumanPlayer
-    Player <|-- ArtificialPlayer
-
-    class HumanPlayer {
-    }
-
+    direction BT
     class ArtificialPlayer {
-        -SecureRandom RANDOM
-        +randomCoordinatePlayed(int size)
+        - SecureRandom RANDOM
+        + randomCoordinatePlayed(int) int
     }
-    ArtificialPlayer ..|> RandomCoordinateCapable
+    class Board {
+        - int HEIGHT
+        - int WIDTH
+        - int SIZE
+        - Tile[] tiles
+        - createBoard() void
+        + getSize() int
+        + getWidth() int
+        + getTile(int, int) Tile
+        + getHeight() int
+    }
+    class Connect4 {
+        + getMoveFromPlayer(Player) int[]
+        + nextTileEmpty(int) int
+    }
+    class ConsoleColors {
+        + String CYAN
+        + String YELLOW
+        + String RED
+        + String RESET
+        + String BOLD_RED
+        + String PURPLE
+        + String WHITE
+        + String BOLD_GREEN
+        + String GREEN
+        + String BLUE
+    }
+    class Fr {
+        + String chooseGameMode
+        + String turnOfPlayer
+        + String wrongCoordinate
+        + String separator
+        + String choose
+        + String victory
+        + String chooseGameType
+        + String rulesGomoku
+        + String colFull
+        + String coordinateX
+        + String wrongChoice
+        + String rulesConnect4
+        + String coordinateY
+        + String tileAlreadyTaken
+        + String rulesTicTacToe
+        + String exceptionIntMessage
+    }
+    class Game {
+        # InteractionUtilisateur clavier
+        # Player player1
+        # View view
+        # int vicortyCondition
+        # Player player2
+        # String rules
+        # Board board
+        # Player[] players
+        + getMoveFromPlayer(Player) int[]
+        + checkWinnerCondition(int) boolean
+        + getBoard() Board
+        + sameOwner(int, int, int, int) boolean
+        + playerTurn(Player) void
+        + isNotEmpty(int, int) boolean
+        + play() void
+        + setOwner(int, int, Player) void
+        + display() void
+        + chooseGameMode() void
+    }
+    class Gomoku
+    class HumanPlayer
+    class InteractionUtilisateur {
+        - Scanner clavier
+        + nextLine() void
+        + nextInt() int
+    }
+    class Main {
+        + main(String[]) void
+    }
+    class Player {
+        ~ String representation
+        ~ String color
+        ~ int number
+        + getNumber() int
+        + getRepresentation() String
+    }
+    class RandomCoordinateCapable {
+        <<Interface>>
+        + randomCoordinatePlayed(int) int
+    }
+    class TicTacToe
+    class Tile {
+        - int coordinateX
+        - boolean hasPawn
+        - String representation
+        - int coordinateY
+        + getCoordinateY() int
+        + getRepresentation() String
+        + setPawn(boolean) void
+        + setRepresentation(String) void
+        + getCoordinateX() int
+        + hasPawn() boolean
+    }
+    class View {
+        + println(String) void
+        + print(String) void
+    }
+
+    ArtificialPlayer  -->  Player
+    ArtificialPlayer  ..>  RandomCoordinateCapable
+    Connect4  -->  Game
+    Gomoku  -->  Game
+    HumanPlayer  -->  Player
+    TicTacToe  -->  Game
+
 ```
 
 ---
