@@ -9,6 +9,6 @@ public class TicTacToe extends Game {
 
     /** Creates a new Tic-Tac-Toe game with a 3x3 board. */
     public TicTacToe() {
-        super(3, 3, 3, Fr.rulesTicTacToe);
+        super(3, 3, 3, Fr.rulesTicTacToe, false);
     }
 }

@@ -8,23 +8,21 @@ import fr.campus.loic.tictactoe.model.player.ArtificialPlayer;
 import fr.campus.loic.tictactoe.model.player.HumanPlayer;
 import fr.campus.loic.tictactoe.model.player.Player;
 import fr.campus.loic.tictactoe.model.player.RandomCoordinateCapable;
-import fr.campus.loic.tictactoe.view.View;
+
 
 import java.util.InputMismatchException;
 
 public abstract class Game {
     /** The game board. */
-    //model
     protected final Board board;
     /** Victory condition. */
-    //model
     protected int victoryCondition;
     /** Rules of the game. */
-    //model
     protected String rules;
     /** The list of players */
-    //model
     protected Player[] players;
+    /** Gravity effect. */
+    protected boolean gravity;
 
     /**
      * Creates a new game instance with the specified board size, victory condition, and rules.
@@ -34,10 +32,11 @@ public abstract class Game {
      * @param victoryCondition  the number of consecutive tiles required to win
      * @param rules             a description of the game rules displayed at the start
      */
-    public Game(int height, int width, int victoryCondition, String rules) {
+    public Game(int height, int width, int victoryCondition, String rules, boolean gravity) {
         this.board = new Board(height, width);
         this.victoryCondition = victoryCondition;
         this.rules = rules;
+        this.gravity = gravity;
     }
 
 
@@ -48,7 +47,6 @@ public abstract class Game {
      * @param row the row index
      * @param player the player who owns the tile
      */
-    //model
     public void setOwner(int col, int row, Player player) {
         board.getTile(col, row).setRepresentation(player.getRepresentation());
     }
@@ -60,9 +58,7 @@ public abstract class Game {
      *
      * @param player the player whose turn it is
      */
-    //model
     public void playerTurn(Player player, int[] move) {
-        //int[] move = getMoveFromPlayer(player);
         board.getTile(move[0], move[1]).setPawn(true);
         setOwner(move[0], move[1], player);
     }
@@ -74,7 +70,6 @@ public abstract class Game {
      * @param row the row index of the tile
      * @return {@code false} if the tile is empty, {@code true} otherwise
      */
-    //model
     public boolean isNotEmpty(int col, int row) {
         return !board.getTile(col, row).getRepresentation().equals("   ");
     }
@@ -88,7 +83,6 @@ public abstract class Game {
      * @param row2 the row index of the second tile
      * @return {@code true} if both tiles have the same owner, {@code false} otherwise
      */
-    //model
     public boolean sameOwner(int col1, int row1, int col2, int row2) {
         return board.getTile(col1, row1).getRepresentation().equals(board.getTile(col2, row2).getRepresentation());
     }
@@ -104,7 +98,6 @@ public abstract class Game {
      * @param condition the number of consecutive tiles needed to win
      * @return {@code true} if a winning sequence exists, {@code false} otherwise
      */
-    //model
     public boolean checkWinnerCondition(int condition) {
         int minimalCondition = Math.min(board.getWidth(), board.getHeight());
         if (condition > minimalCondition) {
@@ -153,23 +146,52 @@ public abstract class Game {
      * Getter for the tests
      * @return the board created for the game.
      */
-    //model
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * Returns the rules description of the game.
+     *
+     * @return the game rules as a string
+     */
     public String getRules() {
         return rules;
     }
 
+    /**
+     * Returns the list of players currently in the game.
+     *
+     * @return an array containing the two players
+     */
     public Player[] getPlayers() {
         return players;
     }
+
+    /**
+     * Returns the number of consecutive tiles required to win the game.
+     *
+     * @return the victory condition value
+     */
     public int getVictoryCondition() {
         return victoryCondition;
     }
 
+    /**
+     * Sets the list of players for the current game.
+     *
+     * @param players an array of two player instances
+     */
     public void setPlayers(Player[] players) {
         this.players = players;
+    }
+
+    /**
+     * Returns the effect of the gravity on the board.
+     *
+     * @return {@code true} if the gravity affects the board, {@code false} otherwise
+     */
+    public boolean getGravity(){
+        return gravity;
     }
 }

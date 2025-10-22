@@ -15,7 +15,9 @@ import java.util.InputMismatchException;
 public class Main {
     public static void main(String[] args) {
         Game tictactoe = new TicTacToe();
-        GameController game = new GameController(tictactoe);
+        Game gomoku = new Gomoku();
+        Game connect4 = new Connect4();
+        GameController game = new GameController(connect4);
 
         game.play();
 

@@ -27,7 +27,6 @@ public class GameController {
     }
 
     /** Displays the current state of the board in the console. */
-    //controller
     public void display() {
         String separator = "";
         for (int col = 0; col < game.getBoard().getWidth(); col++) {
@@ -51,7 +50,6 @@ public class GameController {
      *
      * @return the coordinates {col, row} of the selected tile
      */
-    //controller
     public int[] getMoveFromPlayer(Player player) {
         int col = 0; //player.getX;
         int row = 0; //player.getY;
@@ -90,6 +88,66 @@ public class GameController {
     }
 
     /**
+     * Prompts the player to select a valid move (column and row) for their turn.
+     * <p>
+     * For a human player, input is requested via the console. For an AI player
+     * implementing {@link RandomCoordinateCapable}, a random column is chosen.
+     * </p>
+     *
+     * @param player the player making the move
+     * @return an array of two integers: {column, row} of the selected tile
+     */
+    public int[] getMoveFromPlayerGravity(Player player) {
+        int col = 0; //player.getX;
+        int row = 0; //player.getY;
+        if (player instanceof HumanPlayer) {
+            while (true) {
+                try {
+                    view.println(Fr.choose);
+                    view.print(Fr.coordinateX);
+                    col = clavier.nextInt() - 1;
+
+                    if (col >= 0 && col < game.getBoard().getWidth()) {
+
+                        row = nextTileEmpty(col);
+                        if (row != -1) {
+                            break;
+                        } else {
+                            view.println(ConsoleColors.RED + Fr.colFull + ConsoleColors.RESET);
+                        }
+                    } else {
+                        view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
+                    }
+                } catch (InputMismatchException e) {
+                    view.println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
+                    clavier.nextLine();
+                }
+            }
+        } else if (player instanceof RandomCoordinateCapable random) {
+            do {
+                col = random.randomCoordinatePlayed(game.getBoard().getWidth());
+                row = nextTileEmpty(col);
+            } while (game.getBoard().getTile(col, row).hasPawn());
+        }
+        return new int[] { col, row };
+    }
+
+    /**
+     * Finds the next empty tile in a given column, starting from the bottom.
+     *
+     * @param col the column to check
+     * @return the row index of the next empty tile, or -1 if the column is full
+     */
+    public int nextTileEmpty(int col) {
+        for (int row = game.getBoard().getHeight() - 1; row >= 0; row--) {
+            if (!game.getBoard().getTile(col, row).hasPawn()) {
+                return row;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Runs the main game loop for the current match.
      * <p>
      * Displays the rules, initializes the game mode, and alternates turns between players
@@ -103,7 +161,6 @@ public class GameController {
      *     <li>If no moves remain, the game ends in a draw.</li>
      * </ul>
      */
-    //controller
     public void play(){
         view.println(ConsoleColors.YELLOW + game.getRules() + ConsoleColors.RESET);
         chooseGameMode();
@@ -115,7 +172,11 @@ public class GameController {
         while (countTrun < game.getBoard().getSize() && !gameWon) {
             for (Player p : game.getPlayers()) {
                 view.println(Fr.turnOfPlayer + p.getNumber());
-                game.playerTurn(p, getMoveFromPlayer(p));
+                if (game.getGravity()) {
+                    game.playerTurn(p, getMoveFromPlayerGravity(p));
+                } else {
+                    game.playerTurn(p, getMoveFromPlayer(p));
+                }
                 countTrun++;
                 display();
 
@@ -146,7 +207,6 @@ public class GameController {
      * Ensures a valid numeric input; displays an error message for invalid or non-numeric entries.
      * </p>
      */
-    //controller
     public void chooseGameMode() {
         int choice = 0;
 
@@ -183,22 +243,4 @@ public class GameController {
             }
         }
     }
-    
-    /**
-     * Reads the next integer entered by the user.
-     *
-     * @return the integer value entered by the user
-     */
-    public int nextInt(){
-        return clavier.nextInt();
-    }
-
-    /**
-     * Reads the next line entered by the user (used to consume input or move to the next line).
-     */
-    public void nextLine(){
-        clavier.nextLine();
-    }
-
-
 }
