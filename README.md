@@ -173,6 +173,10 @@ classDiagram
 ## Class diagram after MVC pattern
 
 ```mermaid
+---
+config:
+  theme: neo
+---
 classDiagram
 direction BT
 class ArtificialPlayer {

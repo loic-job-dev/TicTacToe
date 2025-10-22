@@ -1,7 +1,7 @@
 package fr.campus.loic.tictactoe.model.game;
 
 import fr.campus.loic.tictactoe.view.lang.Fr;
-import fr.campus.loic.tictactoe.model.material.ConsoleColors;
+import fr.campus.loic.tictactoe.view.ConsoleColors;
 import fr.campus.loic.tictactoe.model.player.HumanPlayer;
 import fr.campus.loic.tictactoe.model.player.Player;
 import fr.campus.loic.tictactoe.model.player.RandomCoordinateCapable;
@@ -15,12 +15,13 @@ import java.util.InputMismatchException;
  * Supports both human and AI (random) players.
  * </p>
  */
-public class Connect4 extends Game{
+public class Connect4 {//extends Game{
+
 
     /** Creates a new Connect4 game with a 6x7 board and a winning condition of 4 in a row. */
-    public Connect4() {
+    /*public Connect4() {
         super(6, 7, 4, Fr.rulesConnect4);
-    }
+    }*/
 
     /**
      * Prompts the player to select a valid move (column and row) for their turn.
@@ -32,7 +33,7 @@ public class Connect4 extends Game{
      * @param player the player making the move
      * @return an array of two integers: {column, row} of the selected tile
      */
-    @Override
+    /*@Override
     public int[] getMoveFromPlayer(Player player) {
         int col = 0; //player.getX;
         int row = 0; //player.getY;
@@ -66,7 +67,7 @@ public class Connect4 extends Game{
             } while (board.getTile(col, row).hasPawn());
         }
         return new int[] { col, row };
-    }
+    }*/
 
     /**
      * Finds the next empty tile in a given column, starting from the bottom.
@@ -74,12 +75,12 @@ public class Connect4 extends Game{
      * @param col the column to check
      * @return the row index of the next empty tile, or -1 if the column is full
      */
-    public int nextTileEmpty(int col) {
+    /*public int nextTileEmpty(int col) {
         for (int row = board.getHeight() - 1; row >= 0; row--) {
             if (!board.getTile(col, row).hasPawn()) {
                 return row;
             }
         }
         return -1;
-    }
+    }*/
 }

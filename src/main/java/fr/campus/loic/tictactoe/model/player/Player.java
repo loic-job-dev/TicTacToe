@@ -1,6 +1,6 @@
 package fr.campus.loic.tictactoe.model.player;
 
-import fr.campus.loic.tictactoe.model.material.ConsoleColors;
+import fr.campus.loic.tictactoe.view.ConsoleColors;
 
 /**
  * Represents a player with a specific symbol and color.
