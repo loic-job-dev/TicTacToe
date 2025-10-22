@@ -10,9 +10,6 @@ import fr.campus.loic.tictactoe.view.ConsoleColors;
 import fr.campus.loic.tictactoe.view.View;
 import fr.campus.loic.tictactoe.view.lang.Fr;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 /**
  * Handles user input interactions through the console.
  */
@@ -53,14 +50,27 @@ public class GameController {
         int col = 0;
         int row = 0;
         if (player instanceof HumanPlayer) {
-            int[] coords = getCoordinates();
-            col = coords[0];
-            row = coords[1];
+            if (!game.getGravity()) {
+                int[] coords = getCoordinates();
+                col = coords[0];
+                row = coords[1];
+            } else {
+                int[] coords = getRow();
+                col = coords[0];
+                row = coords[1];
+            }
         } else if (player instanceof RandomCoordinateCapable random) {
-            do {
-                col = random.randomCoordinatePlayed(game.getBoard().getWidth());
-                row = random.randomCoordinatePlayed(game.getBoard().getHeight());
-            } while (game.hasPawnAt(col, row));
+            if (!game.getGravity()) {
+                do {
+                    col = random.randomCoordinatePlayed(game.getBoard().getWidth());
+                    row = random.randomCoordinatePlayed(game.getBoard().getHeight());
+                } while (game.hasPawnAt(col, row));
+            } else {
+                do {
+                    col = random.randomCoordinatePlayed(game.getBoard().getWidth());
+                    row = nextTileEmpty(col);
+                } while (game.hasPawnAt(col, row));
+            }
         }
         return new int[] { col, row };
     }
@@ -84,43 +94,22 @@ public class GameController {
         }
     }
 
-    /**
-     * Prompts the player to select a valid move (column and row) for their turn.
-     * <p>
-     * For a human player, input is requested via the console. For an AI player
-     * implementing {@link RandomCoordinateCapable}, a random column is chosen.
-     * </p>
-     *
-     * @param player the player making the move
-     * @return an array of two integers: {column, row} of the selected tile
-     */
-    public int[] getMoveFromPlayerGravity(Player player) {
-        int col = 0;
-        int row = 0;
-        if (player instanceof HumanPlayer) {
-            while (true) {
-                    view.println(Fr.choose);
-                    col = view.askInt(Fr.coordinateX);
+    private int[] getRow() {
+        int row;
+        int col = view.askInt(Fr.coordinateX)-1;
 
-                    if (col >= 0 && col < game.getBoard().getWidth()) {
-
-                        row = nextTileEmpty(col);
-                        if (row != -1) {
-                            break;
-                        } else {
-                            view.println(ConsoleColors.RED + Fr.colFull + ConsoleColors.RESET);
-                        }
-                    } else {
-                        view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
-                    }
-            }
-        } else if (player instanceof RandomCoordinateCapable random) {
-            do {
-                col = random.randomCoordinatePlayed(game.getBoard().getWidth());
-                row = nextTileEmpty(col);
-            } while (game.hasPawnAt(col, row));
+        try {
+            row = nextTileEmpty(col);
+        } catch (OutOfBoardException e) {
+            view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
+            return getRow();
         }
-        return new int[] { col, row };
+        if (row != -1) {
+            return new int[]{col, row};
+        } else {
+            view.println(ConsoleColors.RED + Fr.colFull + ConsoleColors.RESET);
+            return getRow();
+        }
     }
 
     /**
@@ -163,11 +152,8 @@ public class GameController {
         while (countTrun < game.getBoard().getSize() && !gameWon) {
             for (Player p : game.getPlayers()) {
                 view.println(Fr.turnOfPlayer + p.getNumber());
-                if (game.getGravity()) {
-                    game.playerTurn(p, getMoveFromPlayerGravity(p));
-                } else {
-                    game.playerTurn(p, getMoveFromPlayer(p));
-                }
+                game.playerTurn(p, getMoveFromPlayer(p));
+
                 countTrun++;
                 display();
 

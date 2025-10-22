@@ -71,9 +71,9 @@ public class Board {
      * @return the tile at (x, y)
      * @throws IndexOutOfBoundsException if coordinates are outside the board
      */
-    public Tile getTile(int col, int row) {
+    public Tile getTile(int col, int row) throws OutOfBoardException {
         if (col < 0 || col >= WIDTH || row < 0 || row >= HEIGHT) {
-            throw new IndexOutOfBoundsException("Coordonnées en dehors du plateau !");
+            throw new OutOfBoardException("Out of board, can not search pawn !");
         }
         return tiles[row * WIDTH + col];
     }
