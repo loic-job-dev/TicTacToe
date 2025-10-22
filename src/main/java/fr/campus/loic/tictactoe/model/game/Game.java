@@ -1,6 +1,6 @@
 package fr.campus.loic.tictactoe.model.game;
 
-import fr.campus.loic.tictactoe.controller.InteractionUtilisateur;
+import fr.campus.loic.tictactoe.controller.GameController;
 import fr.campus.loic.tictactoe.view.lang.Fr;
 import fr.campus.loic.tictactoe.model.material.Board;
 import fr.campus.loic.tictactoe.model.material.ConsoleColors;
@@ -16,7 +16,7 @@ public abstract class Game {
     /** View used to display messages in the console */
     protected final View view;
     /** Scanner for reading player input. */
-    protected final InteractionUtilisateur clavier;
+    protected final GameController clavier;
     /** The game board. */
     protected final Board board;
     /** Victory condition. */
@@ -39,7 +39,7 @@ public abstract class Game {
      * @param rules             a description of the game rules displayed at the start
      */
     public Game(int height, int width, int victoryCondition, String rules) {
-        this.clavier =  new InteractionUtilisateur();
+        this.clavier =  new GameController();
         this.board = new Board(height, width);
         this.view = new View();
         this.vicortyCondition = victoryCondition;

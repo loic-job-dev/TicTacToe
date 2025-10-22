@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Handles user input interactions through the console.
  */
-public class InteractionUtilisateur {
+public class GameController {
 
     /** Scanner used to read user input from the console. */
     private final Scanner clavier = new Scanner(System.in);

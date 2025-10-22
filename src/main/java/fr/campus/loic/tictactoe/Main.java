@@ -1,6 +1,6 @@
 package fr.campus.loic.tictactoe;
 
-import fr.campus.loic.tictactoe.controller.InteractionUtilisateur;
+import fr.campus.loic.tictactoe.controller.GameController;
 import fr.campus.loic.tictactoe.view.lang.Fr;
 import fr.campus.loic.tictactoe.model.game.Connect4;
 import fr.campus.loic.tictactoe.model.game.Game;
@@ -15,7 +15,7 @@ import java.util.InputMismatchException;
 public class Main {
     public static void main(String[] args) {
         View view = new View();
-        InteractionUtilisateur iu = new  InteractionUtilisateur();
+        GameController iu = new GameController();
 
 
         //Using the args
@@ -24,7 +24,7 @@ public class Main {
         // java -cp out fr.campus.loic.tictactoe.Main Gomoku
         if (args.length > 0) {
             try {
-                String className = "fr.campus.loic.tictactoe.logic." + args[0];
+                String className = "fr.campus.loic.tictactoe.model.game." + args[0];
                 Class<?> clazz = Class.forName(className);
                 Game game = (Game) clazz.getDeclaredConstructor().newInstance();
                 game.play();
