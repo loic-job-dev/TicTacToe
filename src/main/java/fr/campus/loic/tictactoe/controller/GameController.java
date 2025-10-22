@@ -1,6 +1,7 @@
 package fr.campus.loic.tictactoe.controller;
 
 import fr.campus.loic.tictactoe.model.game.Game;
+import fr.campus.loic.tictactoe.model.material.OutOfBoardException;
 import fr.campus.loic.tictactoe.model.player.ArtificialPlayer;
 import fr.campus.loic.tictactoe.model.player.HumanPlayer;
 import fr.campus.loic.tictactoe.model.player.Player;
@@ -54,23 +55,9 @@ public class GameController {
         int col = 0; //player.getX;
         int row = 0; //player.getY;
         if (player instanceof HumanPlayer) {
-            while (true) {
-
-                int[] coordinates = view.askCoordinates(Fr.choose);
-                row = coordinates[1];
-                col = coordinates[0];
-
-                if (col >= 0 && col < game.getBoard().getWidth() && row >= 0 && row < game.getBoard().getHeight()) {
-                    if (!game.getBoard().getTile(col, row).hasPawn()) {
-                        break;
-                    }
-                    else {
-                        view.println(Fr.tileAlreadyTaken);
-                    }
-                } else {
-                    view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
-                }
-            }
+            int[] coords = getCoordinates();
+            col = coords[0];
+            row = coords[1];
         } else if (player instanceof RandomCoordinateCapable random) {
             do {
                 col = random.randomCoordinatePlayed(game.getBoard().getWidth());
@@ -78,6 +65,25 @@ public class GameController {
             } while (game.getBoard().getTile(col, row).hasPawn());
         }
         return new int[] { col, row };
+    }
+
+    private int[] getCoordinates() {
+        int row;
+        int col;
+        int[] coordinates = view.askCoordinates(Fr.choose);
+        row = coordinates[1];
+        col = coordinates[0];
+
+        try {
+            if (game.hasPawnAt(col, row)) {
+                this.view.println("You already have a pawn!");
+                return getCoordinates();
+            }
+            return new int[]{col, row};
+        } catch (OutOfBoardException e) {
+            view.println(ConsoleColors.RED + Fr.wrongCoordinate + ConsoleColors.RESET);
+            return getCoordinates();
+        }
     }
 
     /**

@@ -194,4 +194,8 @@ public abstract class Game {
     public boolean getGravity(){
         return gravity;
     }
+
+    public boolean hasPawnAt(int col, int row) {
+        return this.board.hasPawnAt(col, row);
+    }
 }

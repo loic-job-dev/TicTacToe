@@ -77,4 +77,11 @@ public class Board {
         }
         return tiles[row * WIDTH + col];
     }
+
+    public boolean hasPawnAt(int col, int row) throws OutOfBoardException {
+        if (col < 0 || col >= WIDTH || row < 0 || row >= HEIGHT) {
+            throw new OutOfBoardException("Out of board, can not search pawn !");
+        }
+        return tiles[row * WIDTH + col].hasPawn();
+    }
 }
