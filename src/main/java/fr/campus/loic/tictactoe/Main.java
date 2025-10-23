@@ -1,16 +1,10 @@
 package fr.campus.loic.tictactoe;
 
 import fr.campus.loic.tictactoe.controller.GameController;
-import fr.campus.loic.tictactoe.view.lang.Fr;
 import fr.campus.loic.tictactoe.model.game.Connect4;
 import fr.campus.loic.tictactoe.model.game.Game;
 import fr.campus.loic.tictactoe.model.game.Gomoku;
 import fr.campus.loic.tictactoe.model.game.TicTacToe;
-import fr.campus.loic.tictactoe.view.ConsoleColors;
-import fr.campus.loic.tictactoe.view.View;
-
-import java.util.InputMismatchException;
-
 
 public class Main {
     public static void main(String[] args) {

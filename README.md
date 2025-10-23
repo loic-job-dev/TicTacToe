@@ -79,6 +79,45 @@ java -cp build/libs/TicTacToe-1.0-SNAPSHOT.jar fr.campus.loic.tictactoe.Main
 
 ---
 
+## Sequence diagram
+
+```mermaid
+sequenceDiagram
+
+    actor Main
+    participant GameController
+    participant View
+    participant Game
+    participant Board
+
+    Main->>GameController: main(args)
+    GameController->>View: println("Bienvenue dans le jeu !")
+    GameController->>View: askInt("Choisir le mode de jeu")
+    View-->>GameController: mode choisi
+
+    GameController->>Game: initialiser la partie()
+    GameController->>Board: afficher le plateau()
+    Board-->>GameController: représentation du plateau
+
+    GameController->>View: afficher le plateau()
+    View-->>GameController: confirmation affichage
+
+    GameController->>Game: getMoveFromPlayer(player)
+    Game->>Board: vérifier case vide()
+    Board-->>Game: true/false
+
+    GameController->>Game: playerTurn(player, move)
+    Game->>Board: setOwner(col, row, player)
+    Board-->>Game: OK
+
+    GameController->>Game: checkWinnerCondition()
+    Game-->>GameController: victoire / égalité / en cours
+
+    GameController->>View: println("Fin de partie")
+```
+
+---
+
 ## Class diagram before MVC pattern
 
 ```mermaid
