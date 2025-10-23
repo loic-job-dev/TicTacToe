@@ -2,6 +2,7 @@ package fr.campus.loic.squaregames.tests;
 
 import fr.campus.loic.squaregames.model.game.Game;
 import fr.campus.loic.squaregames.model.game.TicTacToe;
+import fr.campus.loic.squaregames.model.material.OutOfBoardException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -63,7 +64,7 @@ public class TicTacToeTest {
         int colTest = 3;
         int rowTest = 8;
         Game tictactoe = new TicTacToe();
-        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
+        Exception exception = assertThrows(OutOfBoardException.class, () -> {
             tictactoe.getBoard().getTile(colTest, rowTest).setPawn(true);
         });
     }
