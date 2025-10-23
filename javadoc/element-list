@@ -1,8 +1,8 @@
-fr.campus.loic.tictactoe
-fr.campus.loic.tictactoe.controller
-fr.campus.loic.tictactoe.model.game
-fr.campus.loic.tictactoe.model.material
-fr.campus.loic.tictactoe.model.player
-fr.campus.loic.tictactoe.tests
-fr.campus.loic.tictactoe.view
-fr.campus.loic.tictactoe.view.lang
+fr.campus.loic.squaregames
+fr.campus.loic.squaregames.controller
+fr.campus.loic.squaregames.model.game
+fr.campus.loic.squaregames.model.material
+fr.campus.loic.squaregames.model.player
+fr.campus.loic.squaregames.tests
+fr.campus.loic.squaregames.view
+fr.campus.loic.squaregames.view.lang

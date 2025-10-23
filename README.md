@@ -47,7 +47,7 @@ This project follows the official Java naming conventions for clarity and consis
 
 | Element Type         | Convention   | Example                        |
 |-----------------------|--------------|----------------------------------|
-| Package               | lowercase    | `fr.campus.loic.tictactoe`       |
+| Package               | lowercase    | `fr.campus.loic.squaregames`       |
 | Class / Interface     | PascalCase   | `GameController`, `Player`       |
 | Method                | camelCase    | `checkWinnerCondition()`         |
 | Variable / Attribute  | camelCase    | `victoryCondition`               |
@@ -74,7 +74,7 @@ To compile and run the project using Gradle:
 ./gradlew build
 
 # Run the application
-java -cp build/libs/TicTacToe-1.0-SNAPSHOT.jar fr.campus.loic.tictactoe.Main
+java -cp build/libs/TicTacToe-1.0-SNAPSHOT.jar fr.campus.loic.squaregames.Main
 ```
 
 ---
