@@ -161,6 +161,15 @@ public abstract class Game {
     }
 
     /**
+     * Returns the total number of tiles on the game board.
+     *
+     * @return the number of tiles on the board
+     */
+    public int getBoardSize(){
+        return  BOARD.getSize();
+    }
+
+    /**
      * Returns the rules of the game.
      *
      * @return the game rules as a string

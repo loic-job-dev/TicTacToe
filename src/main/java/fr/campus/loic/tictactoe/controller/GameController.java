@@ -49,7 +49,7 @@ public class GameController {
         int countTrun = 0;
         boolean gameWon = false;
 
-        while (countTrun < game.getBoard().getSize() && !gameWon) {
+        while (countTrun < game.getBoardSize() && !gameWon) {
             for (Player p : game.getPlayers()) {
                 VIEW.println(Fr.turnOfPlayer + p.getNumber());
                 game.playerTurn(p, getMoveFromPlayer(p));
@@ -63,7 +63,7 @@ public class GameController {
                     break;
                 }
 
-                if (countTrun >= game.getBoard().getSize()) {
+                if (countTrun >= game.getBoardSize()) {
                     break;
                 }
             }
