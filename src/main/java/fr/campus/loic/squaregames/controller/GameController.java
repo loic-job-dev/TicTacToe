@@ -156,7 +156,7 @@ public class GameController {
             VIEW.println(ConsoleColors.CYAN + separator);
             for (int col = 0; col < game.getBoard().getWidth(); col++) {
                 VIEW.print("|");
-                VIEW.print(game.getBoard().getTile(col, row).getRepresentation());
+                VIEW.print(game.getBoardTile(col, row).getRepresentation());
                 VIEW.print("|");
             }
             VIEW.println("");
@@ -268,7 +268,7 @@ public class GameController {
      */
     public int nextTileEmpty(int col) {
         for (int row = game.getBoard().getHeight() - 1; row >= 0; row--) {
-            if (!game.getBoard().getTile(col, row).hasPawn()) {
+            if (!game.getBoardTile(col, row).hasPawn()) {
                 return row;
             }
         }

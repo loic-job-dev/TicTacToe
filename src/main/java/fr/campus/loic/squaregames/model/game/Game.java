@@ -1,6 +1,8 @@
 package fr.campus.loic.squaregames.model.game;
 
 import fr.campus.loic.squaregames.model.material.Board;
+import fr.campus.loic.squaregames.model.material.OutOfBoardException;
+import fr.campus.loic.squaregames.model.material.Tile;
 import fr.campus.loic.squaregames.model.player.Player;
 
 /**
@@ -167,6 +169,18 @@ public abstract class Game {
      */
     public int getBoardSize(){
         return  BOARD.getSize();
+    }
+
+    /**
+     * Returns the tile located at the specified column and row on the game board.
+     *
+     * @param col the column index (0-based)
+     * @param row the row index (0-based)
+     * @return the {@link Tile} at the given coordinates
+     * @throws OutOfBoardException if the coordinates are outside the board
+     */
+    public Tile getBoardTile(int col, int row) {
+        return BOARD.getTile(col, row);
     }
 
     /**
