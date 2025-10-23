@@ -1,29 +1,34 @@
 package fr.campus.loic.tictactoe.model.material;
 
 /**
- * Represents a Tic-Tac-Toe board of a given size with a grid of tiles.
+ * Represents a generic rectangular game board composed of tiles.
+ * <p>
+ * The board stores tiles in a 1D array but provides access via (column, row) coordinates.
+ * Supports variable height and width, suitable for games like Tic-Tac-Toe, Gomoku, or Connect 4.
+ * </p>
  */
 public class Board {
 
-    /** Size of the board (number of rows/columns). */
-    private final int SIZE;
+    /** Number of rows in the board. */
     private final int HEIGHT;
+    /** Number of columns in the board. */
     private final int WIDTH;
-
-    /** 1D array of tiles composing the board. */
-    private Tile[] tiles;
+    /** Total number of tiles on the board. */
+    private final int SIZE;
+    /** Array storing all tiles of the board in row-major order. */
+    private final Tile[] TILES;
 
     /**
-     * Creates a new board of the specified size.
+     * Creates a new board of the specified dimensions.
      *
-     * @param height the height of the board
-     * @param width the width of the board
+     * @param height the number of rows
+     * @param width  the number of columns
      */
     public Board(int height, int width) {
         this.HEIGHT = height;
         this.WIDTH = width;
         this.SIZE = height*width;
-        this.tiles = new Tile[SIZE];
+        this.TILES = new Tile[SIZE];
         createBoard();
     }
 
@@ -31,13 +36,13 @@ public class Board {
     private void createBoard() {
         for (int col = 0; col < WIDTH; col++) {
             for (int row = 0; row < HEIGHT; row++) {
-                tiles[row * WIDTH + col] = new Tile(row, col);
+                TILES[row * WIDTH + col] = new Tile(row, col);
             }
         }
     }
 
     /**
-     * Returns the size of the board.
+     * Returns the total number of tiles on the board.
      *
      * @return the board size
      */
@@ -46,7 +51,7 @@ public class Board {
     }
 
     /**
-     * Returns the height of the board.
+     * Returns the number of rows in the board.
      *
      * @return the board height
      */
@@ -55,7 +60,7 @@ public class Board {
     }
 
     /**
-     * Returns the width of the board.
+     * Returns the number of columns in the board.
      *
      * @return the board width
      */
@@ -64,24 +69,32 @@ public class Board {
     }
 
     /**
-     * Returns the tile at the specified coordinates.
+     * Returns the tile located at the specified column and row.
      *
-     * @param col the column index
-     * @param row the row index
-     * @return the tile at (x, y)
-     * @throws IndexOutOfBoundsException if coordinates are outside the board
+     * @param col the column index (0-based)
+     * @param row the row index (0-based)
+     * @return the tile at the given coordinates
+     * @throws OutOfBoardException if the coordinates are outside the board
      */
     public Tile getTile(int col, int row) throws OutOfBoardException {
         if (col < 0 || col >= WIDTH || row < 0 || row >= HEIGHT) {
             throw new OutOfBoardException("Out of board, can not search pawn !");
         }
-        return tiles[row * WIDTH + col];
+        return TILES[row * WIDTH + col];
     }
 
+    /**
+     * Checks whether a tile at the given coordinates contains a pawn.
+     *
+     * @param col the column index (0-based)
+     * @param row the row index (0-based)
+     * @return {@code true} if the tile contains a pawn, {@code false} otherwise
+     * @throws OutOfBoardException if the coordinates are outside the board
+     */
     public boolean hasPawnAt(int col, int row) throws OutOfBoardException {
         if (col < 0 || col >= WIDTH || row < 0 || row >= HEIGHT) {
             throw new OutOfBoardException("Out of board, can not search pawn !");
         }
-        return tiles[row * WIDTH + col].hasPawn();
+        return TILES[row * WIDTH + col].hasPawn();
     }
 }

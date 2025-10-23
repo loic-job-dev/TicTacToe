@@ -7,10 +7,9 @@ package fr.campus.loic.tictactoe.model.material;
 public class Tile {
 
     /** X-coordinate of the tile. */
-    private final int coordinateX;
+    private final int COORDINATE_X;
     /** Y-coordinate of the tile. */
-    private final int coordinateY;
-
+    private final int COORDINATE_Y;
     /** Indicates whether the tile currently has a pawn. */
     private boolean hasPawn;
     /** The string representation of the tile. */
@@ -23,19 +22,10 @@ public class Tile {
      * @param coordinateY the column index
      */
     public Tile(int coordinateX, int coordinateY) {
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
+        this.COORDINATE_X = coordinateX;
+        this.COORDINATE_Y = coordinateY;
         this.hasPawn = false;
         this.representation = "   ";
-    }
-
-    /** @return the X-coordinate of the tile */
-    public int getCoordinateX() {
-        return coordinateX;
-    }
-    /** @return the Y-coordinate of the tile */
-    public int getCoordinateY() {
-        return coordinateY;
     }
 
     /** @return true if the tile has a pawn, false otherwise */

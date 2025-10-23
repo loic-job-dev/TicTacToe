@@ -14,7 +14,7 @@ public class ArtificialPlayer extends Player implements RandomCoordinateCapable 
      * Creates a new player with the given symbol and number.
      *
      * @param representation the symbol representing the player
-     * @param number         the player number (1 = red, 2 = green, others = yellow)
+     * @param number         the player number (1 = red, 2 = green, 3 = purple, 4 = yellow, otherwise = white)
      */
     public ArtificialPlayer(String representation, int number) {
         super(representation, number);
@@ -23,7 +23,7 @@ public class ArtificialPlayer extends Player implements RandomCoordinateCapable 
     /**
      * Generates a random coordinate within the valid board range.
      *
-     * @param size the board size (e.g., 3 for a 3×3 grid)
+     * @param size the number of tiles on the board (e.g., 9 for a 3×3 grid)
      * @return a random integer between {@code 0} (inclusive) and {@code size} (exclusive)
      */
     @Override

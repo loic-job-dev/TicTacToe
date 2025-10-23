@@ -7,7 +7,7 @@ import fr.campus.loic.tictactoe.view.lang.Fr;
  */
 public class TicTacToe extends Game {
 
-    /** Creates a new Tic-Tac-Toe game with a 3x3 board. */
+    /** Creates a new Tic-Tac-Toe game with a 3x3 board and a winning condition of 3 in a row. */
     public TicTacToe() {
         super(3, 3, 3, Fr.rulesTicTacToe, false);
     }

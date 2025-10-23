@@ -3,55 +3,62 @@ package fr.campus.loic.tictactoe.model.game;
 import fr.campus.loic.tictactoe.model.material.Board;
 import fr.campus.loic.tictactoe.model.player.Player;
 
-
+/**
+ * Abstract base class for all board-based games.
+ * <p>
+ * Provides common functionality such as managing the board, players, turns, and
+ * victory condition checking. Supports both gravity-based and non-gravity games.
+ * </p>
+ */
 public abstract class Game {
     /** The game board. */
-    protected final Board board;
-    /** Victory condition. */
-    protected int victoryCondition;
-    /** Rules of the game. */
-    protected String rules;
-    /** The list of players */
-    protected Player[] players;
-    /** Gravity effect. */
-    protected boolean gravity;
+    private final Board BOARD;
+    /** Number of consecutive tiles required to win. */
+    private final int VICTORY_CONDITION;
+    /** Description of the game rules. */
+    private final String RULES;
+    /** The players participating in the game. */
+    private Player[] players;
+    /** Whether gravity affects tile placement (e.g., Connect 4). */
+    private final boolean GRAVITY;
 
     /**
-     * Creates a new game instance with the specified board size, victory condition, and rules.
+     * Creates a new game instance with the specified board size, victory condition, rules, and gravity.
      *
      * @param height            the number of rows on the board
      * @param width             the number of columns on the board
      * @param victoryCondition  the number of consecutive tiles required to win
-     * @param rules             a description of the game rules displayed at the start
+     * @param rules             a description of the game rules
+     * @param gravity           {@code true} if gravity affects tile placement; {@code false} otherwise
      */
     public Game(int height, int width, int victoryCondition, String rules, boolean gravity) {
-        this.board = new Board(height, width);
-        this.victoryCondition = victoryCondition;
-        this.rules = rules;
-        this.gravity = gravity;
+        this.BOARD = new Board(height, width);
+        this.VICTORY_CONDITION = victoryCondition;
+        this.RULES = rules;
+        this.GRAVITY = gravity;
     }
 
 
     /**
      * Sets the owner of a tile and updates its visual representation.
      *
-     * @param col the column index
-     * @param row the row index
+     * @param col    the column index
+     * @param row    the row index
      * @param player the player who owns the tile
      */
     public void setOwner(int col, int row, Player player) {
-        board.getTile(col, row).setRepresentation(player.getRepresentation());
+        BOARD.getTile(col, row).setRepresentation(player.getRepresentation());
     }
 
 
     /**
-     * Executes a single turn for the given player by prompting them for a move
-     * and displaying the chosen coordinates.
+     * Executes a single turn for the given player by marking the selected tile.
      *
      * @param player the player whose turn it is
+     * @param move   the coordinates {@code [col, row]} of the chosen tile
      */
     public void playerTurn(Player player, int[] move) {
-        board.getTile(move[0], move[1]).setPawn(true);
+        BOARD.getTile(move[0], move[1]).setPawn(true);
         setOwner(move[0], move[1], player);
     }
 
@@ -63,7 +70,7 @@ public abstract class Game {
      * @return {@code false} if the tile is empty, {@code true} otherwise
      */
     public boolean isNotEmpty(int col, int row) {
-        return !board.getTile(col, row).getRepresentation().equals("   ");
+        return !BOARD.getTile(col, row).getRepresentation().equals("   ");
     }
 
     /**
@@ -76,7 +83,7 @@ public abstract class Game {
      * @return {@code true} if both tiles have the same owner, {@code false} otherwise
      */
     public boolean sameOwner(int col1, int row1, int col2, int row2) {
-        return board.getTile(col1, row1).getRepresentation().equals(board.getTile(col2, row2).getRepresentation());
+        return BOARD.getTile(col1, row1).getRepresentation().equals(BOARD.getTile(col2, row2).getRepresentation());
     }
 
     /**
@@ -91,7 +98,7 @@ public abstract class Game {
      * @return {@code true} if a winning sequence exists, {@code false} otherwise
      */
     public boolean checkWinnerCondition(int condition) {
-        int minimalCondition = Math.min(board.getWidth(), board.getHeight());
+        int minimalCondition = Math.min(BOARD.getWidth(), BOARD.getHeight());
         if (condition > minimalCondition) {
             condition = minimalCondition;
         }
@@ -99,8 +106,8 @@ public abstract class Game {
         int[][] directions = { {0, 1}, {1, 0}, {1, 1}, {1, -1} };
 
         //Check every tile
-        for (int col = 0; col < board.getWidth(); col++) {
-            for (int row = 0; row < board.getHeight(); row++) {
+        for (int col = 0; col < BOARD.getWidth(); col++) {
+            for (int row = 0; row < BOARD.getHeight(); row++) {
                 //If the tile is not empty, maybe there's a winner
                 if (isNotEmpty(col, row)) {
                     //For each of the 4 directions to test
@@ -115,7 +122,7 @@ public abstract class Game {
                             int y = row + k * dy;
 
                             //If the tile is out of board, break
-                            if (x < 0 || y < 0 || x >= board.getWidth() || y >= board.getHeight()) {
+                            if (x < 0 || y < 0 || x >= BOARD.getWidth() || y >= BOARD.getHeight()) {
                                 break;
                             }
                             //If the tile have the same owner, increment count
@@ -133,22 +140,33 @@ public abstract class Game {
         return false;
     }
 
-
     /**
-     * Getter for the tests
-     * @return the board created for the game.
+     * Checks if there is a pawn at the specified tile.
+     *
+     * @param col the column index
+     * @param row the row index
+     * @return {@code true} if the tile is occupied, {@code false} otherwise
      */
-    public Board getBoard() {
-        return board;
+    public boolean hasPawnAt(int col, int row) {
+        return this.BOARD.hasPawnAt(col, row);
     }
 
     /**
-     * Returns the rules description of the game.
+     * Returns the game board.
+     *
+     * @return the board instance
+     */
+    public Board getBoard() {
+        return BOARD;
+    }
+
+    /**
+     * Returns the rules of the game.
      *
      * @return the game rules as a string
      */
     public String getRules() {
-        return rules;
+        return RULES;
     }
 
     /**
@@ -166,28 +184,25 @@ public abstract class Game {
      * @return the victory condition value
      */
     public int getVictoryCondition() {
-        return victoryCondition;
+        return VICTORY_CONDITION;
     }
 
     /**
      * Sets the list of players for the current game.
      *
-     * @param players an array of two player instances
+     * @param players an array of player instances
      */
     public void setPlayers(Player[] players) {
         this.players = players;
     }
 
     /**
-     * Returns the effect of the gravity on the board.
+     * Returns whether gravity affects the board.
      *
-     * @return {@code true} if the gravity affects the board, {@code false} otherwise
+     * @return {@code true} if gravity is enabled, {@code false} otherwise
      */
     public boolean getGravity(){
-        return gravity;
+        return GRAVITY;
     }
 
-    public boolean hasPawnAt(int col, int row) {
-        return this.board.hasPawnAt(col, row);
-    }
 }

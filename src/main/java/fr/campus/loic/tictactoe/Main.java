@@ -1,18 +1,12 @@
 package fr.campus.loic.tictactoe;
 
 import fr.campus.loic.tictactoe.controller.GameController;
-import fr.campus.loic.tictactoe.model.game.Connect4;
-import fr.campus.loic.tictactoe.model.game.Game;
-import fr.campus.loic.tictactoe.model.game.Gomoku;
-import fr.campus.loic.tictactoe.model.game.TicTacToe;
+
 
 public class Main {
     public static void main(String[] args) {
-        Game tictactoe = new TicTacToe();
-        Game gomoku = new Gomoku();
-        Game connect4 = new Connect4();
-        GameController game = new GameController(tictactoe);
 
+        GameController game = new GameController();
         game.play();
 
         //Using the args
@@ -36,39 +30,7 @@ public class Main {
 
         //If not args passed, the user have to make a choice
         else {
-            Game game;
-            int choice = 0;
-            boolean validChoice = false;
-            while (!validChoice) {
-                try {
-                    view.println(ConsoleColors.PURPLE + Fr.chooseGameType + ConsoleColors.RESET);
-                    choice = game.nextInt();
-
-                    switch (choice) {
-                        case 1 -> {
-                            game = new TicTacToe();
-                            validChoice = true;
-                            game.play();
-                        }
-                        case 2 -> {
-                            game = new Gomoku();
-                            validChoice = true;
-                            game.play();
-                        }
-                        case 3 -> {
-                            game = new Connect4();
-                            validChoice = true;
-                            game.play();
-                        }
-                        default -> {
-                            view.println(ConsoleColors.RED + Fr.wrongChoice + ConsoleColors.RESET);
-                        }
-                    }
-                } catch (InputMismatchException e) {
-                    view.println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
-                    game.nextLine();
-                }
-            }
+            game.play();
         }*/
     }
 }
