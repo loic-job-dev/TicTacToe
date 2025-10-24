@@ -27,18 +27,24 @@ public class GameController {
     private Game game;
     public States state;
 
-//    while (state != 'QUIT') {
-//    switch(state) {
-//        case 'INIT' -> blablabla; -> modifies state to 'WAITING_MODE'
-//        case 'WAITING_MODE' -> blablabla;
-//      }
-//    }
-//    // if (!QUIT) {rappel de méthode}
-
-
+    /**
+     * Runs the game using a state-driven loop.
+     * <p>
+     * The method manages the game flow based on the current state:
+     * </p>
+     * <ul>
+     *     <li>{@link States#WAIT_STYLE} — prompts the user to choose the type of game.</li>
+     *     <li>{@link States#WAIT_MODE} — prompts the user to select the game mode (Human vs Human, Human vs AI, AI vs AI).</li>
+     *     <li>{@link States#WAIT_COORDINATES} — executes player turns and updates the board.</li>
+     *     <li>{@link States#WINNER} / {@link States#DRAW} — ends the game loop.</li>
+     * </ul>
+     * <p>
+     * This method continues looping until the game state reaches {@link States#END}.
+     * </p>
+     */
     public void playState() {
         this.state = States.WAIT_STYLE;
-        while (state != States.END) {
+        while (this.state != States.END) {
             switch (this.state) {
                 case States.WAIT_STYLE -> {
                     this.game = chooseGameType();
@@ -46,52 +52,67 @@ public class GameController {
                 case States.WAIT_MODE -> {
                     chooseGameMode();
                 }
-                case States. -> {
+                case States.WAIT_COORDINATES -> {
+                    playTurn();
+                }
+                case States.WINNER, States.DRAW -> {
+                    this.state = States.END;
                 }
             }
         }
     }
+
     /**
-     * Runs the main game loop for the current match.
+     * Executes a single round of turns for all players in the current game.
      * <p>
-     * Displays the rules, initializes the game mode, and alternates turns between players
-     * until a winner is found or the board is full. After each move, the board is updated
-     * and displayed in the console.
-     * </p>
+     * For each player:
      * <ul>
-     *     <li>Calls {@code chooseGameMode()} to determine player types (human or AI).</li>
-     *     <li>Each player takes a turn via {@code playerTurn(Player)}.</li>
-     *     <li>After every move, {@code checkWinnerCondition(int)} verifies if a win occurred.</li>
-     *     <li>If no moves remain, the game ends in a draw.</li>
+     *     <li>Displays whose turn it is.</li>
+     *     <li>Prompts the player to make a move via {@link Game#playerTurn(Player, int[])}.</li>
+     *     <li>Updates and displays the board after the move.</li>
+     *     <li>Checks if the move results in a victory; if so, ends the game with {@link #winner(Player)}.</li>
+     *     <li>If all tiles are filled and no winner is found, sets the game state to {@link States#DRAW}.</li>
      * </ul>
+     * </p>
+     * <p>
+     * This method only executes if the current game state is {@link States#WAIT_COORDINATES}.
+     * </p>
      */
-    public void play(){
-        this.game = chooseGameType();
-        chooseGameMode();
-        display();
-
+    public void playTurn() {
         int countTrun = 0;
-        boolean gameWon = false;
 
-        while (countTrun < game.getBoardSize() && !gameWon) {
-            for (Player p : game.getPlayers()) {
+        for (Player p : game.getPlayers()) {
+            if (this.state == States.WAIT_COORDINATES) {
                 VIEW.println(Fr.turnOfPlayer + p.getNumber());
                 game.playerTurn(p, getMoveFromPlayer(p));
 
                 countTrun++;
                 display();
 
-                if(game.checkWinnerCondition(game.getVictoryCondition())){
-                    VIEW.println(ConsoleColors.BOLD_GREEN + Fr.victory +  p.getNumber() + ConsoleColors.RESET);
-                    gameWon = true;
-                    break;
+                if (game.checkWinnerCondition(game.getVictoryCondition())){
+                    winner(p);
                 }
 
                 if (countTrun >= game.getBoardSize()) {
-                    break;
+                    this.state = States.DRAW;
                 }
+            } else {
+                break;
             }
         }
+    }
+
+    /**
+     * Declares the specified player as the winner of the game.
+     * <p>
+     * Prints a victory message for the player and sets the game state to {@link States#WINNER}.
+     * </p>
+     *
+     * @param player the player who has won the game
+     */
+    public void winner(Player player) {
+        VIEW.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
+        this.state = States.WINNER;
     }
 
     /**
@@ -106,6 +127,7 @@ public class GameController {
      * </ul>
      * <p>
      * Ensures a valid numeric input; displays an error message for invalid or non-numeric entries.
+     * Sets the game state to {@link States#WAIT_COORDINATES}.
      * </p>
      */
     public void chooseGameMode() {
@@ -121,16 +143,22 @@ public class GameController {
             players[0] = new HumanPlayer("X", 1);
             players[1] = new HumanPlayer("O", 2);
             game.setPlayers(players);
+            display();
+            this.state = States.WAIT_COORDINATES;
         }
         else if (choice == 2) {
             players[0] = new HumanPlayer("X", 1);
             players[1] = new ArtificialPlayer("O", 2);
             game.setPlayers(players);
+            display();
+            this.state = States.WAIT_COORDINATES;
         }
         else if (choice == 3) {
             players[0] = new ArtificialPlayer("X", 1);
             players[1] = new ArtificialPlayer("O", 2);
             game.setPlayers(players);
+            display();
+            this.state = States.WAIT_COORDINATES;
         } else {
             chooseGameMode();
         }
@@ -138,6 +166,7 @@ public class GameController {
 
     /**
      * Prompts the user to select the type of game to play and returns the corresponding instance.
+     * Sets the game state to {@link States#WAIT_MODE}.
      * <p>
      * The available options are:
      * </p>
