@@ -423,3 +423,23 @@ DirectionsLoop --> jLoop
 jLoop --> iLoop
 iLoop --> End
 ```
+
+---
+
+## State-machine description
+
+| **État source**           | **Événement / Condition**              | **Action / Transition**                | **État suivant**             | **Remarques** |
+|----------------------------|----------------------------------------|----------------------------------------|------------------------------|----------------|
+| `[*]`                     | —                                      | Initialisation du jeu                  | **Initialisation**            | État initial global |
+| **Initialisation**         | —                                      | —                                      | (sous-états internes)         | Contient les étapes de setup |
+| `AttenteChoixStyle`        | `VérificationSaisie`                  | Création du plateau                    | **CreationBoard**             | Vérifie saisie du style de jeu |
+| `CreationBoard`            | —                                      | —                                      | **AttenteChoixMode**          | Plateau prêt |
+| `AttenteChoixMode`         | `VérificationSaisie`                  | Création des joueurs                   | **CreationPlayers**           | Choix mode (solo, multi…) |
+| `CreationPlayers`          | —                                      | —                                      | **AttenteCoordonneesJeu**     | Tous les joueurs créés |
+| `AttenteCoordonneesJeu`    | `VérificationSaisie`                  | Vérifie les coups joués                | **VérificationFinDeTour**     | Saisie des coordonnées |
+| `VérificationFinDeTour`    | `!winner && !draw`                    | Nouveau tour                           | **AttenteCoordonneesJeu**     | Continue le jeu |
+| `VérificationFinDeTour`    | `boardFull && !winner`                | Affiche message d’égalité              | **Egalite**                   | Fin de partie sans gagnant |
+| `VérificationFinDeTour`    | `winner`                              | Affiche message de victoire            | **Gagnant**                   | Fin de partie avec gagnant |
+| `Egalite`                  | `DrawMessage`                         | —                                      | **Fin**                       | État terminal |
+| `Gagnant`                  | `WinMessage`                          | —                                      | **Fin**                       | État terminal |
+| `Fin`                      | —                                      | Fin du programme                       | `[*]`                         | Fin du cycle |

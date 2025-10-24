@@ -25,6 +25,15 @@ public class GameController {
 
     private final View VIEW = new View();
     private Game game;
+    public States state;
+
+//    while (state != 'QUIT') {
+//    switch(state) {
+//        case 'INIT' -> blablabla; -> modifies state to 'WAITING_MODE'
+//        case 'WAITING_MODE' -> blablabla;
+//      }
+//    }
+//    // if (!QUIT) {rappel de méthode}
 
     /**
      * Runs the main game loop for the current match.
