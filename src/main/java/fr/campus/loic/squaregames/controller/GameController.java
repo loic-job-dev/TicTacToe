@@ -46,15 +46,9 @@ public class GameController {
         this.state = States.WAIT_STYLE;
         while (this.state != States.END) {
             switch (this.state) {
-                case States.WAIT_STYLE -> {
-                    this.game = chooseGameType();
-                }
-                case States.WAIT_MODE -> {
-                    chooseGameMode();
-                }
-                case States.WAIT_COORDINATES -> {
-                    playTurn();
-                }
+                case States.WAIT_STYLE -> chooseGameType();
+                case States.WAIT_MODE -> chooseGameMode();
+                case States.WAIT_COORDINATES -> playTurn();
                 case States.WINNER, States.DRAW -> {
                     this.state = States.END;
                 }
@@ -139,29 +133,26 @@ public class GameController {
 
         choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
 
-        if (choice == 1) {
-            players[0] = new HumanPlayer("X", 1);
-            players[1] = new HumanPlayer("O", 2);
-            game.setPlayers(players);
-            display();
-            this.state = States.WAIT_COORDINATES;
+        switch (choice) {
+            case 1 -> {
+                players[0] = new HumanPlayer("X", 1);
+                players[1] = new HumanPlayer("O", 2);
+            }
+            case 2 -> {
+                players[0] = new HumanPlayer("X", 1);
+                players[1] = new ArtificialPlayer("O", 2);
+            }
+            case 3 -> {
+                players[0] = new ArtificialPlayer("X", 1);
+                players[1] = new ArtificialPlayer("O", 2);
+            }
+            default -> {
+                chooseGameMode();
+            }
         }
-        else if (choice == 2) {
-            players[0] = new HumanPlayer("X", 1);
-            players[1] = new ArtificialPlayer("O", 2);
-            game.setPlayers(players);
-            display();
-            this.state = States.WAIT_COORDINATES;
-        }
-        else if (choice == 3) {
-            players[0] = new ArtificialPlayer("X", 1);
-            players[1] = new ArtificialPlayer("O", 2);
-            game.setPlayers(players);
-            display();
-            this.state = States.WAIT_COORDINATES;
-        } else {
-            chooseGameMode();
-        }
+        game.setPlayers(players);
+        display();
+        this.state = States.WAIT_COORDINATES;
     }
 
     /**
@@ -180,26 +171,25 @@ public class GameController {
      * recursively prompts again.
      * </p>
      *
-     * @return a new {@code Game} instance corresponding to the selected type
      */
-    public Game chooseGameType() {
+    public void chooseGameType() {
         int choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameType + ConsoleColors.RESET);
         switch (choice) {
             case 1 -> {
                 this.state = States.WAIT_MODE;
-                return new TicTacToe();
+                this.game =  new TicTacToe();
             }
             case 2 -> {
                 this.state = States.WAIT_MODE;
-                return new Gomoku();
+                this.game =  new Gomoku();
             }
             case 3 -> {
                 this.state = States.WAIT_MODE;
-                return new Connect4();
+                this.game =  new Connect4();
             }
             default -> {
                 VIEW.println(ConsoleColors.RED + Fr.wrongChoice + ConsoleColors.RESET);
-                return chooseGameType();
+                chooseGameType();
             }
         }
     }
