@@ -36,6 +36,7 @@ public class GameController {
      *     <li>{@link States#WAIT_STYLE} — prompts the user to choose the type of game.</li>
      *     <li>{@link States#WAIT_MODE} — prompts the user to select the game mode (Human vs Human, Human vs AI, AI vs AI).</li>
      *     <li>{@link States#WAIT_COORDINATES} — executes player turns and updates the board.</li>
+     *     <li>{@link States#NEXT} — switches to the next player.</li>
      *     <li>{@link States#WINNER} / {@link States#DRAW} — ends the game loop.</li>
      * </ul>
      * <p>
@@ -49,6 +50,7 @@ public class GameController {
                 case States.WAIT_STYLE -> chooseGameType();
                 case States.WAIT_MODE -> chooseGameMode();
                 case States.WAIT_COORDINATES -> playTurn();
+                case States.NEXT -> changeCurrentPlayer();
                 case States.WINNER, States.DRAW -> {
                     this.state = States.END;
                 }
@@ -57,43 +59,72 @@ public class GameController {
     }
 
     /**
-     * Executes a single round of turns for all players in the current game.
+     * Executes a single turn for the current player in the game.
      * <p>
-     * For each player:
+     * This method handles the entire process of one player's move:
      * <ul>
-     *     <li>Displays whose turn it is.</li>
-     *     <li>Prompts the player to make a move via {@link Game#playerTurn(Player, int[])}.</li>
-     *     <li>Updates and displays the board after the move.</li>
-     *     <li>Checks if the move results in a victory; if so, ends the game with {@link #winner(Player)}.</li>
-     *     <li>If all tiles are filled and no winner is found, sets the game state to {@link States#DRAW}.</li>
+     *     <li>Retrieves the current player from the game instance.</li>
+     *     <li>Displays a message indicating which player's turn it is.</li>
+     *     <li>Asks the player to provide move coordinates using {@link #getMoveFromPlayer(Player)}.</li>
+     *     <li>Executes the player's move through {@link Game#playerTurn(Player, int[])}.</li>
+     *     <li>Updates and displays the game board.</li>
+     *     <li>Checks if the player has met the victory condition using {@link Game#checkWinnerCondition(int)}.</li>
+     *     <li>If the player wins, calls {@link #winner(Player)} and updates the game state accordingly.</li>
+     *     <li>If all board positions are filled, sets the state to {@link States#DRAW}.</li>
+     *     <li>Otherwise, prepares for the next turn by setting the state to {@link States#NEXT}.</li>
      * </ul>
      * </p>
      * <p>
-     * This method only executes if the current game state is {@link States#WAIT_COORDINATES}.
+     * This method should only execute when the current game state is {@link States#WAIT_COORDINATES}.
      * </p>
      */
     public void playTurn() {
-        int countTrun = 0;
+        int countTurn = 0;
+        Player p = game.getCurrentPlayer();
 
-        for (Player p : game.getPlayers()) {
-            if (this.state == States.WAIT_COORDINATES) {
-                VIEW.println(Fr.turnOfPlayer + p.getNumber());
-                game.playerTurn(p, getMoveFromPlayer(p));
+        VIEW.println(Fr.turnOfPlayer + p.getNumber());
+        game.playerTurn(p, getMoveFromPlayer(p));
 
-                countTrun++;
-                display();
+        countTurn++;
+        display();
 
-                if (game.checkWinnerCondition(game.getVictoryCondition())){
-                    winner(p);
-                }
-
-                if (countTrun >= game.getBoardSize()) {
-                    this.state = States.DRAW;
-                }
-            } else {
-                break;
-            }
+        if (game.checkWinnerCondition(game.getVictoryCondition())){
+            winner(p);
         }
+
+        else if (countTurn >= game.getBoardSize()) {
+            this.state = States.DRAW;
+        }
+        else {
+            this.state = States.NEXT;
+        }
+    }
+
+    /**
+     * Switches the current player to the next one in the game sequence.
+     * <p>
+     * This method retrieves the current player and determines which player
+     * should play next based on their player number:
+     * <ul>
+     *     <li>If the current player is the last in the player list, it switches back to the first player.</li>
+     *     <li>Otherwise, it selects the next player in order.</li>
+     * </ul>
+     * After updating the current player, the game state is set to {@link States#WAIT_COORDINATES}
+     * to indicate that the next player should now make a move.
+     * </p>
+     */
+    public void changeCurrentPlayer() {
+        Player[] players = game.getPlayers();
+        int numberPlayers = players.length;
+        Player currentPlayer = game.getCurrentPlayer();
+
+        if ((currentPlayer.getNumber()) ==  numberPlayers) {
+            game.setCurrentPlayer(players[0]);
+        } else {
+            game.setCurrentPlayer(players[(currentPlayer.getNumber())]);
+        }
+
+        this.state = States.WAIT_COORDINATES;
     }
 
     /**
@@ -151,6 +182,7 @@ public class GameController {
             }
         }
         game.setPlayers(players);
+        game.setCurrentPlayer(players[0]);
         display();
         this.state = States.WAIT_COORDINATES;
     }

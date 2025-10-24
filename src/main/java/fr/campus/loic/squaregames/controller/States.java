@@ -4,7 +4,7 @@ public enum States {
     WAIT_STYLE,
     WAIT_MODE,
     WAIT_COORDINATES,
-    CHECK_END_TURN,
+    NEXT,
     DRAW,
     WINNER,
     END;

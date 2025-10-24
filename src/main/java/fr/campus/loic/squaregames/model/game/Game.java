@@ -23,6 +23,8 @@ public abstract class Game {
     private Player[] players;
     /** Whether gravity affects tile placement (e.g., Connect 4). */
     private final boolean GRAVITY;
+    /** The current player of the turn. */
+    private Player currentPlayer;
 
     /**
      * Creates a new game instance with the specified board size, victory condition, rules, and gravity.
@@ -227,5 +229,24 @@ public abstract class Game {
     public boolean getGravity(){
         return GRAVITY;
     }
+
+    /**
+     * Returns the player whose turn it currently is.
+     *
+     * @return the current player
+     */
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    /**
+     * Sets the player whose turn it currently is.
+     *
+     * @param currentPlayer the player to set as the current one
+     */
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
 
 }
