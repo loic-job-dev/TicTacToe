@@ -1,6 +1,7 @@
 package fr.campus.loic.squaregames.controller;
 
 public enum States {
+    INIT,
     WAIT_STYLE,
     CREATION_BOARD,
     WAIT_MODE,

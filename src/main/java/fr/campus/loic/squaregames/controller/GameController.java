@@ -35,6 +35,22 @@ public class GameController {
 //    }
 //    // if (!QUIT) {rappel de méthode}
 
+
+    public void playState() {
+        this.state = States.WAIT_STYLE;
+        while (state != States.END) {
+            switch (this.state) {
+                case States.WAIT_STYLE -> {
+                    this.game = chooseGameType();
+                }
+                case States.WAIT_MODE -> {
+                    chooseGameMode();
+                }
+                case States. -> {
+                }
+            }
+        }
+    }
     /**
      * Runs the main game loop for the current match.
      * <p>
@@ -51,7 +67,6 @@ public class GameController {
      */
     public void play(){
         this.game = chooseGameType();
-        VIEW.println(ConsoleColors.YELLOW + game.getRules() + ConsoleColors.RESET);
         chooseGameMode();
         display();
 
@@ -94,6 +109,8 @@ public class GameController {
      * </p>
      */
     public void chooseGameMode() {
+        VIEW.println(ConsoleColors.YELLOW + game.getRules() + ConsoleColors.RESET);
+
         int choice = 0;
 
         Player[] players = new Player[2];
@@ -140,12 +157,15 @@ public class GameController {
         int choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameType + ConsoleColors.RESET);
         switch (choice) {
             case 1 -> {
+                this.state = States.WAIT_MODE;
                 return new TicTacToe();
             }
             case 2 -> {
+                this.state = States.WAIT_MODE;
                 return new Gomoku();
             }
             case 3 -> {
+                this.state = States.WAIT_MODE;
                 return new Connect4();
             }
             default -> {
