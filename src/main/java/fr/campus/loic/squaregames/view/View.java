@@ -93,8 +93,12 @@ public class View {
     /**
      * Clears the screen, so the user don't see the previous grids while playing.
      */
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+    public void clearScreen() {
+        try {
+            new ProcessBuilder("clear").inheritIO().start().waitFor();
+        } catch (Exception e) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+        }
     }
 }
