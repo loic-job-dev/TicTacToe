@@ -49,10 +49,10 @@ public class GameController {
         this.state = States.WAIT_STYLE;
         while (this.state != States.END) {
             switch (this.state) {
-                case States.WAIT_STYLE -> chooseGameType();
-                case States.WAIT_MODE -> chooseGameMode();
-                case States.WAIT_COORDINATES -> playTurn();
-                case States.NEXT -> changeCurrentPlayer();
+                case WAIT_STYLE -> chooseGameType();
+                case WAIT_MODE -> chooseGameMode();
+                case WAIT_COORDINATES -> playTurn();
+                case NEXT -> changeCurrentPlayer();
                 default -> checkState();
             }
         }
@@ -248,6 +248,7 @@ public class GameController {
 
     /** Displays the current state of the board in the console. */
     public void display() {
+        VIEW.clearScreen();
         String separator = "";
         for (int col = 0; col < game.getBoard().getWidth(); col++) {
             separator += Fr.separator;

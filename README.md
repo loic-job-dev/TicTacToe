@@ -439,6 +439,7 @@ classDiagram
         + println(String) void
         + print(String) void
         + askCoordinates(String) int[]
+        + clearScreen() void
     }
 
     ArtificialPlayer  -->  Player
