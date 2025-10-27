@@ -25,6 +25,8 @@ public abstract class Game implements IGame {
     private final boolean GRAVITY;
     /** The current player of the turn. */
     private IPlayer currentPlayer;
+    /** The count of turns played. */
+    int countTurn = 0;
 
     /**
      * Creates a new game instance with the specified board size, victory condition, rules, and gravity.
@@ -248,5 +250,21 @@ public abstract class Game implements IGame {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Sets the number of turns that have been played in the current game.
+     *
+     * @param countTurn the current turn count to set
+     */
+    public void setCountTurn(int countTurn) {
+        this.countTurn = countTurn;
+    }
 
+    /**
+     * Returns the number of turns that have been played so far.
+     *
+     * @return the current turn count
+     */
+    public int getCountTurn() {
+        return countTurn;
+    }
 }

@@ -20,7 +20,6 @@ public class GameController {
     private final View VIEW = new View();
     private IGame game;
     public States state;
-    int countTurn = 0;
 
     /**
      * Runs the game using a state-driven loop.
@@ -96,14 +95,14 @@ public class GameController {
         VIEW.println(Fr.turnOfPlayer + p.getNumber());
         game.playerTurn(p, getMoveFromPlayer(p));
 
-        countTurn++;
+        game.setCountTurn((game.getCountTurn()+1));
         display();
 
         if (game.checkWinnerCondition(game.getVictoryCondition())){
             winner(p);
         }
 
-        else if (countTurn >= game.getBoardSize()) {
+        else if (game.getCountTurn() >= game.getBoardSize()) {
             VIEW.println("Egalité !");
             this.state = States.DRAW;
         }

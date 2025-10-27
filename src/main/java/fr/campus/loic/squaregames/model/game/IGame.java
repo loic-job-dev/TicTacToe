@@ -37,4 +37,8 @@ public interface IGame {
     public IPlayer getCurrentPlayer();
 
     public void setCurrentPlayer(IPlayer currentPlayer);
+
+    public void setCountTurn(int countTurn);
+
+    public int getCountTurn();
 }
