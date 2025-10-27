@@ -255,120 +255,137 @@ classDiagram
         - SecureRandom RANDOM
         + randomCoordinatePlayed(int) int
     }
+    class ArtificialPlayerFactory {
+        + createPlayer(String, int) IPlayer
+    }
     class Board {
-        - int SIZE
         - int HEIGHT
-        - Tile[] TILES
         - int WIDTH
-        - createBoard() void
-        + getHeight() int
-        + getTile(int, int) Tile
+        - int SIZE
+        - Tile[] TILES
         + getWidth() int
         + hasPawnAt(int, int) boolean
+        + getHeight() int
+        - createBoard() void
+        + getTile(int, int) Tile
         + getSize() int
     }
     class Connect4
+    class Connect4Factory {
+        + createGame() IGame
+    }
     class ConsoleColors {
-        + String RESET
-        + String BOLD_GREEN
-        + String RED
-        + String PURPLE
         + String WHITE
         + String BOLD_RED
-        + String CYAN
-        + String BLUE
-        + String GREEN
         + String YELLOW
+        + String RED
+        + String GREEN
+        + String RESET
+        + String BOLD_GREEN
+        + String BLUE
+        + String PURPLE
+        + String CYAN
     }
     class Fr {
-        + String rulesGomoku
-        + String choose
-        + String chooseGameMode
-        + String coordinateX
-        + String rulesConnect4
-        + String rulesTicTacToe
         + String victory
+        + String rulesTicTacToe
         + String wrongChoice
+        + String rulesGomoku
+        + String chooseGameMode
         + String chooseGameType
-        + String exceptionIntMessage
-        + String turnOfPlayer
-        + String separator
-        + String tileAlreadyTaken
-        + String colFull
-        + String coordinateY
         + String wrongCoordinate
+        + String coordinateX
+        + String colFull
+        + String choose
+        + String coordinateY
+        + String tileAlreadyTaken
+        + String turnOfPlayer
+        + String exceptionIntMessage
+        + String separator
+        + String rulesConnect4
     }
     class Game {
-        - Board BOARD
-        ~ int countTurn
-        - IPlayer currentPlayer
-        - int VICTORY_CONDITION
         - boolean GRAVITY
+        - IPlayer currentPlayer
+        ~ int countTurn
+        - Board BOARD
+        - int VICTORY_CONDITION
         - String RULES
         - IPlayer[] players
+        + setCountTurn(int) void
+        + sameOwner(int, int, int, int) boolean
         + getCountTurn() int
-        + playerTurn(IPlayer, int[]) void
-        + getCurrentPlayer() IPlayer
-        + setCurrentPlayer(IPlayer) void
+        + checkWinnerCondition(int) boolean
         + getBoard() Board
-        + getBoardSize() int
-        + getBoardTile(int, int) Tile
+        + getVictoryCondition() int
         + isNotEmpty(int, int) boolean
         + getRules() String
+        + playerTurn(IPlayer, int[]) void
+        + getBoardTile(int, int) Tile
+        + getCurrentPlayer() IPlayer
+        + setCurrentPlayer(IPlayer) void
+        + hasPawnAt(int, int) boolean
         + getGravity() boolean
         + setOwner(int, int, IPlayer) void
-        + checkWinnerCondition(int) boolean
-        + getVictoryCondition() int
-        + setPlayers(IPlayer[]) void
-        + sameOwner(int, int, int, int) boolean
+        + getBoardSize() int
         + getPlayers() IPlayer[]
-        + hasPawnAt(int, int) boolean
-        + setCountTurn(int) void
+        + setPlayers(IPlayer[]) void
     }
     class GameController {
         - View VIEW
         + States state
         - IGame game
-        + chooseGameMode() void
-        - getCoordinates() int[]
-        + playTurn() void
-        + playState() void
-        + changeCurrentPlayer() void
+        - GameFactory gameFactory
         + nextTileEmpty(int) int
-        + checkState() void
+        + chooseGameMode() void
+        + playState() void
+        + getMoveFromPlayer(IPlayer) int[]
+        - getCoordinates() int[]
+        + chooseGameType() void
+        + changeCurrentPlayer() void
         - getRow() int[]
         + winner(IPlayer) void
+        + checkState() void
         + display() void
-        + getMoveFromPlayer(IPlayer) int[]
-        + chooseGameType() void
+        + playTurn() void
+    }
+    class GameFactory {
+        + createGame() IGame
     }
     class Gomoku
+    class GomokuFactory {
+        + createGame() IGame
+    }
     class HumanPlayer
+    class HumanPlayerFactory {
+        + createPlayer(String, int) IPlayer
+    }
     class IGame {
         <<Interface>>
-        + getVictoryCondition() int
-        + setPlayers(IPlayer[]) void
-        + sameOwner(int, int, int, int) boolean
-        + getPlayers() IPlayer[]
-        + checkWinnerCondition(int) boolean
-        + getBoardTile(int, int) Tile
-        + setCurrentPlayer(IPlayer) void
-        + getCountTurn() int
-        + isNotEmpty(int, int) boolean
-        + getRules() String
-        + setCountTurn(int) void
-        + getBoardSize() int
-        + hasPawnAt(int, int) boolean
         + getBoard() Board
-        + playerTurn(IPlayer, int[]) void
-        + getCurrentPlayer() IPlayer
+        + getVictoryCondition() int
+        + hasPawnAt(int, int) boolean
+        + setCountTurn(int) void
+        + getRules() String
         + setOwner(int, int, IPlayer) void
+        + getBoardSize() int
+        + setPlayers(IPlayer[]) void
+        + getPlayers() IPlayer[]
+        + playerTurn(IPlayer, int[]) void
+        + getBoardTile(int, int) Tile
+        + getCountTurn() int
+        + getCurrentPlayer() IPlayer
+        + checkWinnerCondition(int) boolean
+        + sameOwner(int, int, int, int) boolean
         + getGravity() boolean
+        + setCurrentPlayer(IPlayer) void
+        + isNotEmpty(int, int) boolean
     }
     class IPlayer {
         <<Interface>>
-        + getNumber() int
         + getRepresentation() String
+        + isHuman() boolean
+        + getNumber() int
     }
     class Main {
         + main(String[]) void
@@ -376,10 +393,15 @@ classDiagram
     class OutOfBoardException
     class Player {
         - String COLOR
-        - int NUMBER
         - String REPRESENTATION
-        + getNumber() int
+        - int NUMBER
+        - boolean IS_HUMAN
+        + isHuman() boolean
         + getRepresentation() String
+        + getNumber() int
+    }
+    class PlayerFactory {
+        + createPlayer(String, int) IPlayer
     }
     class RandomCoordinateCapable {
         <<Interface>>
@@ -387,45 +409,51 @@ classDiagram
     }
     class States {
         <<enumeration>>
-        +  END
-        +  WAIT_STYLE
-        +  WAIT_COORDINATES
-        +  WINNER
         +  WAIT_MODE
+        +  WINNER
         +  DRAW
+        +  WAIT_STYLE
         +  NEXT
-        + valueOf(String) States
+        +  END
+        +  WAIT_COORDINATES
         + values() States[]
+        + valueOf(String) States
     }
     class TicTacToe
+    class TicTacToeFactory {
+        + createGame() IGame
+    }
     class Tile {
         - boolean hasPawn
-        - int COORDINATE_Y
-        - int COORDINATE_X
         - String representation
-        + hasPawn() boolean
+        - int COORDINATE_X
+        - int COORDINATE_Y
         + setPawn(boolean) void
-        + getRepresentation() String
         + setRepresentation(String) void
+        + hasPawn() boolean
+        + getRepresentation() String
     }
     class View {
         - Scanner CLAVIER
-        + askCoordinates(String) int[]
+        + askInt(String) int
         + println(String) void
         + print(String) void
-        + askInt(String) int
+        + askCoordinates(String) int[]
     }
 
     ArtificialPlayer  -->  Player
     ArtificialPlayer  ..>  RandomCoordinateCapable
+    ArtificialPlayerFactory  -->  PlayerFactory
     Connect4  -->  Game
+    Connect4Factory  -->  GameFactory
     Game  ..>  IGame
     Gomoku  -->  Game
+    GomokuFactory  -->  GameFactory
     HumanPlayer  -->  Player
+    HumanPlayerFactory  -->  PlayerFactory
     Player  ..>  IPlayer
     TicTacToe  -->  Game
-
-
+    TicTacToeFactory  -->  GameFactory
 ```
 
 ---
