@@ -51,16 +51,10 @@ public class GameController {
     }
 
     /**
-     * Verifies whether the game has reached a terminal state.
+     * Checks whether the game has reached a terminal state.
      * <p>
-     * This method checks if the current {@link #state} corresponds to either
-     * {@link States#WINNER} or {@link States#DRAW}.
-     * If so, it transitions the game to the {@link States#END} state,
-     * effectively stopping the main game loop managed by {@link #playState()}.
-     * </p>
-     * <p>
-     * This ensures that once a player has won or the game ends in a draw,
-     * no further actions or turns are processed.
+     * If the current {@link #state} is either {@link States#WINNER} or {@link States#DRAW},
+     * this method sets it to {@link States#END}, stopping the main loop managed by {@link #playState()}.
      * </p>
      */
     public void checkState(){
@@ -70,23 +64,19 @@ public class GameController {
     }
 
     /**
-     * Executes a single turn for the current player in the game.
+     * Executes a single turn for the current player.
      * <p>
-     * This method handles the entire process of one player's move:
-     * <ul>
-     *     <li>Retrieves the current player from the game instance.</li>
-     *     <li>Displays a message indicating which player's turn it is.</li>
-     *     <li>Asks the player to provide move coordinates using {@link #getMoveFromPlayer(IPlayer)}.</li>
-     *     <li>Executes the player's move through {@link Game#playerTurn(IPlayer, int[])}.</li>
-     *     <li>Updates and displays the game board.</li>
-     *     <li>Checks if the player has met the victory condition using {@link Game#checkWinnerCondition(int)}.</li>
-     *     <li>If the player wins, calls {@link #winner(IPlayer)} and updates the game state accordingly.</li>
-     *     <li>If all board positions are filled, sets the state to {@link States#DRAW}.</li>
-     *     <li>Otherwise, prepares for the next turn by setting the state to {@link States#NEXT}.</li>
-     * </ul>
+     * Handles the entire process of one player's move:
      * </p>
+     * <ul>
+     *     <li>Retrieves the current player.</li>
+     *     <li>Prompts for or generates the move coordinates.</li>
+     *     <li>Performs the move and updates the board.</li>
+     *     <li>Checks for a win or draw condition.</li>
+     *     <li>Updates the game state accordingly.</li>
+     * </ul>
      * <p>
-     * This method should only execute when the current game state is {@link States#WAIT_COORDINATES}.
+     * This method should only be called when the state is {@link States#WAIT_COORDINATES}.
      * </p>
      */
     public void playTurn() {
@@ -112,16 +102,10 @@ public class GameController {
     }
 
     /**
-     * Switches the current player to the next one in the game sequence.
+     * Switches the current player to the next one in sequence.
      * <p>
-     * This method retrieves the current player and determines which player
-     * should play next based on their player number:
-     * <ul>
-     *     <li>If the current player is the last in the player list, it switches back to the first player.</li>
-     *     <li>Otherwise, it selects the next player in order.</li>
-     * </ul>
-     * After updating the current player, the game state is set to {@link States#WAIT_COORDINATES}
-     * to indicate that the next player should now make a move.
+     * If the current player is the last in the list, it switches back to the first.
+     * Updates the state to {@link States#WAIT_COORDINATES} to signal the next turn.
      * </p>
      */
     public void changeCurrentPlayer() {
@@ -139,12 +123,12 @@ public class GameController {
     }
 
     /**
-     * Declares the specified player as the winner of the game.
+     * Declares the specified player as the winner.
      * <p>
-     * Prints a victory message for the player and sets the game state to {@link States#WINNER}.
+     * Displays a victory message and sets the game state to {@link States#WINNER}.
      * </p>
      *
-     * @param player the player who has won the game
+     * @param player the player who won the game
      */
     public void winner(IPlayer player) {
         VIEW.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
@@ -152,9 +136,9 @@ public class GameController {
     }
 
     /**
-     * Prompts the user to select a game mode and initializes the two players accordingly.
+     * Prompts the user to select a game mode and initializes both players.
      * <p>
-     * The user can choose between:
+     * The available modes are:
      * </p>
      * <ul>
      *     <li><b>1</b> — Human vs Human</li>
@@ -162,8 +146,8 @@ public class GameController {
      *     <li><b>3</b> — AI vs AI</li>
      * </ul>
      * <p>
-     * Ensures a valid numeric input; displays an error message for invalid or non-numeric entries.
-     * Sets the game state to {@link States#WAIT_COORDINATES}.
+     * Ensures valid numeric input. Displays an error message and retries on invalid entries.
+     * Sets the state to {@link States#WAIT_COORDINATES}.
      * </p>
      */
     public void chooseGameMode() {
@@ -199,10 +183,9 @@ public class GameController {
     }
 
     /**
-     * Prompts the user to select the type of game to play and returns the corresponding instance.
-     * Sets the game state to {@link States#WAIT_MODE}.
+     * Prompts the user to choose the type of game to play.
      * <p>
-     * The available options are:
+     * The available types are:
      * </p>
      * <ul>
      *     <li><b>1</b> — Tic Tac Toe</li>
@@ -210,10 +193,9 @@ public class GameController {
      *     <li><b>3</b> — Connect 4</li>
      * </ul>
      * <p>
-     * If the user enters an invalid choice, an error message is displayed and the method
-     * recursively prompts again.
+     * Sets the game instance and transitions to {@link States#WAIT_MODE}.
+     * Displays an error and retries on invalid input.
      * </p>
-     *
      */
     public void chooseGameType() {
         int choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameType + ConsoleColors.RESET);
@@ -256,11 +238,11 @@ public class GameController {
     }
 
     /**
-     * Determines the coordinates for a player's move.
+     * Determines the move coordinates for the current player.
      * <p>
-     * For human players, prompts input via the console. For AI players,
-     * generates random valid coordinates. Handles both gravity-based
-     * (Connect 4) and non-gravity-based games.
+     * For human players, prompts input via the console.
+     * For AI players, generates random valid coordinates.
+     * Supports both gravity-based (Connect 4) and standard grid games.
      * </p>
      *
      * @param player the player making the move
@@ -296,14 +278,13 @@ public class GameController {
     }
 
     /**
-     * Prompts the player to enter coordinates for their move and validates them.
+     * Prompts the player to enter move coordinates and validates them.
      * <p>
-     * Ensures that the selected tile is within the board and not already occupied.
-     * If the coordinates are invalid or the tile is taken, an error message is displayed
-     * and the method recursively prompts again.
+     * Ensures the coordinates are within the board and not already occupied.
+     * Displays an error message and retries on invalid input.
      * </p>
      *
-     * @return an array {@code [col, row]} representing the valid coordinates chosen by the player
+     * @return an array {@code [col, row]} of valid coordinates
      */
     private int[] getCoordinates() {
         int row;
@@ -325,13 +306,13 @@ public class GameController {
     }
 
     /**
-     * Determines the lowest available row in a given column (used in gravity-based games like Connect 4).
+     * Determines the lowest available tile in a given column (for gravity-based games).
      * <p>
-     * Prompts the user to select a column, then finds the first empty tile from bottom to top.
-     * If the column is full or invalid, displays an error and prompts again.
+     * Prompts the player for a column and returns the next available row from bottom to top.
+     * Retries if the column is full or invalid.
      * </p>
      *
-     * @return an array {@code [col, row]} representing the coordinates of the available tile
+     * @return an array {@code [col, row]} representing the next available tile
      */
     private int[] getRow() {
         int row;
@@ -354,7 +335,7 @@ public class GameController {
     /**
      * Finds the next empty tile in a given column, starting from the bottom.
      *
-     * @param col the column to check
+     * @param col the column index to check
      * @return the row index of the next empty tile, or -1 if the column is full
      */
     public int nextTileEmpty(int col) {
