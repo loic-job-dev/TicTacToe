@@ -14,7 +14,7 @@ import fr.campus.loic.squaregames.view.ConsoleColors;
  *     <li>Any other number — White</li>
  * </ul>
  */
-public abstract class Player {
+public abstract class Player implements IPlayer {
 
     /** The symbol representing the player on the board. */
     private final String REPRESENTATION;

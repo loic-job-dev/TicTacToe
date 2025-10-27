@@ -1,14 +1,8 @@
 package fr.campus.loic.squaregames.controller;
 
-import fr.campus.loic.squaregames.model.game.Connect4;
-import fr.campus.loic.squaregames.model.game.Game;
-import fr.campus.loic.squaregames.model.game.Gomoku;
-import fr.campus.loic.squaregames.model.game.TicTacToe;
+import fr.campus.loic.squaregames.model.game.*;
 import fr.campus.loic.squaregames.model.material.OutOfBoardException;
-import fr.campus.loic.squaregames.model.player.ArtificialPlayer;
-import fr.campus.loic.squaregames.model.player.HumanPlayer;
-import fr.campus.loic.squaregames.model.player.Player;
-import fr.campus.loic.squaregames.model.player.RandomCoordinateCapable;
+import fr.campus.loic.squaregames.model.player.*;
 import fr.campus.loic.squaregames.view.ConsoleColors;
 import fr.campus.loic.squaregames.view.View;
 import fr.campus.loic.squaregames.view.lang.Fr;
@@ -24,8 +18,9 @@ import fr.campus.loic.squaregames.view.lang.Fr;
 public class GameController {
 
     private final View VIEW = new View();
-    private Game game;
+    private IGame game;
     public States state;
+    int countTurn = 0;
 
     /**
      * Runs the game using a state-driven loop.
@@ -51,10 +46,27 @@ public class GameController {
                 case States.WAIT_MODE -> chooseGameMode();
                 case States.WAIT_COORDINATES -> playTurn();
                 case States.NEXT -> changeCurrentPlayer();
-                case States.WINNER, States.DRAW -> {
-                    this.state = States.END;
-                }
+                default -> checkState();
             }
+        }
+    }
+
+    /**
+     * Verifies whether the game has reached a terminal state.
+     * <p>
+     * This method checks if the current {@link #state} corresponds to either
+     * {@link States#WINNER} or {@link States#DRAW}.
+     * If so, it transitions the game to the {@link States#END} state,
+     * effectively stopping the main game loop managed by {@link #playState()}.
+     * </p>
+     * <p>
+     * This ensures that once a player has won or the game ends in a draw,
+     * no further actions or turns are processed.
+     * </p>
+     */
+    public void checkState(){
+        if (this.state == States.WINNER || this.state ==  States.DRAW){
+            this.state = States.END;
         }
     }
 
@@ -65,11 +77,11 @@ public class GameController {
      * <ul>
      *     <li>Retrieves the current player from the game instance.</li>
      *     <li>Displays a message indicating which player's turn it is.</li>
-     *     <li>Asks the player to provide move coordinates using {@link #getMoveFromPlayer(Player)}.</li>
-     *     <li>Executes the player's move through {@link Game#playerTurn(Player, int[])}.</li>
+     *     <li>Asks the player to provide move coordinates using {@link #getMoveFromPlayer(IPlayer)}.</li>
+     *     <li>Executes the player's move through {@link Game#playerTurn(IPlayer, int[])}.</li>
      *     <li>Updates and displays the game board.</li>
      *     <li>Checks if the player has met the victory condition using {@link Game#checkWinnerCondition(int)}.</li>
-     *     <li>If the player wins, calls {@link #winner(Player)} and updates the game state accordingly.</li>
+     *     <li>If the player wins, calls {@link #winner(IPlayer)} and updates the game state accordingly.</li>
      *     <li>If all board positions are filled, sets the state to {@link States#DRAW}.</li>
      *     <li>Otherwise, prepares for the next turn by setting the state to {@link States#NEXT}.</li>
      * </ul>
@@ -79,8 +91,7 @@ public class GameController {
      * </p>
      */
     public void playTurn() {
-        int countTurn = 0;
-        Player p = game.getCurrentPlayer();
+        IPlayer p = game.getCurrentPlayer();
 
         VIEW.println(Fr.turnOfPlayer + p.getNumber());
         game.playerTurn(p, getMoveFromPlayer(p));
@@ -93,6 +104,7 @@ public class GameController {
         }
 
         else if (countTurn >= game.getBoardSize()) {
+            VIEW.println("Egalité !");
             this.state = States.DRAW;
         }
         else {
@@ -114,9 +126,9 @@ public class GameController {
      * </p>
      */
     public void changeCurrentPlayer() {
-        Player[] players = game.getPlayers();
+        IPlayer[] players = game.getPlayers();
         int numberPlayers = players.length;
-        Player currentPlayer = game.getCurrentPlayer();
+        IPlayer currentPlayer = game.getCurrentPlayer();
 
         if ((currentPlayer.getNumber()) ==  numberPlayers) {
             game.setCurrentPlayer(players[0]);
@@ -135,7 +147,7 @@ public class GameController {
      *
      * @param player the player who has won the game
      */
-    public void winner(Player player) {
+    public void winner(IPlayer player) {
         VIEW.println(ConsoleColors.BOLD_GREEN + Fr.victory +  player.getNumber() + ConsoleColors.RESET);
         this.state = States.WINNER;
     }
@@ -255,7 +267,7 @@ public class GameController {
      * @param player the player making the move
      * @return an array {@code [col, row]} representing the chosen coordinates
      */
-    public int[] getMoveFromPlayer(Player player) {
+    public int[] getMoveFromPlayer(IPlayer player) {
         int col = 0;
         int row = 0;
         if (player instanceof HumanPlayer) {

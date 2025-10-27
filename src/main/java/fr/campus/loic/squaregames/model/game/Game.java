@@ -3,7 +3,7 @@ package fr.campus.loic.squaregames.model.game;
 import fr.campus.loic.squaregames.model.material.Board;
 import fr.campus.loic.squaregames.model.material.OutOfBoardException;
 import fr.campus.loic.squaregames.model.material.Tile;
-import fr.campus.loic.squaregames.model.player.Player;
+import fr.campus.loic.squaregames.model.player.IPlayer;
 
 /**
  * Abstract base class for all board-based games.
@@ -12,7 +12,7 @@ import fr.campus.loic.squaregames.model.player.Player;
  * victory condition checking. Supports both gravity-based and non-gravity games.
  * </p>
  */
-public abstract class Game {
+public abstract class Game implements IGame {
     /** The game board. */
     private final Board BOARD;
     /** Number of consecutive tiles required to win. */
@@ -20,11 +20,11 @@ public abstract class Game {
     /** Description of the game rules. */
     private final String RULES;
     /** The players participating in the game. */
-    private Player[] players;
+    private IPlayer[] players;
     /** Whether gravity affects tile placement (e.g., Connect 4). */
     private final boolean GRAVITY;
     /** The current player of the turn. */
-    private Player currentPlayer;
+    private IPlayer currentPlayer;
 
     /**
      * Creates a new game instance with the specified board size, victory condition, rules, and gravity.
@@ -50,7 +50,7 @@ public abstract class Game {
      * @param row    the row index
      * @param player the player who owns the tile
      */
-    public void setOwner(int col, int row, Player player) {
+    public void setOwner(int col, int row, IPlayer player) {
         BOARD.getTile(col, row).setRepresentation(player.getRepresentation());
     }
 
@@ -61,7 +61,7 @@ public abstract class Game {
      * @param player the player whose turn it is
      * @param move   the coordinates {@code [col, row]} of the chosen tile
      */
-    public void playerTurn(Player player, int[] move) {
+    public void playerTurn(IPlayer player, int[] move) {
         BOARD.getTile(move[0], move[1]).setPawn(true);
         setOwner(move[0], move[1], player);
     }
@@ -199,7 +199,7 @@ public abstract class Game {
      *
      * @return an array containing the two players
      */
-    public Player[] getPlayers() {
+    public IPlayer[] getPlayers() {
         return players;
     }
 
@@ -217,7 +217,7 @@ public abstract class Game {
      *
      * @param players an array of player instances
      */
-    public void setPlayers(Player[] players) {
+    public void setPlayers(IPlayer[] players) {
         this.players = players;
     }
 
@@ -235,7 +235,7 @@ public abstract class Game {
      *
      * @return the current player
      */
-    public Player getCurrentPlayer() {
+    public IPlayer getCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -244,7 +244,7 @@ public abstract class Game {
      *
      * @param currentPlayer the player to set as the current one
      */
-    public void setCurrentPlayer(Player currentPlayer) {
+    public void setCurrentPlayer(IPlayer currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
