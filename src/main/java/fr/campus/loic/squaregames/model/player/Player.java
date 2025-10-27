@@ -1,5 +1,6 @@
 package fr.campus.loic.squaregames.model.player;
 
+import fr.campus.loic.squaregames.model.game.IGame;
 import fr.campus.loic.squaregames.view.ConsoleColors;
 
 /**
@@ -22,6 +23,8 @@ public abstract class Player implements IPlayer {
     private final String COLOR;
     /** The player's number used to assign colors and identify turns. */
     private final int NUMBER;
+    /** Indicates whether the player is human or AI-controlled. */
+    private final boolean IS_HUMAN;
 
     /**
      * Creates a new player with the specified symbol and number.
@@ -29,9 +32,10 @@ public abstract class Player implements IPlayer {
      * @param representation the symbol representing the player
      * @param number the player number, used to determine color
      */
-    public Player(String representation, int number) {
+    public Player(String representation, int number, boolean isHuman) {
         this.REPRESENTATION = representation;
         this.NUMBER = number;
+        this.IS_HUMAN = isHuman;
         switch (number) {
             case 1 -> this.COLOR = ConsoleColors.RED;
             case 2 -> this.COLOR = ConsoleColors.GREEN;
@@ -57,5 +61,14 @@ public abstract class Player implements IPlayer {
      */
     public int getNumber() {
         return this.NUMBER;
+    }
+
+    /**
+     * Indicates whether this player is human.
+     *
+     * @return {@code true} if the player is human, {@code false} otherwise
+     */
+    public boolean isHuman() {
+        return IS_HUMAN;
     }
 }

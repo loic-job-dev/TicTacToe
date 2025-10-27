@@ -251,7 +251,7 @@ public class GameController {
     public int[] getMoveFromPlayer(IPlayer player) {
         int col = 0;
         int row = 0;
-        if (player instanceof HumanPlayer) {
+        if (player.isHuman()) {
             if (!game.getGravity()) {
                 int[] coords = getCoordinates();
                 col = coords[0];

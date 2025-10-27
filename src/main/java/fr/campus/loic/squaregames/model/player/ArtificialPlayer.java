@@ -17,7 +17,7 @@ public class ArtificialPlayer extends Player implements RandomCoordinateCapable 
      * @param number         the player number (1 = red, 2 = green, 3 = purple, 4 = yellow, otherwise = white)
      */
     public ArtificialPlayer(String representation, int number) {
-        super(representation, number);
+        super(representation, number, false);
     }
 
     /**

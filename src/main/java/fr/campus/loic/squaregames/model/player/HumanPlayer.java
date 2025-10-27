@@ -17,6 +17,6 @@ public class HumanPlayer extends Player {
      * @param number the player number (1 = red, 2 = green, 3 = purple, 4 = yellow, otherwise = white)
      */
     public HumanPlayer(String representation, int number) {
-        super(representation, number);
+        super(representation, number, true);
     }
 }
