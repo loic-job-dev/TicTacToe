@@ -256,128 +256,175 @@ classDiagram
         + randomCoordinatePlayed(int) int
     }
     class Board {
-        - int WIDTH
         - int SIZE
         - int HEIGHT
-        - Tile[] tiles
+        - Tile[] TILES
+        - int WIDTH
         - createBoard() void
         + getHeight() int
-        + getWidth() int
-        + getSize() int
         + getTile(int, int) Tile
+        + getWidth() int
         + hasPawnAt(int, int) boolean
+        + getSize() int
     }
     class Connect4
     class ConsoleColors {
-        + String WHITE
-        + String BLUE
-        + String PURPLE
-        + String BOLD_RED
         + String RESET
-        + String RED
-        + String YELLOW
-        + String CYAN
-        + String GREEN
         + String BOLD_GREEN
+        + String RED
+        + String PURPLE
+        + String WHITE
+        + String BOLD_RED
+        + String CYAN
+        + String BLUE
+        + String GREEN
+        + String YELLOW
     }
     class Fr {
+        + String rulesGomoku
         + String choose
         + String chooseGameMode
-        + String separator
+        + String coordinateX
         + String rulesConnect4
-        + String coordinateY
-        + String rulesGomoku
-        + String wrongCoordinate
-        + String exceptionIntMessage
-        + String chooseGameType
-        + String colFull
-        + String tileAlreadyTaken
-        + String turnOfPlayer
         + String rulesTicTacToe
         + String victory
-        + String coordinateX
         + String wrongChoice
+        + String chooseGameType
+        + String exceptionIntMessage
+        + String turnOfPlayer
+        + String separator
+        + String tileAlreadyTaken
+        + String colFull
+        + String coordinateY
+        + String wrongCoordinate
     }
     class Game {
-        # Player[] players
-        # String rules
-        # Board board
-        # boolean gravity
-        # int victoryCondition
-        + playerTurn(Player, int[]) void
-        + getGravity() boolean
-        + getPlayers() Player[]
-        + setOwner(int, int, Player) void
-        + sameOwner(int, int, int, int) boolean
-        + getRules() String
-        + isNotEmpty(int, int) boolean
-        + getVictoryCondition() int
-        + hasPawnAt(int, int) boolean
-        + checkWinnerCondition(int) boolean
+        - Board BOARD
+        ~ int countTurn
+        - IPlayer currentPlayer
+        - int VICTORY_CONDITION
+        - boolean GRAVITY
+        - String RULES
+        - IPlayer[] players
+        + getCountTurn() int
+        + playerTurn(IPlayer, int[]) void
+        + getCurrentPlayer() IPlayer
+        + setCurrentPlayer(IPlayer) void
         + getBoard() Board
-        + setPlayers(Player[]) void
+        + getBoardSize() int
+        + getBoardTile(int, int) Tile
+        + isNotEmpty(int, int) boolean
+        + getRules() String
+        + getGravity() boolean
+        + setOwner(int, int, IPlayer) void
+        + checkWinnerCondition(int) boolean
+        + getVictoryCondition() int
+        + setPlayers(IPlayer[]) void
+        + sameOwner(int, int, int, int) boolean
+        + getPlayers() IPlayer[]
+        + hasPawnAt(int, int) boolean
+        + setCountTurn(int) void
     }
     class GameController {
-        - View view
-        - Game game
-        - getRow() int[]
-        + play() void
-        - getCoordinates() int[]
-        + display() void
+        - View VIEW
+        + States state
+        - IGame game
         + chooseGameMode() void
-        + getMoveFromPlayer(Player) int[]
+        - getCoordinates() int[]
+        + playTurn() void
+        + playState() void
+        + changeCurrentPlayer() void
         + nextTileEmpty(int) int
+        + checkState() void
+        - getRow() int[]
+        + winner(IPlayer) void
+        + display() void
+        + getMoveFromPlayer(IPlayer) int[]
+        + chooseGameType() void
     }
     class Gomoku
     class HumanPlayer
+    class IGame {
+        <<Interface>>
+        + getVictoryCondition() int
+        + setPlayers(IPlayer[]) void
+        + sameOwner(int, int, int, int) boolean
+        + getPlayers() IPlayer[]
+        + checkWinnerCondition(int) boolean
+        + getBoardTile(int, int) Tile
+        + setCurrentPlayer(IPlayer) void
+        + getCountTurn() int
+        + isNotEmpty(int, int) boolean
+        + getRules() String
+        + setCountTurn(int) void
+        + getBoardSize() int
+        + hasPawnAt(int, int) boolean
+        + getBoard() Board
+        + playerTurn(IPlayer, int[]) void
+        + getCurrentPlayer() IPlayer
+        + setOwner(int, int, IPlayer) void
+        + getGravity() boolean
+    }
+    class IPlayer {
+        <<Interface>>
+        + getNumber() int
+        + getRepresentation() String
+    }
     class Main {
         + main(String[]) void
     }
     class OutOfBoardException
     class Player {
-        ~ int number
-        ~ String color
-        ~ String representation
-        + getRepresentation() String
+        - String COLOR
+        - int NUMBER
+        - String REPRESENTATION
         + getNumber() int
+        + getRepresentation() String
     }
     class RandomCoordinateCapable {
         <<Interface>>
         + randomCoordinatePlayed(int) int
     }
-    class TicTacToe
-    class TicTacToeTest {
-        + testFirstLineSecondColumn() void
-        + testNewBoardIsEmpty() void
-        + testCoordinateTooHigh() void
-        + testTileCaptured() void
+    class States {
+        <<enumeration>>
+        +  END
+        +  WAIT_STYLE
+        +  WAIT_COORDINATES
+        +  WINNER
+        +  WAIT_MODE
+        +  DRAW
+        +  NEXT
+        + valueOf(String) States
+        + values() States[]
     }
+    class TicTacToe
     class Tile {
         - boolean hasPawn
-        - int coordinateX
+        - int COORDINATE_Y
+        - int COORDINATE_X
         - String representation
-        - int coordinateY
-        + setRepresentation(String) void
-        + getCoordinateX() int
         + hasPawn() boolean
         + setPawn(boolean) void
         + getRepresentation() String
-        + getCoordinateY() int
+        + setRepresentation(String) void
     }
     class View {
-        - Scanner clavier
-        + println(String) void
+        - Scanner CLAVIER
         + askCoordinates(String) int[]
-        + askInt(String) int
+        + println(String) void
         + print(String) void
+        + askInt(String) int
     }
 
     ArtificialPlayer  -->  Player
     ArtificialPlayer  ..>  RandomCoordinateCapable
     Connect4  -->  Game
+    Game  ..>  IGame
     Gomoku  -->  Game
     HumanPlayer  -->  Player
+    Player  ..>  IPlayer
     TicTacToe  -->  Game
+
 
 ```
 
