@@ -1,8 +1,14 @@
 package fr.campus.loic.squaregames.controller;
 
 import fr.campus.loic.squaregames.model.game.*;
+import fr.campus.loic.squaregames.model.gameFactories.Connect4Factory;
+import fr.campus.loic.squaregames.model.gameFactories.GameFactory;
+import fr.campus.loic.squaregames.model.gameFactories.GomokuFactory;
+import fr.campus.loic.squaregames.model.gameFactories.TicTacToeFactory;
 import fr.campus.loic.squaregames.model.material.OutOfBoardException;
 import fr.campus.loic.squaregames.model.player.*;
+import fr.campus.loic.squaregames.model.playerFactories.ArtificialPlayerFactory;
+import fr.campus.loic.squaregames.model.playerFactories.HumanPlayerFactory;
 import fr.campus.loic.squaregames.view.ConsoleColors;
 import fr.campus.loic.squaregames.view.View;
 import fr.campus.loic.squaregames.view.lang.Fr;
@@ -18,6 +24,7 @@ import fr.campus.loic.squaregames.view.lang.Fr;
 public class GameController {
 
     private final View VIEW = new View();
+    private GameFactory gameFactory;
     private IGame game;
     public States state;
 
@@ -146,35 +153,39 @@ public class GameController {
      *     <li><b>3</b> — AI vs AI</li>
      * </ul>
      * <p>
-     * Ensures valid numeric input. Displays an error message and retries on invalid entries.
-     * Sets the state to {@link States#WAIT_COORDINATES}.
+     * If an invalid choice is entered, the method recursively calls itself to prompt again.
+     * Once valid players are created, they are assigned to the game with Player 1 (X)
+     * set as the current player. The game board is displayed and the state transitions
+     * to {@link States#WAIT_COORDINATES}.
      * </p>
+     *
+     * @see HumanPlayerFactory#createPlayer(String, int)
+     * @see ArtificialPlayerFactory#createPlayer(String, int)
      */
     public void chooseGameMode() {
         VIEW.println(ConsoleColors.YELLOW + game.getRules() + ConsoleColors.RESET);
 
         int choice = 0;
-
-        Player[] players = new Player[2];
+        HumanPlayerFactory humanPlayer = new HumanPlayerFactory();
+        ArtificialPlayerFactory artificialPlayer = new ArtificialPlayerFactory();
+        IPlayer[] players = new IPlayer[2];
 
         choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
 
         switch (choice) {
             case 1 -> {
-                players[0] = new HumanPlayer("X", 1);
-                players[1] = new HumanPlayer("O", 2);
+                players[0] = humanPlayer.createPlayer("X", 1);
+                players[1] = humanPlayer.createPlayer("O", 2);
             }
             case 2 -> {
-                players[0] = new HumanPlayer("X", 1);
-                players[1] = new ArtificialPlayer("O", 2);
+                players[0] = humanPlayer.createPlayer("X", 1);
+                players[1] = artificialPlayer.createPlayer("O", 2);
             }
             case 3 -> {
-                players[0] = new ArtificialPlayer("X", 1);
-                players[1] = new ArtificialPlayer("O", 2);
+                players[0] = artificialPlayer.createPlayer("X", 1);
+                players[1] = artificialPlayer.createPlayer("O", 2);
             }
-            default -> {
-                chooseGameMode();
-            }
+            default -> chooseGameMode();
         }
         game.setPlayers(players);
         game.setCurrentPlayer(players[0]);
@@ -193,30 +204,35 @@ public class GameController {
      *     <li><b>3</b> — Connect 4</li>
      * </ul>
      * <p>
-     * Sets the game instance and transitions to {@link States#WAIT_MODE}.
-     * Displays an error and retries on invalid input.
+     * Based on the user's choice, the appropriate game factory is instantiated.
+     * If an invalid choice is entered, an error message is displayed and the method
+     * recursively calls itself to prompt again. Once a valid factory is selected,
+     * the game instance is created and the state transitions to {@link States#WAIT_MODE}.
      * </p>
+     *
+     * @see TicTacToeFactory#createGame()
+     * @see GomokuFactory#createGame()
+     * @see Connect4Factory#createGame()
      */
     public void chooseGameType() {
         int choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameType + ConsoleColors.RESET);
         switch (choice) {
             case 1 -> {
-                this.state = States.WAIT_MODE;
-                this.game =  new TicTacToe();
+                this.gameFactory = new TicTacToeFactory();
             }
             case 2 -> {
-                this.state = States.WAIT_MODE;
-                this.game =  new Gomoku();
+                this.gameFactory =  new GomokuFactory();
             }
             case 3 -> {
-                this.state = States.WAIT_MODE;
-                this.game =  new Connect4();
+                this.gameFactory =  new Connect4Factory();
             }
             default -> {
                 VIEW.println(ConsoleColors.RED + Fr.wrongChoice + ConsoleColors.RESET);
                 chooseGameType();
             }
         }
+        this.game = gameFactory.createGame();
+        this.state = States.WAIT_MODE;
     }
 
     /** Displays the current state of the board in the console. */
