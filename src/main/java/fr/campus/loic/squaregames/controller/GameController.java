@@ -1,8 +1,15 @@
 package fr.campus.loic.squaregames.controller;
 
+import fr.campus.loic.squaregames.model.gamefactory.Connect4Factory;
+import fr.campus.loic.squaregames.model.gamefactory.GameFactory;
+import fr.campus.loic.squaregames.model.gamefactory.GomokuFactory;
+import fr.campus.loic.squaregames.model.gamefactory.TicTacToeFactory;
 import fr.campus.loic.squaregames.model.game.*;
 import fr.campus.loic.squaregames.model.material.OutOfBoardException;
 import fr.campus.loic.squaregames.model.player.*;
+import fr.campus.loic.squaregames.model.playerfactory.ArtificialPlayerFactory;
+import fr.campus.loic.squaregames.model.playerfactory.HumanPlayerFactory;
+import fr.campus.loic.squaregames.model.playerfactory.PlayerFactory;
 import fr.campus.loic.squaregames.view.ConsoleColors;
 import fr.campus.loic.squaregames.view.View;
 import fr.campus.loic.squaregames.view.lang.Fr;
@@ -18,6 +25,7 @@ import fr.campus.loic.squaregames.view.lang.Fr;
 public class GameController {
 
     private final View VIEW = new View();
+    private GameFactory gameFactory;
     private IGame game;
     public States state;
 
@@ -138,39 +146,50 @@ public class GameController {
     /**
      * Prompts the user to select a game mode and initializes both players.
      * <p>
-     * The available modes are:
+     * The available game modes are:
      * </p>
      * <ul>
-     *     <li><b>1</b> — Human vs Human</li>
-     *     <li><b>2</b> — Human vs AI</li>
-     *     <li><b>3</b> — AI vs AI</li>
+     *     <li><b>1</b> — Human vs Human: both players are controlled by humans.</li>
+     *     <li><b>2</b> — Human vs AI: the first player is human, the second is AI-controlled.</li>
+     *     <li><b>3</b> — AI vs AI: both players are controlled by AI.</li>
      * </ul>
      * <p>
-     * Ensures valid numeric input. Displays an error message and retries on invalid entries.
-     * Sets the state to {@link States#WAIT_COORDINATES}.
+     * This method ensures that the user enters a valid numeric choice.
+     * If an invalid input is detected, an error message is displayed and
+     * the user is prompted again.
      * </p>
+     * <p>
+     * After selecting the mode:
+     * <ul>
+     *     <li>The players are created using the corresponding {@link PlayerFactory} implementations.</li>
+     *     <li>The game instance is updated with the new players.</li>
+     *     <li>The current player is set to the first player.</li>
+     *     <li>The board is displayed.</li>
+     *     <li>The game state is set to {@link States#WAIT_COORDINATES} to start the turns.</li>
+     * </ul>
      */
     public void chooseGameMode() {
         VIEW.println(ConsoleColors.YELLOW + game.getRules() + ConsoleColors.RESET);
 
-        int choice = 0;
+        PlayerFactory humanPlayerFactory = new HumanPlayerFactory();
+        PlayerFactory artificialPlayerFactory = new ArtificialPlayerFactory();
 
-        Player[] players = new Player[2];
+        IPlayer[] players = new Player[2];
 
-        choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
+        int choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
 
         switch (choice) {
             case 1 -> {
-                players[0] = new HumanPlayer("X", 1);
-                players[1] = new HumanPlayer("O", 2);
+                players[0] = humanPlayerFactory.createPlayer("X", 1);
+                players[1] = humanPlayerFactory.createPlayer("O", 2);
             }
             case 2 -> {
-                players[0] = new HumanPlayer("X", 1);
-                players[1] = new ArtificialPlayer("O", 2);
+                players[0] = humanPlayerFactory.createPlayer("X", 1);
+                players[1] = artificialPlayerFactory.createPlayer("O", 2);
             }
             case 3 -> {
-                players[0] = new ArtificialPlayer("X", 1);
-                players[1] = new ArtificialPlayer("O", 2);
+                players[0] = artificialPlayerFactory.createPlayer("X", 1);
+                players[1] = artificialPlayerFactory.createPlayer("O", 2);
             }
             default -> {
                 chooseGameMode();
@@ -183,9 +202,9 @@ public class GameController {
     }
 
     /**
-     * Prompts the user to choose the type of game to play.
+     * Prompts the user to select which type of game to play and initializes the corresponding game gamefactory.
      * <p>
-     * The available types are:
+     * The player can choose from the following game types:
      * </p>
      * <ul>
      *     <li><b>1</b> — Tic Tac Toe</li>
@@ -193,30 +212,38 @@ public class GameController {
      *     <li><b>3</b> — Connect 4</li>
      * </ul>
      * <p>
-     * Sets the game instance and transitions to {@link States#WAIT_MODE}.
-     * Displays an error and retries on invalid input.
+     * Based on the user's selection, this method:
+     * </p>
+     * <ul>
+     *     <li>Instantiates the appropriate {@code GameFactory} subclass.</li>
+     *     <li>Creates a new {@code Game} instance through {@link GameFactory#createGame()}.</li>
+     *     <li>Transitions the controller state to {@link States#WAIT_MODE} to proceed with mode selection.</li>
+     * </ul>
+     * <p>
+     * If the user enters an invalid option, an error message is displayed and the method
+     * recursively prompts for a valid input.
      * </p>
      */
     public void chooseGameType() {
         int choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameType + ConsoleColors.RESET);
+
         switch (choice) {
             case 1 -> {
-                this.state = States.WAIT_MODE;
-                this.game =  new TicTacToe();
+                this.gameFactory = new TicTacToeFactory();
             }
             case 2 -> {
-                this.state = States.WAIT_MODE;
-                this.game =  new Gomoku();
+                this.gameFactory = new GomokuFactory();
             }
             case 3 -> {
-                this.state = States.WAIT_MODE;
-                this.game =  new Connect4();
+                this.gameFactory = new Connect4Factory();
             }
             default -> {
                 VIEW.println(ConsoleColors.RED + Fr.wrongChoice + ConsoleColors.RESET);
                 chooseGameType();
             }
         }
+        this.game =  gameFactory.createGame();
+        this.state = States.WAIT_MODE;
     }
 
     /** Displays the current state of the board in the console. */
