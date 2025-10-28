@@ -5,6 +5,7 @@ import fr.campus.loic.squaregames.model.gamefactory.GameFactory;
 import fr.campus.loic.squaregames.model.gamefactory.GomokuFactory;
 import fr.campus.loic.squaregames.model.gamefactory.TicTacToeFactory;
 import fr.campus.loic.squaregames.model.game.*;
+import fr.campus.loic.squaregames.model.material.Board;
 import fr.campus.loic.squaregames.model.material.OutOfBoardException;
 import fr.campus.loic.squaregames.model.player.*;
 import fr.campus.loic.squaregames.model.playerfactory.ArtificialPlayerFactory;
@@ -91,12 +92,16 @@ public class GameController {
     public void playTurn() {
         IPlayer p = game.getCurrentPlayer();
 
-        PERSISTENCE_CONTROLLER.savePlayer(p);
+        //To save the two players in a file
+        //PERSISTENCE_CONTROLLER.savePlayer(p);
 
         VIEW.println(Fr.turnOfPlayer + p.getNumber());
         game.playerTurn(p, getMoveFromPlayer(p));
 
         game.setCountTurn((game.getCountTurn()+1));
+
+        //To save the board at each turn :
+        //PERSISTENCE_CONTROLLER.saveBoard(game.getBoard());
         display();
 
         if (game.checkWinnerCondition(game.getVictoryCondition())){
@@ -251,6 +256,12 @@ public class GameController {
             }
         }
         this.game =  gameFactory.createGame();
+        //To load a TicTacToe :
+        Board loadedBoard = PERSISTENCE_CONTROLLER.getBoard(9);
+        this.game.setBoard(loadedBoard);
+
+        //To save the board :
+        //PERSISTENCE_CONTROLLER.saveBoard(game.getBoard());
         this.state = States.WAIT_MODE;
     }
 

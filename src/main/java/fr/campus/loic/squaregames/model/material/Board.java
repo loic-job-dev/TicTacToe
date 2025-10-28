@@ -1,5 +1,7 @@
 package fr.campus.loic.squaregames.model.material;
 
+import java.io.Serializable;
+
 /**
  * Represents a generic rectangular game board composed of tiles.
  * <p>
@@ -7,7 +9,7 @@ package fr.campus.loic.squaregames.model.material;
  * Supports variable height and width, suitable for games like Tic-Tac-Toe, Gomoku, or Connect 4.
  * </p>
  */
-public class Board {
+public class Board implements Serializable {
 
     /** Number of rows in the board. */
     private final int HEIGHT;

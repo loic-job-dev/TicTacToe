@@ -20,6 +20,8 @@ public interface IGame {
 
     public Board getBoard();
 
+    public void setBoard(Board board);
+
     public int getBoardSize();
 
     public Tile getBoardTile(int col, int row);

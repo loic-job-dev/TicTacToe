@@ -13,8 +13,9 @@ import fr.campus.loic.squaregames.model.player.IPlayer;
  * </p>
  */
 public abstract class Game implements IGame {
+
     /** The game board. */
-    private final Board BOARD;
+    private Board board;
     /** Number of consecutive tiles required to win. */
     private final int VICTORY_CONDITION;
     /** Description of the game rules. */
@@ -38,7 +39,7 @@ public abstract class Game implements IGame {
      * @param gravity           {@code true} if gravity affects tile placement; {@code false} otherwise
      */
     public Game(int height, int width, int victoryCondition, String rules, boolean gravity) {
-        this.BOARD = new Board(height, width);
+        this.board = new Board(height, width);
         this.VICTORY_CONDITION = victoryCondition;
         this.RULES = rules;
         this.GRAVITY = gravity;
@@ -53,7 +54,7 @@ public abstract class Game implements IGame {
      * @param player the player who owns the tile
      */
     public void setOwner(int col, int row, IPlayer player) {
-        BOARD.getTile(col, row).setRepresentation(player.getRepresentation());
+        board.getTile(col, row).setRepresentation(player.getRepresentation());
     }
 
 
@@ -64,7 +65,7 @@ public abstract class Game implements IGame {
      * @param move   the coordinates {@code [col, row]} of the chosen tile
      */
     public void playerTurn(IPlayer player, int[] move) {
-        BOARD.getTile(move[0], move[1]).setPawn(true);
+        board.getTile(move[0], move[1]).setPawn(true);
         setOwner(move[0], move[1], player);
     }
 
@@ -76,7 +77,7 @@ public abstract class Game implements IGame {
      * @return {@code false} if the tile is empty, {@code true} otherwise
      */
     public boolean isNotEmpty(int col, int row) {
-        return !BOARD.getTile(col, row).getRepresentation().equals("   ");
+        return !board.getTile(col, row).getRepresentation().equals("   ");
     }
 
     /**
@@ -89,7 +90,7 @@ public abstract class Game implements IGame {
      * @return {@code true} if both tiles have the same owner, {@code false} otherwise
      */
     public boolean sameOwner(int col1, int row1, int col2, int row2) {
-        return BOARD.getTile(col1, row1).getRepresentation().equals(BOARD.getTile(col2, row2).getRepresentation());
+        return board.getTile(col1, row1).getRepresentation().equals(board.getTile(col2, row2).getRepresentation());
     }
 
     /**
@@ -104,7 +105,7 @@ public abstract class Game implements IGame {
      * @return {@code true} if a winning sequence exists, {@code false} otherwise
      */
     public boolean checkWinnerCondition(int condition) {
-        int minimalCondition = Math.min(BOARD.getWidth(), BOARD.getHeight());
+        int minimalCondition = Math.min(board.getWidth(), board.getHeight());
         if (condition > minimalCondition) {
             condition = minimalCondition;
         }
@@ -112,8 +113,8 @@ public abstract class Game implements IGame {
         int[][] directions = { {0, 1}, {1, 0}, {1, 1}, {1, -1} };
 
         //Check every tile
-        for (int col = 0; col < BOARD.getWidth(); col++) {
-            for (int row = 0; row < BOARD.getHeight(); row++) {
+        for (int col = 0; col < board.getWidth(); col++) {
+            for (int row = 0; row < board.getHeight(); row++) {
                 //If the tile is not empty, maybe there's a winner
                 if (isNotEmpty(col, row)) {
                     //For each of the 4 directions to test
@@ -128,7 +129,7 @@ public abstract class Game implements IGame {
                             int y = row + k * dy;
 
                             //If the tile is out of board, break
-                            if (x < 0 || y < 0 || x >= BOARD.getWidth() || y >= BOARD.getHeight()) {
+                            if (x < 0 || y < 0 || x >= board.getWidth() || y >= board.getHeight()) {
                                 break;
                             }
                             //If the tile have the same owner, increment count
@@ -154,7 +155,7 @@ public abstract class Game implements IGame {
      * @return {@code true} if the tile is occupied, {@code false} otherwise
      */
     public boolean hasPawnAt(int col, int row) {
-        return this.BOARD.hasPawnAt(col, row);
+        return this.board.hasPawnAt(col, row);
     }
 
     /**
@@ -163,7 +164,11 @@ public abstract class Game implements IGame {
      * @return the board instance
      */
     public Board getBoard() {
-        return BOARD;
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     /**
@@ -172,7 +177,7 @@ public abstract class Game implements IGame {
      * @return the number of tiles on the board
      */
     public int getBoardSize(){
-        return  BOARD.getSize();
+        return  board.getSize();
     }
 
     /**
@@ -184,7 +189,7 @@ public abstract class Game implements IGame {
      * @throws OutOfBoardException if the coordinates are outside the board
      */
     public Tile getBoardTile(int col, int row) {
-        return BOARD.getTile(col, row);
+        return board.getTile(col, row);
     }
 
     /**

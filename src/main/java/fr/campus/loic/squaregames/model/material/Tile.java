@@ -1,10 +1,12 @@
 package fr.campus.loic.squaregames.model.material;
 
+import java.io.Serializable;
+
 /**
  * Represents a single tile on a board.
  * Each tile has coordinates, may hold a pawn, and has a visual representation.
  */
-public class Tile {
+public class Tile implements Serializable {
 
     /** X-coordinate of the tile. */
     private final int COORDINATE_X;
