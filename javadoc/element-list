@@ -3,6 +3,7 @@ fr.campus.loic.squaregames.controller
 fr.campus.loic.squaregames.model.game
 fr.campus.loic.squaregames.model.gamefactory
 fr.campus.loic.squaregames.model.material
+fr.campus.loic.squaregames.model.persistence
 fr.campus.loic.squaregames.model.player
 fr.campus.loic.squaregames.model.playerfactory
 fr.campus.loic.squaregames.tests
