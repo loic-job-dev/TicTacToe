@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.io.StreamCorruptedException;
 
 public interface Persistence {
-    public void createPlayer(IPlayer player) throws FileNotFoundException, StreamCorruptedException, IOException;
+    public void createPlayer(IPlayer player) throws IOException;
 
-    public IPlayer readPlayer(int number) throws FileNotFoundException, StreamCorruptedException, IOException, ClassNotFoundException;
+    public IPlayer readPlayer(int number) throws IOException, ClassNotFoundException;
 
-    public void createBoard(Board board) throws FileNotFoundException, StreamCorruptedException, IOException;
+    public void createBoard(Board board) throws IOException;
 
-    public Board readBoard(int id) throws FileNotFoundException, StreamCorruptedException, IOException, ClassNotFoundException;
+    public Board readBoard(int id) throws IOException, ClassNotFoundException;
 }

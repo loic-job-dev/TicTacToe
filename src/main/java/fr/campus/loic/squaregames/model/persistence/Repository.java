@@ -10,11 +10,11 @@ import java.io.StreamCorruptedException;
 
 public interface Repository {
 
-    public void createPlayerFile(IPlayer player) throws FileNotFoundException, StreamCorruptedException, IOException;
+    public void createPlayerFile(IPlayer player) throws IOException;
 
-    public IPlayer readPlayerFile(int number) throws FileNotFoundException, StreamCorruptedException, IOException, ClassNotFoundException;
+    public IPlayer readPlayerFile(int number) throws IOException, ClassNotFoundException;
 
-    public void createBoardFile(Board board) throws FileNotFoundException, StreamCorruptedException, IOException;
+    public void createBoardFile(Board board) throws IOException;
 
-    public Board readBoardFile(int id) throws FileNotFoundException, StreamCorruptedException, IOException, ClassNotFoundException;
+    public Board readBoardFile(int id) throws IOException, ClassNotFoundException;
 }
