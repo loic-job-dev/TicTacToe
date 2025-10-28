@@ -10,23 +10,23 @@ public class GameSerialization implements Persistence, Serializable {
     GameFileRepository gr = new GameFileRepository();
 
     @Override
-    public void createPlayer(IPlayer player) throws Exception {
+    public void createPlayer(IPlayer player) throws FileNotFoundException, StreamCorruptedException, IOException {
         gr.createPlayerFile(player);
     }
 
     @Override
-    public IPlayer readPlayer(int number) throws Exception {
+    public IPlayer readPlayer(int number) throws FileNotFoundException, StreamCorruptedException, IOException, ClassNotFoundException {
         return gr.readPlayerFile(number);
     }
 
 
     @Override
-    public void createBoard(Board board) throws Exception {
+    public void createBoard(Board board) throws FileNotFoundException, StreamCorruptedException, IOException {
         gr.createBoardFile(board);
     }
 
     @Override
-    public Board readBoard(int id) throws Exception {
+    public Board readBoard(int id) throws FileNotFoundException, StreamCorruptedException, IOException, ClassNotFoundException {
         return gr.readBoardFile(id);
     }
 }

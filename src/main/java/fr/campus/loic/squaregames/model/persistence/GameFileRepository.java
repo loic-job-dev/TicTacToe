@@ -17,7 +17,7 @@ public class GameFileRepository implements Repository{
         }
     }
 
-    public void createPlayerFile(IPlayer player) throws Exception {
+    public void createPlayerFile(IPlayer player) throws FileNotFoundException, StreamCorruptedException, IOException {
         FileOutputStream file = new FileOutputStream(SAVE_DIR + "player_" + player.getNumber() + ".ser");
         ObjectOutputStream out = new ObjectOutputStream(file);
         out.writeObject(player);
@@ -26,7 +26,7 @@ public class GameFileRepository implements Repository{
     }
 
     @Override
-    public IPlayer readPlayerFile(int number) throws Exception {
+    public IPlayer readPlayerFile(int number) throws FileNotFoundException, StreamCorruptedException, IOException, ClassNotFoundException {
         FileInputStream file = new FileInputStream(SAVE_DIR + "player_" + number + ".ser");
         ObjectInputStream in = new ObjectInputStream(file);
         IPlayer player = (IPlayer) in.readObject();
@@ -36,7 +36,7 @@ public class GameFileRepository implements Repository{
     }
 
     @Override
-    public void createBoardFile(Board board) throws Exception {
+    public void createBoardFile(Board board) throws FileNotFoundException, StreamCorruptedException, IOException {
         //TODO : add an id for each board (a game ID ??)
         FileOutputStream file = new FileOutputStream(SAVE_DIR + "board_" + board.getSize() + ".ser");
         ObjectOutputStream out = new ObjectOutputStream(file);
@@ -46,7 +46,7 @@ public class GameFileRepository implements Repository{
     }
 
     @Override
-    public Board readBoardFile(int id) throws Exception {
+    public Board readBoardFile(int id) throws FileNotFoundException, StreamCorruptedException, IOException, ClassNotFoundException {
         FileInputStream file = new FileInputStream(SAVE_DIR + "board_" + id + ".ser");
         ObjectInputStream in = new ObjectInputStream(file);
         Board board = (Board) in.readObject();
