@@ -3,6 +3,8 @@ package fr.campus.loic.squaregames.model.player;
 import fr.campus.loic.squaregames.model.game.IGame;
 import fr.campus.loic.squaregames.view.ConsoleColors;
 
+import java.io.Serializable;
+
 /**
  * Represents a player in a board game with a specific symbol and color.
  * <p>
@@ -15,7 +17,7 @@ import fr.campus.loic.squaregames.view.ConsoleColors;
  *     <li>Any other number — White</li>
  * </ul>
  */
-public abstract class Player implements IPlayer {
+public abstract class Player implements IPlayer, Serializable {
 
     /** The symbol representing the player on the board. */
     private final String REPRESENTATION;

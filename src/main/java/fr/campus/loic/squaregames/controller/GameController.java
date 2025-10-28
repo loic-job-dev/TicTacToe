@@ -28,6 +28,7 @@ public class GameController {
     private GameFactory gameFactory;
     private IGame game;
     public States state;
+    private final PersistenceController PERSISTENCE_CONTROLLER = new PersistenceController(VIEW);
 
     /**
      * Runs the game using a state-driven loop.
@@ -89,6 +90,8 @@ public class GameController {
      */
     public void playTurn() {
         IPlayer p = game.getCurrentPlayer();
+
+        PERSISTENCE_CONTROLLER.savePlayer(p);
 
         VIEW.println(Fr.turnOfPlayer + p.getNumber());
         game.playerTurn(p, getMoveFromPlayer(p));
@@ -169,19 +172,24 @@ public class GameController {
      * </ul>
      */
     public void chooseGameMode() {
+        //TODO : add a method in each Game to call the PlayerFactory
         VIEW.println(ConsoleColors.YELLOW + game.getRules() + ConsoleColors.RESET);
 
         PlayerFactory humanPlayerFactory = new HumanPlayerFactory();
         PlayerFactory artificialPlayerFactory = new ArtificialPlayerFactory();
 
-        IPlayer[] players = new Player[2];
+        IPlayer[] players = new IPlayer[2];
 
         int choice = VIEW.askInt(ConsoleColors.PURPLE + Fr.chooseGameMode + ConsoleColors.RESET);
 
         switch (choice) {
             case 1 -> {
-                players[0] = humanPlayerFactory.createPlayer("X", 1);
-                players[1] = humanPlayerFactory.createPlayer("O", 2);
+                //Test to load players from files
+                players[0] = PERSISTENCE_CONTROLLER.getPlayer(1);
+                players[1] = PERSISTENCE_CONTROLLER.getPlayer(2);
+
+//                players[0] = humanPlayerFactory.createPlayer("X", 1);
+//                players[1] = humanPlayerFactory.createPlayer("O", 2);
             }
             case 2 -> {
                 players[0] = humanPlayerFactory.createPlayer("X", 1);
