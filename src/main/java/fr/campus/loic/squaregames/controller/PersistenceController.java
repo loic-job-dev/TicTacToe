@@ -5,6 +5,8 @@ import fr.campus.loic.squaregames.model.persistence.*;
 import fr.campus.loic.squaregames.model.player.IPlayer;
 import fr.campus.loic.squaregames.view.View;
 
+import java.io.IOException;
+
 public class PersistenceController {
 
     private final Persistence PERSISTENCE;
@@ -19,7 +21,7 @@ public class PersistenceController {
         try {
             PERSISTENCE.createPlayer(player);
             VIEW.println("Joueur sauvegardé !");
-        }catch (Exception e){
+        }catch (IOException e){
             VIEW.println("Erreur lors de la sauvegarde : " + e.getMessage());
         }
     }
@@ -27,8 +29,11 @@ public class PersistenceController {
     public IPlayer getPlayer(int number) {
         try {
              return PERSISTENCE.readPlayer(number);
-        } catch (Exception e){
-            VIEW.println("Erreur lors du chargement : " + e.getMessage());
+        } catch (IOException e){
+            VIEW.println("Erreur fichier lors du chargement : " + e.getMessage());
+            return null;
+        } catch (ClassNotFoundException c) {
+            VIEW.println("Erreur de classe lors du chargement : " + c.getMessage());
             return null;
         }
     }
@@ -37,7 +42,7 @@ public class PersistenceController {
         try {
             PERSISTENCE.createBoard(board);
             VIEW.println("Grille de jeu sauvegardée !");
-        } catch (Exception e){
+        } catch (IOException e){
             VIEW.println("Erreur lors de la sauvegarde : " + e.getMessage());
         }
     }
@@ -45,8 +50,11 @@ public class PersistenceController {
     public Board getBoard(int id) {
         try {
             return PERSISTENCE.readBoard(id);
-        } catch (Exception e){
-            VIEW.println("Erreur lors du chargement : " + e.getMessage());
+        } catch (IOException e){
+            VIEW.println("Erreur fichier lors du chargement : " + e.getMessage());
+            return null;
+        } catch (ClassNotFoundException c) {
+            VIEW.println("Erreur de classe lors du chargement : " + c.getMessage());
             return null;
         }
     }
