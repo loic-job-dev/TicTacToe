@@ -18,7 +18,7 @@ import java.io.*;
 public class GameFileRepository implements Repository{
 
     /** Directory where all saved files are stored. */
-    private static final String SAVE_DIR = "saves/";
+    private static final String SAVE_DIR = "gamesquare_saves/";
 
     static {
         File dir = new File(SAVE_DIR);
@@ -38,7 +38,7 @@ public class GameFileRepository implements Repository{
      * @throws IOException if an I/O error occurs while writing the file
      */
     public void createPlayerFile(IPlayer player) throws IOException {
-        FileOutputStream file = new FileOutputStream(SAVE_DIR + "player_" + player.getNumber() + ".ser");
+        FileOutputStream file = new FileOutputStream(SAVE_DIR + "player_human _" + player.isHuman() + player.getNumber() + ".ser");
         ObjectOutputStream out = new ObjectOutputStream(file);
         out.writeObject(player);
         out.close();
@@ -54,8 +54,8 @@ public class GameFileRepository implements Repository{
      * @throws ClassNotFoundException if the class definition of the serialized object is not found
      */
     @Override
-    public IPlayer readPlayerFile(int number) throws IOException, ClassNotFoundException {
-        FileInputStream file = new FileInputStream(SAVE_DIR + "player_" + number + ".ser");
+    public IPlayer readPlayerFile(boolean isHuman, int number) throws IOException, ClassNotFoundException {
+        FileInputStream file = new FileInputStream(SAVE_DIR + "player_human _" + isHuman + number + ".ser");
         ObjectInputStream in = new ObjectInputStream(file);
         IPlayer player = (IPlayer) in.readObject();
         in.close();

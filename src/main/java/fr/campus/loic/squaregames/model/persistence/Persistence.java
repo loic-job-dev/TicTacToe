@@ -10,7 +10,7 @@ import java.io.StreamCorruptedException;
 public interface Persistence {
     public void createPlayer(IPlayer player) throws IOException;
 
-    public IPlayer readPlayer(int number) throws IOException, ClassNotFoundException;
+    public IPlayer readPlayer(boolean isHuman, int number) throws IOException, ClassNotFoundException;
 
     public void createBoard(Board board) throws IOException;
 

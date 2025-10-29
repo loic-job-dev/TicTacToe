@@ -9,7 +9,7 @@ public interface Repository {
 
     public void createPlayerFile(IPlayer player) throws IOException;
 
-    public IPlayer readPlayerFile(int number) throws IOException, ClassNotFoundException;
+    public IPlayer readPlayerFile(boolean isHuman, int number) throws IOException, ClassNotFoundException;
 
     public void createBoardFile(Board board) throws IOException;
 

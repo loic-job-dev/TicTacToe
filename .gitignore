@@ -5,6 +5,7 @@ build/
 !**/src/test/**/build/
 .kotlin
 saves/
+gamesquare_saves/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

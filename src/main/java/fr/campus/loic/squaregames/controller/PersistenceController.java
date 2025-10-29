@@ -66,16 +66,8 @@ public class PersistenceController {
      * @param number the number identifying the player file
      * @return the deserialized {@link IPlayer} instance, or {@code null} if loading fails
      */
-    public IPlayer getPlayer(int number) {
-        try {
-             return PERSISTENCE.readPlayer(number);
-        } catch (IOException e){
-            VIEW.println("Erreur fichier lors du chargement : " + e.getMessage());
-            return null;
-        } catch (ClassNotFoundException c) {
-            VIEW.println("Erreur de classe lors du chargement : " + c.getMessage());
-            return null;
-        }
+    public IPlayer getPlayer(boolean isHuman, int number) throws IOException, ClassNotFoundException {
+        return PERSISTENCE.readPlayer(isHuman, number);
     }
 
     /**

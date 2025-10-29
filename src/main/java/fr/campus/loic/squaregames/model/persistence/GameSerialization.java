@@ -42,8 +42,8 @@ public class GameSerialization implements Persistence, Serializable {
      * @throws ClassNotFoundException if the serialized class cannot be found
      */
     @Override
-    public IPlayer readPlayer(int number) throws IOException, ClassNotFoundException {
-        return gr.readPlayerFile(number);
+    public IPlayer readPlayer(boolean isHuman, int number) throws IOException, ClassNotFoundException {
+        return gr.readPlayerFile(isHuman, number);
     }
 
     /**

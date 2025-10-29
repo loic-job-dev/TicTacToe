@@ -15,6 +15,8 @@ import fr.campus.loic.squaregames.view.ConsoleColors;
 import fr.campus.loic.squaregames.view.View;
 import fr.campus.loic.squaregames.view.lang.Fr;
 
+import java.io.IOException;
+
 
 /**
  * Handles user input and controls the overall flow of the game.
@@ -91,9 +93,6 @@ public class GameController {
      */
     public void playTurn() {
         IPlayer p = game.getCurrentPlayer();
-
-        //To save the two players in a file
-        //PERSISTENCE_CONTROLLER.savePlayer(p);
 
         VIEW.println(Fr.turnOfPlayer + p.getNumber());
         game.playerTurn(p, getMoveFromPlayer(p));
@@ -189,12 +188,13 @@ public class GameController {
 
         switch (choice) {
             case 1 -> {
-                //Test to load players from files
-                players[0] = PERSISTENCE_CONTROLLER.getPlayer(1);
-                players[1] = PERSISTENCE_CONTROLLER.getPlayer(2);
-
-//                players[0] = humanPlayerFactory.createPlayer("X", 1);
-//                players[1] = humanPlayerFactory.createPlayer("O", 2);
+                try {
+                    players[0] = PERSISTENCE_CONTROLLER.getPlayer(true, 1);
+                    players[1] = PERSISTENCE_CONTROLLER.getPlayer(true, 2);
+                } catch (IOException | ClassNotFoundException e) {
+                    players[0] = humanPlayerFactory.createPlayer("X", 1);
+                    players[1] = humanPlayerFactory.createPlayer("O", 2);
+                }
             }
             case 2 -> {
                 players[0] = humanPlayerFactory.createPlayer("X", 1);
@@ -208,6 +208,10 @@ public class GameController {
                 chooseGameMode();
             }
         }
+        //To save the two players in a file
+        PERSISTENCE_CONTROLLER.savePlayer(players[0]);
+        PERSISTENCE_CONTROLLER.savePlayer(players[1]);
+
         game.setPlayers(players);
         game.setCurrentPlayer(players[0]);
         display();
@@ -257,8 +261,8 @@ public class GameController {
         }
         this.game =  gameFactory.createGame();
         //To load a TicTacToe :
-        Board loadedBoard = PERSISTENCE_CONTROLLER.getBoard(9);
-        this.game.setBoard(loadedBoard);
+        //Board loadedBoard = PERSISTENCE_CONTROLLER.getBoard(9);
+        //this.game.setBoard(loadedBoard);
 
         //To save the board :
         //PERSISTENCE_CONTROLLER.saveBoard(game.getBoard());
