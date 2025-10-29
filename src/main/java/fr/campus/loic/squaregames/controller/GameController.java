@@ -31,6 +31,7 @@ public class GameController {
     private IGame game;
     public States state;
     private final PersistenceController PERSISTENCE_CONTROLLER = new PersistenceController(VIEW);
+    private final PlayerController  PLAYER_CONTROLLER = new PlayerController(VIEW);
 
     /**
      * Runs the game using a state-driven loop.
@@ -194,7 +195,7 @@ public class GameController {
                 }
             }
             case 2 -> {
-                players[0] = humanPlayerFactory.createPlayer("X", 1);
+                players[0] = PLAYER_CONTROLLER.createPlayerFromUser();
                 players[1] = artificialPlayerFactory.createPlayer("O", 2);
             }
             case 3 -> {

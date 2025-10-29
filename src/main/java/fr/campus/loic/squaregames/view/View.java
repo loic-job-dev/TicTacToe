@@ -101,4 +101,27 @@ public class View {
             System.out.flush();
         }
     }
+
+    /**
+     * Prompts the user to enter a character and validates the input.
+     * <p>
+     * If the user enters invalid input, an error message is displayed and the prompt repeats.
+     * </p>
+     *
+     * @param message the message to display before asking for the character
+     * @return the valid character entered by the user
+     */
+    public String askRepresentation(String message) {
+        char representationChosen = 'X';
+
+        try {
+            println(message);
+            representationChosen = CLAVIER.next().toUpperCase().charAt(0);
+        } catch (InputMismatchException e) {
+            println(ConsoleColors.RED + Fr.exceptionIntMessage + ConsoleColors.RESET);
+            CLAVIER.nextLine();
+            askRepresentation(message);
+        }
+        return "" + representationChosen;
+    }
 }
